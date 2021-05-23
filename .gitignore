@@ -1,0 +1,8 @@
+## Folders
+./out
+./node_modules
+
+## Security
+.env
+*.db
+*.tsbuildinfo
