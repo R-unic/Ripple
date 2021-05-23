@@ -1,6 +1,6 @@
 ## Folders
-./out
-./node_modules
+/out
+/node_modules
 
 ## Security
 .env
@@ -8,3 +8,4 @@
 *.tsbuildinfo
 *.bat
 *.cmd
+*.js
