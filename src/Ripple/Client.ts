@@ -7,7 +7,7 @@ export default class RippleClient extends AkairoClient {
     public readonly Version = `v${pkg.version}`;
     public readonly Prefix = "::";
     public readonly InviteLink = "https://bit.ly/2SjjB3d";
-    public readonly GitHubRepo = "https://github.com/AlphaRunic/Ripple";
+    public readonly GitHubRepo = "https://github.com/AlphaRunic/Ripple#readme";
     public readonly Giveaways = new GiveawaysManager(this, {
         storage: "./GiveawayStorage.json",
         updateCountdownEvery: 10000,
