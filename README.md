@@ -6,4 +6,4 @@
   <br>
 </h1>
 <h3 align="center">All-purpose TypeScript Discord bot</p>
-<h3 href="https://alpharunic.github.io/Ripple/" align="center">Learn more</a>
+<a href="https://alpharunic.github.io/Ripple/" align="center">Learn more</a>
