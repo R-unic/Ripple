@@ -1,6 +1,6 @@
 import { Command } from "discord-akairo";
 import { Message } from "discord.js";
-import { User } from "../../Ripple/Util";
+import { StripISO, User } from "../../Ripple/Util";
 import RippleClient from "../../Ripple/Client";
 
 export default class extends Command {
@@ -21,7 +21,7 @@ export default class extends Command {
                 .setThumbnail(msg.guild.iconURL({ dynamic: true }))
                 .addField("Members", msg.guild.memberCount, true)
                 .addField("Region", msg.guild.region, true)
-                .addField("Created On", msg.guild.createdAt, true)
+                .addField("Created On", StripISO(msg.guild.createdAt), true)
                 .addField("Owner", User(msg.guild.ownerID), true)
                 .addField("Nitro Boost Tier", msg.guild.premiumTier, true)
                 .addField("Partnered", msg.guild.partnered ? "Yes" : "No", true)

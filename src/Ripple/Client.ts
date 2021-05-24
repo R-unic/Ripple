@@ -1,6 +1,7 @@
 import { AkairoClient, CommandHandler } from "discord-akairo";
 import { ClientEvents, Message, MessageEmbed } from "discord.js";
 import { GiveawaysManager } from "discord-giveaways";
+import { readdirSync } from "fs";
 const pkg = require(__dirname + "/../../package.json");
 
 export default class RippleClient extends AkairoClient {
@@ -9,6 +10,8 @@ export default class RippleClient extends AkairoClient {
     public readonly InviteLink = "https://bit.ly/2SjjB3d";
     public readonly GitHubRepo = "https://github.com/AlphaRunic/Ripple";
     public readonly Website = "https://alpharunic.github.io/Ripple";
+    public CommandCount = 0;
+    public readonly Package = pkg;
     public readonly Giveaways = new GiveawaysManager(this, {
         storage: "./GiveawayStorage.json",
         updateCountdownEvery: 10000,
@@ -56,6 +59,13 @@ export default class RippleClient extends AkairoClient {
         this.HandleEvents();
         this.InitiateDatabases();
         this.LoadCommands();
+
+        readdirSync(`${__dirname}/../Commands`)
+            .forEach(folder => 
+                readdirSync(`${__dirname}/../Commands/${folder}`)
+                    .filter(file => file.endsWith(".ts") || file.endsWith(".js"))
+                    .forEach(() => this.CommandCount++)
+            );
     }
 
     public Embed(): MessageEmbed {
