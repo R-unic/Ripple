@@ -15,12 +15,12 @@ export default class extends Command {
         const client = this.client as RippleClient;
         return msg.reply("Ping...")
             .then(async sent => {
-                const created = sent.createdTimestamp
+                const created = msg.createdTimestamp
                 sent.delete();
                 return msg.reply(
                     client.Embed()
                         .setTitle("Pong! 🏓")
-                        .addField("Latency", `${(Date.now() - created) - 1100}ms`)
+                        .addField("Latency", `${sent.createdTimestamp - created}ms`)
                         .addField("Discord API Latency", `${Math.round(client.ws.ping)}ms`)
                 )
             })
