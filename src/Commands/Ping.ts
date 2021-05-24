@@ -5,7 +5,9 @@ export default class Ping extends Command {
     public constructor() {
         const name = "ping";
         super(name, {
-            aliases: [name, "test"]
+            aliases: [name, "test"],
+            description: "Returns 'Pong!'",
+            category: "Fun"
         });
     }
 

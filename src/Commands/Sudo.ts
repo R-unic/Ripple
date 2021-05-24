@@ -6,6 +6,8 @@ export default class Sudo extends Command {
         const name = "sudo";
         super(name, {
             aliases: [name, "say", "repeat", "echo"],
+            description: "Repeats the message provided.",
+            category: "Fun",
             args: [
                 {
                     id: "message",
@@ -16,7 +18,9 @@ export default class Sudo extends Command {
     }
 
     public async exec(msg: Message, args) {
-        msg.channel.send(args.message);
-        return msg.delete();
+        if (args.message) {
+            msg.channel.send(args.message);
+            return msg.delete();
+        }
     }
 }
