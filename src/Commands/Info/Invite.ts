@@ -1,23 +1,22 @@
 import { Command } from "discord-akairo";
-import { Message, MessageEmbed } from "discord.js";
+import { Message } from "discord.js";
+import RippleClient from "../../Ripple/Client";
 
-export default class Invite extends Command {
+export default class extends Command {
     public constructor() {
         const name = "invite";
         super(name, {
             aliases: [name, "invitelink", "inviteme", "invitebot"],
-            description: "Returns an invite link for Ripple.",
-            category: "Info"
+            description: "Returns an invite link for Ripple."
         });
     }
 
     public async exec(msg: Message) {
+        const client = this.client as RippleClient;
         return msg.reply(
-            new MessageEmbed()
+            client.Embed(msg)
                 .setTitle("Invite Me! 🔗")
                 .setURL("https://bit.ly/2SjjB3d")
-                .setColor("RANDOM")
-                .setTimestamp()
         );
     }
 }

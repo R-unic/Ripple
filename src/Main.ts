@@ -1,19 +1,20 @@
 import { error } from "console";
-import { RippleClient } from "./Ripple/Client";
-import * as dotenv from "dotenv";
+import RippleClient from "./Ripple/Client";
 import Events from "./Ripple/Events";
+import * as dotenv from "dotenv";
 
 dotenv.config();
 
 const Ripple = new RippleClient(Events);
-Ripple.LoadCommands();
 Ripple.login(process.env.LOGIN_TOKEN as string)
-    .then(() => 
+    .then(() =>       
         Ripple.user.setPresence({
             status: "online",
             activity: {
-                name: `::help | ${Ripple.Version} by <@!415233686758359051>`,
+                name: `${Ripple.guilds.cache.size} servers | ::help`,
                 type: "WATCHING"
             }
         })
     ).catch(error);
+
+process.on("unhandledRejection", error);

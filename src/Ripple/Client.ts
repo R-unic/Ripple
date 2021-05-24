@@ -1,30 +1,71 @@
-import { AkairoClient as Client, CommandHandler } from "discord-akairo";
-import { ClientEvents } from "discord.js";
-import path = require("path");
+import { AkairoClient, CommandHandler } from "discord-akairo";
+import { ClientEvents, Message, MessageEmbed } from "discord.js";
 
-export class RippleClient extends Client {
-    public readonly Version = "v1.0.0";
+export default class RippleClient extends AkairoClient {
+    
+    public readonly Version = "v1.1.0";
+    public readonly Prefix = "::";
 
-    private readonly commandHandler = new CommandHandler(this, {
-        directory: path.join(__dirname, "../Commands/"),
+    public readonly CommandHandler = new CommandHandler(this, {
+        automateCategories: true,
+        directory: __dirname + "/../Commands/",
         prefix: "::",
-        defaultCooldown: 1,
+        defaultCooldown: 5e3,
         blockBots: true,
-        blockClient: true
+        blockClient: true,
+        commandUtil: true,
+        argumentDefaults: {
+            prompt: {
+                cancel: (msg: Message) => `${msg.author}, command cancelled.`,
+                ended: (msg: Message) => `${msg.author}, command declined.`,
+                modifyRetry: (msg, text) => text && `${msg.author}, ${text}\n\nType \`cancel\` to cancel this command.`,
+                modifyStart: (msg, text) => text && `${msg.author}, ${text}\n\nType \`cancel\` to cancel this command.`,
+                retries: 3,
+                time: 30000,
+                timeout: (msg: Message) => `${msg.author}, command expired.`
+            }
+        },
     });
 
     public constructor(
         private events: Map<keyof ClientEvents, Function>
     ) {
         super({
-            disableMentions: "everyone",
             ownerID: ["415233686758359051", "686418809720012843"]
+        }, {
+            disableMentions: "everyone"
         });
+
         this.HandleEvents();
+        this.InitiateDatabases();
+        this.LoadCommands();
     }
 
-    public LoadCommands() {
-        this.commandHandler.loadAll();
+    public Embed(msg: Message): MessageEmbed {
+        return new MessageEmbed()
+            .setColor("RANDOM")
+            .setFooter(`Ripple ${this.Version}`, this.user.displayAvatarURL({ dynamic: true }))
+            .setTimestamp();
+    }
+
+    public Seconds(ms: number): number {
+        return ms * 1000;
+    }
+
+    public MissingArg(msg: Message, argName: string): Promise<Message> {
+        return msg.reply(`Missing argument "${argName}".`);
+    }
+
+    public Tag(tag: string, id: string): string {
+        return `${tag}_${id}`;
+    }
+
+    private InitiateDatabases() {
+        
+    }
+
+    private LoadCommands() {
+        this.CommandHandler.loadAll();
     }
 
     private HandleEvents() {
