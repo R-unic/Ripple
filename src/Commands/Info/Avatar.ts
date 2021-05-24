@@ -27,7 +27,7 @@ export default class extends Command {
             member = msg.member;
 
         return msg.reply(
-            client.Embed(msg)
+            client.Embed()
                 .setTitle(`${member.displayName}'s Avatar`)
                 .setImage(member.user.displayAvatarURL({ dynamic: true }))
         );

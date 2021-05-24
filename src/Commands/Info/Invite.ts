@@ -14,7 +14,7 @@ export default class extends Command {
     public async exec(msg: Message) {
         const client = this.client as RippleClient;
         return msg.reply(
-            client.Embed(msg)
+            client.Embed()
                 .setTitle("Invite Me! 🔗")
                 .setURL("https://bit.ly/2SjjB3d")
         );

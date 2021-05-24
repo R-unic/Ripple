@@ -41,7 +41,7 @@ export default class extends Command {
         ];
 
         return msg.channel.send(
-            client.Embed(msg)
+            client.Embed()
                 .setTitle("🎱 Magic 8-Ball 🎱")
                 .setDescription(answers[floor(random() * answers.length)])
         );

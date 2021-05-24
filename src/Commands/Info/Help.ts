@@ -38,7 +38,7 @@ export default class extends Command {
         const userPermissions = command.userPermissions as string[];
         const examples: string[] = command.description.examples;
 
-        const embed = client.Embed(msg)
+        const embed = client.Embed()
             .setTitle(`${prefix}${command} ${command.description.usage ? command.description.usage : ""}`)
             .setDescription(typeof command.description === "string" ? command.description : command.description.content)
 
@@ -56,7 +56,7 @@ export default class extends Command {
 
     public async defaultHelpMenu(client: RippleClient, msg: Message) {
         const prefix = client.Prefix;
-        const embed = client.Embed(msg)
+        const embed = client.Embed()
             .setTitle("Commands")
             .setDescription([
                 msg.guild ? `This server's prefix is \`${prefix}\`` : "",

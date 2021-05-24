@@ -1,12 +1,24 @@
 import { AkairoClient, CommandHandler } from "discord-akairo";
 import { ClientEvents, Message, MessageEmbed } from "discord.js";
+import { GiveawaysManager } from "discord-giveaways";
 
 export default class RippleClient extends AkairoClient {
-    
     public readonly Version = "v1.1.0";
     public readonly Prefix = "::";
+    public readonly Giveaways = new GiveawaysManager(this, {
+        storage: "./giveawayStorage.json",
+        updateCountdownEvery: 10000,
+        hasGuildMembersIntent: false,
+        default: {
+            botsCanWin: false,
+            exemptPermissions: ['ADMINISTRATOR'],
+            embedColor: '#FF00DD',
+            embedColorEnd: "#FF8800",
+            reaction: "🎉"
+        }
+    });
 
-    public readonly CommandHandler = new CommandHandler(this, {
+    private readonly commandHandler = new CommandHandler(this, {
         automateCategories: true,
         directory: __dirname + "/../Commands/",
         prefix: "::",
@@ -41,7 +53,7 @@ export default class RippleClient extends AkairoClient {
         this.LoadCommands();
     }
 
-    public Embed(msg: Message): MessageEmbed {
+    public Embed(): MessageEmbed {
         return new MessageEmbed()
             .setColor("RANDOM")
             .setFooter(`Ripple ${this.Version}`, this.user.displayAvatarURL({ dynamic: true }))
@@ -65,7 +77,7 @@ export default class RippleClient extends AkairoClient {
     }
 
     private LoadCommands() {
-        this.CommandHandler.loadAll();
+        this.commandHandler.loadAll();
     }
 
     private HandleEvents() {
