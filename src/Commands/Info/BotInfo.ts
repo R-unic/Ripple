@@ -1,5 +1,6 @@
 import { Command } from "discord-akairo";
 import { version as discordJSVersion, GuildMember, Message } from "discord.js";
+import { Hyperlink } from "../../Ripple/Util";
 import RippleClient from "../../Ripple/Client";
 
 export default class extends Command {
@@ -11,7 +12,7 @@ export default class extends Command {
         });
     }
 
-    public async exec(msg: Message, { member }: { member: (GuildMember | null) }) {
+    public async exec(msg: Message) {
         const client = this.client as RippleClient;
         return msg.reply(
             client.Embed()
@@ -24,7 +25,7 @@ export default class extends Command {
                 .addField("Library", discordJSVersion, true)
                 .addField("Language", "TypeScript 4.2.4", true)
                 .addField("Compiled Environment", process.version, true)
-                .addField("Links", `[Invite](${client.InviteLink}) | [GitHub Repository](${client.GitHubRepo})`, true)
+                .addField("Links", `${Hyperlink(client.InviteLink, "Invite")} | ${Hyperlink(client.Website, "Website")} | ${Hyperlink(client.GitHubRepo, "GitHub Repository")}`, true)
         );
     }
 }

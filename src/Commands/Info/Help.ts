@@ -43,9 +43,9 @@ export default class extends Command {
             .setDescription(typeof command.description === "string" ? command.description : command.description.content)
 
         if (clientPermissions)
-            embed.addField("Required Bot Permissions", clientPermissions.map(p => `\`${toTitleCase(p)}\``).join(", "));
+            embed.addField("Required Bot Permissions", clientPermissions);
         if (userPermissions)
-            embed.addField("Required User Permissions:", userPermissions.map(p => `\`${toTitleCase(p)}\``).join(", "));
+            embed.addField("Required User Permissions:", userPermissions);
         if (command.aliases.length > 1)
             embed.addField("Aliases", command.aliases.slice(1).map(a => `\`${a}\``).join(", "));
         if (examples)
