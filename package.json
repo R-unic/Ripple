@@ -1,10 +1,10 @@
 {
   "name": "ripple",
-  "version": "1.0.0",
+  "version": "1.2.0",
   "description": "All-purpose TypeScript Discord bot",
   "main": "Main.js",
   "scripts": {
-    "start": "node --trace-warnings out/Main.js",
+    "start": "nodemon --trace-warnings out/Main.js -e .ts,.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -24,6 +24,7 @@
   },
   "homepage": "https://github.com/AlphaRunic/Ripple#readme",
   "dependencies": {
+    "axios": "^0.21.1",
     "discord-akairo": "^8.1.0",
     "discord-giveaways": "^4.5.1",
     "discord.js": "^12.5.3",

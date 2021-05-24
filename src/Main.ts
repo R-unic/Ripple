@@ -1,4 +1,5 @@
 import { error } from "console";
+import { env, on } from "process";
 import RippleClient from "./Ripple/Client";
 import Events from "./Ripple/Events";
 import * as dotenv from "dotenv";
@@ -6,7 +7,7 @@ import * as dotenv from "dotenv";
 dotenv.config();
 
 const Ripple = new RippleClient(Events);
-Ripple.login(process.env.LOGIN_TOKEN as string)
+Ripple.login(env.LOGIN_TOKEN)
     .then(() =>       
         Ripple.user.setPresence({
             status: "online",
@@ -17,4 +18,4 @@ Ripple.login(process.env.LOGIN_TOKEN as string)
         })
     ).catch(error);
 
-process.on("unhandledRejection", error);
+on("unhandledRejection", error);

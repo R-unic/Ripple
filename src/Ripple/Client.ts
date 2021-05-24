@@ -1,12 +1,15 @@
 import { AkairoClient, CommandHandler } from "discord-akairo";
 import { ClientEvents, Message, MessageEmbed } from "discord.js";
 import { GiveawaysManager } from "discord-giveaways";
+const pkg = require(__dirname + "/../../package.json");
 
 export default class RippleClient extends AkairoClient {
-    public readonly Version = "v1.1.0";
+    public readonly Version = `v${pkg.version}`;
     public readonly Prefix = "::";
+    public readonly InviteLink = "https://bit.ly/2SjjB3d";
+    public readonly GitHubRepo = "https://github.com/AlphaRunic/Ripple";
     public readonly Giveaways = new GiveawaysManager(this, {
-        storage: "./giveawayStorage.json",
+        storage: "./GiveawayStorage.json",
         updateCountdownEvery: 10000,
         hasGuildMembersIntent: false,
         default: {
@@ -38,6 +41,7 @@ export default class RippleClient extends AkairoClient {
             }
         },
     });
+    
 
     public constructor(
         private events: Map<keyof ClientEvents, Function>
@@ -82,7 +86,7 @@ export default class RippleClient extends AkairoClient {
 
     private HandleEvents() {
         this.events.forEach((callback, event) => 
-            this.on(event, (...args: any[]) => callback(...args))
+            this.on(event, (...args: any[]) => callback(this, ...args))
         );
     }
 }

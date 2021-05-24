@@ -16,7 +16,7 @@ export default class extends Command {
         return msg.reply(
             client.Embed()
                 .setTitle("Invite Me! 🔗")
-                .setURL("https://bit.ly/2SjjB3d")
+                .setURL(client.InviteLink)
         );
     }
 }
