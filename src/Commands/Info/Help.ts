@@ -87,6 +87,7 @@ export default class extends Command {
 
         embed.fields = embed.fields.sort((a, b) => a.name > b.name ? 1 : (a.name < b.name ? -1 : 0));
 
-        return msg.member.send(embed);
+        return msg.member.send(embed)
+            .then(() => msg.reply("I sent you a help menu in your DMs! 💖"));;
     }
 }

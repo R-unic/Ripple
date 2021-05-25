@@ -10,6 +10,7 @@ export default class extends Command {
             aliases: [name, "bulkdel", "bulkdelete", "nuke", "clear"],
             userPermissions: "MANAGE_MESSAGES",
             clientPermissions: "MANAGE_MESSAGES",
+            cooldown: 5,
             description: {
                 content: "Deletes a number of messages at once.",
                 usage: "<numberOfMessages>"
