@@ -18,7 +18,7 @@ export default class extends Command {
         const res = ((await this.requestAPI(msg)) as { img: string, date: string })
         return msg.reply(
             client.Embed()
-                .setTitle('🐶 Meow! 🐶')
+                .setTitle('🐱 Meow! 🐱')
                 .setAuthor(res.date)
                 .setImage(res.img)
         );

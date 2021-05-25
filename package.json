@@ -22,7 +22,7 @@
   "bugs": {
     "url": "https://github.com/AlphaRunic/Ripple/issues"
   },
-  "homepage": "https://github.com/AlphaRunic/Ripple#readme",
+  "homepage": "https://alpharunic.github.io/Ripple",
   "dependencies": {
     "@types/ms": "^0.7.31",
     "@types/node-fetch": "^2.5.10",
