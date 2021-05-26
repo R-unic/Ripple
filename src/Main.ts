@@ -1,10 +1,13 @@
-import { error } from "console";
-import { on } from "process";
+import { on as On } from "process";
 import Ripple from "./Ripple/Client";
-import * as dotenv from "dotenv";
+import { config as InitiateDotEnv } from "dotenv";
 
-dotenv.config();
-
+InitiateDotEnv();
 new Ripple;
 
-on("unhandledRejection", error);
+On("unhandledRejection", err => new Error(
+    typeof err === "string"? 
+    err 
+    : 
+    "Unhandled Promise Rejection" + "\n" + err
+));
