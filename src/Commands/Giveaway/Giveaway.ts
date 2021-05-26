@@ -35,18 +35,15 @@ export default class extends Command {
         });
     }
 
-    public async exec(msg: Message, { prize, time, winnerAmount, channel }: { prize: string, time: string, winnerAmount: number, channel: (TextChannel | undefined) }) {
+    public async exec(msg: Message, { prize, time, winnerAmount, channel = msg.channel as TextChannel }: { prize: string, time: string, winnerAmount: number, channel: (TextChannel | undefined) }) {
         const client = this.client as RippleClient;
-        const exampleCommand = 'E.g. `::giveaway 1d 1 "Discord Nitro"`';
 
         if (!time)
-            return msg.reply(`Please specify a time that the giveaway will last for. ${exampleCommand}`);
-        if (!winnerAmount)
-            return msg.reply(`Please specify an amount of winners for the giveaway. ${exampleCommand}`);
+            return client.Logger.MissingArgError(msg, "time");
         if (!prize)
-            return msg.reply(`Please specify a prize that the giveaway will award. ${exampleCommand}`);
+            return client.Logger.MissingArgError(msg, "prize");
 
-        return client.Giveaways.start(channel ?? (msg.channel as TextChannel), {
+        return client.Giveaways.start(channel, {
             time: ms(time),
             winnerCount: winnerAmount,
             prize: prize

@@ -25,6 +25,22 @@ export default class extends Command {
 
     public async exec(msg: Message, { role }: { role: Role }) {
         const client = this.client as RippleClient;
-        // TODO: database
+
+        if (!role) {
+            await client.Set(msg, "autorole", null);
+            return msg.reply(
+                client.Success()
+                    .setDescription(`Successfully disabled autorole.`)
+            );
+        }
+
+        return client.Set(msg, "autorole", role.id)
+            .then(success => {
+                if (success)
+                    return msg.reply(
+                        client.Success()
+                            .setDescription(`Successfully set autorole to ${role}.`)
+                    );
+            }).catch(err => client.Logger.DatabaseError(msg, err));
     }
 }

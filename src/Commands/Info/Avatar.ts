@@ -21,10 +21,8 @@ export default class extends Command {
         });
     }
 
-    public async exec(msg: Message, { member }: { member: (GuildMember | null) }) {
+    public async exec(msg: Message, { member = msg.member }: { member: (GuildMember | null) }) {
         const client = this.client as RippleClient;
-        if (!member)
-            member = msg.member;
 
         return msg.reply(
             client.Embed()

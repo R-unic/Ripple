@@ -23,7 +23,11 @@ export default class extends Command {
 
     public async exec(msg: Message, { giveawayMessage }: { giveawayMessage: Message }) {
         const client = this.client as RippleClient;
-        return client.Giveaways.delete(giveawayMessage.id)
+
+        return !giveawayMessage? 
+            client.Logger.MissingArgError(msg, "giveawayMessage")
+            :
+            client.Giveaways.delete(giveawayMessage.id)
             .then(() => msg.reply("Giveaway sucessfully deleted!"))
             .catch(() => msg.reply(`No giveaway with message ID ${giveawayMessage.id} exists.`));
     }

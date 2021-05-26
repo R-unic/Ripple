@@ -22,10 +22,12 @@ export default class extends Command {
 
     public async exec(msg: Message, { message }: { message: string }) {
         const client = this.client as RippleClient;
-        if (!message)
-            return client.MissingArg(msg, "message");
 
-        msg.channel.send(message);
+        message ? 
+            msg.channel.send(message) 
+            : 
+            client.Logger.MissingArgError(msg, "message");
+            
         return msg.delete();
     }
 }

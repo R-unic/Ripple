@@ -20,12 +20,9 @@ export default class extends Command {
         });
     }
 
-    public async exec(msg: Message, { member }: { member: GuildMember }) {
+    public async exec(msg: Message, { member = msg.guild.members.cache.random() }: { member: GuildMember }) {
         const client = this.client as RippleClient;
         const affinity = Math.round(Math.random() * 100);
-
-        if (!member)
-            member = msg.guild.members.cache.random();
 
         return msg.reply(
             client.Embed()

@@ -17,11 +17,11 @@ export default class extends Command {
 
         return msg.channel.send(
             client.Embed()
-                .setTitle("Uptime")
-                .addField("Days", uptime.getDay() - 3, true)
-                .addField("Hours", uptime.getHours() - 16, true)
-                .addField("Minutes", uptime.getMinutes(), true)
-                .addField("Seconds", uptime.getSeconds(), true)
+                .setTitle("⏲️ Uptime ⏲️")
+                .addField("Days", uptime.getDay() - 3)
+                .addField("Hours", uptime.getHours() - 16)
+                .addField("Minutes", uptime.getMinutes())
+                .addField("Seconds", uptime.getSeconds())
         );
     }
 }

@@ -32,12 +32,13 @@ export default class extends Command {
     public async exec(msg: Message, { command }: { command: Command }) {
         const client = this.client as RippleClient;
         const prefix = client.Prefix;
-        if (!command) return this.defaultHelpMenu(client, msg);
+
+        if (!command)
+            return this.defaultHelpMenu(client, msg);
 
         const clientPermissions = command.clientPermissions as string[];
         const userPermissions = command.userPermissions as string[];
         const examples: string[] = command.description.examples;
-
         const embed = client.Embed()
             .setTitle(`${prefix}${command} ${command.description.usage ? command.description.usage : ""}`)
             .setDescription(typeof command.description === "string" ? command.description : command.description.content)

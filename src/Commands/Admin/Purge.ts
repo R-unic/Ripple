@@ -27,8 +27,9 @@ export default class extends Command {
 
     public async exec(msg: Message, { messagesToRemove }: { messagesToRemove: number }) {
         const client = this.client as RippleClient;
+        
         if (!messagesToRemove || messagesToRemove === 0)
-            return client.MissingArg(msg, "messagesToRemove");
+            return client.Logger.MissingArgError(msg, "messagesToRemove");
 
         const channel = msg.channel as TextChannel
         if (!channel)

@@ -23,25 +23,25 @@ export default class extends Command {
     public async exec(msg: Message, { feedback }: { feedback: string }) {
         const client = this.client as RippleClient;
 
-        if (!feedback)
-            return client.MissingArg(msg, "feedback");
-
-        return client.guilds.fetch("846604279288168468")
-            .then(guild => {
-                return guild.channels.cache.find(channel => channel.id === "846605592054857728");
-            })
-            .then(async (feedbackChannel: TextChannel) => {
-                return feedbackChannel.send(
-                    client.Embed()
-                        .setTitle(`${msg.author.username} Says`)
-                        .setDescription(feedback)
-                        .setThumbnail(feedbackChannel.guild.iconURL({ dynamic: true }))
-                        .addField("Server", `${msg.guild.name} | [Invite](${(await msg.guild.fetchInvites()).first()})`)
-                );
-            })
-            .then(() => {
-                msg.delete();
-                return msg.reply("Successfully sent feedback!");
-            });
+        return !feedback?
+            client.Logger.MissingArgError(msg, "feedback")
+            :
+            client.guilds.fetch("846604279288168468")
+                .then(guild => {
+                    return guild.channels.cache.find(channel => channel.id === "846605592054857728");
+                })
+                .then(async (feedbackChannel: TextChannel) => {
+                    return feedbackChannel.send(
+                        client.Embed()
+                            .setTitle(`${msg.author.username} Says`)
+                            .setDescription(feedback)
+                            .setThumbnail(feedbackChannel.guild.iconURL({ dynamic: true }))
+                            .addField("Server", `${msg.guild.name} | [Invite](${(await msg.guild.fetchInvites()).first()})`)
+                    );
+                })
+                .then(() => {
+                    msg.delete();
+                    return msg.reply("Successfully sent feedback!");
+                });
     }
 }
