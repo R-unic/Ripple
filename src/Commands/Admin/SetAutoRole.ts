@@ -4,9 +4,9 @@ import RippleClient from "../../Ripple/Client";
 
 export default class extends Command {
     public constructor() {
-        const name = "autorole";
+        const name = "setautorole";
         super(name, {
-            aliases: [name, "joinrole"],
+            aliases: [name, "setjoinrole", "autorole", "joinrole"],
             userPermissions: "MANAGE_ROLES",
             clientPermissions: "MANAGE_ROLES",
             cooldown: 3,

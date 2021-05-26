@@ -17,7 +17,7 @@ export default class extends Command {
             client.Embed()
                 .setTitle("GitHub")
                 .setURL("https://github.com/AlphaRunic/Ripple")
-                .setImage("https://opengraph.githubassets.com/97bd4d7cef5c31277bfbb577cc87e7f6e1f92f3ccb90ed6c14f55e2016d37bc7/AlphaRunic/Ripple")
+                .setThumbnail("https://opengraph.githubassets.com/97bd4d7cef5c31277bfbb577cc87e7f6e1f92f3ccb90ed6c14f55e2016d37bc7/AlphaRunic/Ripple")
         );
     }
 }
