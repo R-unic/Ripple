@@ -1,9 +1,9 @@
 import { Command } from "discord-akairo";
 import { Message } from "discord.js";
-import RippleClient from "../../Ripple/Client";
+import Ripple from "../../Ripple/Client";
 import fetch from "node-fetch";
 
-export default class extends Command {
+export default class extends Command<Ripple> {
     public constructor() {
         const name = "dog";
         super(name, {
@@ -13,9 +13,8 @@ export default class extends Command {
     }
 
     public async exec(msg: Message) {
-        const client = this.client as RippleClient;
         return msg.reply(
-            client.Embed()
+            this.client.Embed()
                 .setTitle('🐶 Woof! 🐶')
                 .setImage(await this.getImage(msg))
         );

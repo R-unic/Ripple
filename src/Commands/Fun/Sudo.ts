@@ -1,8 +1,9 @@
 import { Command } from "discord-akairo";
 import { Message } from "discord.js";
-import RippleClient from "../../Ripple/Client";
+import { Arg } from "../../Ripple/Util";
+import Ripple from "../../Ripple/Client";
 
-export default class extends Command {
+export default class extends Command<Ripple> {
     public constructor() {
         const name = "sudo";
         super(name, {
@@ -11,22 +12,15 @@ export default class extends Command {
                 content: "Repeats the message provided.",
                 usage: '<"message">'
             },
-            args: [
-                {
-                    id: "message",
-                    type: "string"
-                }
-            ]
+            args: [ Arg("message", "string") ]
         });
     }
 
     public async exec(msg: Message, { message }: { message: string }) {
-        const client = this.client as RippleClient;
-
         message ? 
             msg.channel.send(message) 
             : 
-            client.Logger.MissingArgError(msg, "message");
+            this.client.Logger.MissingArgError(msg, "message");
             
         return msg.delete();
     }

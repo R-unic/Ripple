@@ -1,9 +1,9 @@
 import { Command } from "discord-akairo";
 import { version as discordJSVersion, Message } from "discord.js";
 import { Hyperlink, StripISO } from "../../Ripple/Util";
-import RippleClient from "../../Ripple/Client";
+import Ripple from "../../Ripple/Client";
 
-export default class extends Command<RippleClient> {
+export default class extends Command<Ripple> {
     public constructor() {
         const name = "botinfo";
         super(name, {

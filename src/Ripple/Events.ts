@@ -1,12 +1,12 @@
 import { Role } from "discord.js";
 import { ClientEvents, GuildMember } from "discord.js";
 import { error, log } from "console";
-import RippleClient from "./Client";
+import Ripple from "./Client";
 
 const Events = new Map<keyof ClientEvents, Function>([
-    ["ready", (client: RippleClient) => log(`Ripple ${client.Version} is now online.`)],
+    ["ready", (client: Ripple) => log(`Ripple ${client.Version} is now online.`)],
     ["error", (_, err) => error(err)],
-    ["guildMemberAdd", (client: RippleClient, member: GuildMember) => {
+    ["guildMemberAdd", (client: Ripple, member: GuildMember) => {
         if (member.user === client.user) {
             client.UpdatePresence();
             member.guild.systemChannel.send("Thanks for inviting me! My prefix is `::`. If you need any help, just say `::help`.");

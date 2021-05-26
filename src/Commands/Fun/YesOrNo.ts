@@ -1,8 +1,8 @@
 import { Command } from "discord-akairo";
 import { Message } from "discord.js";
-import RippleClient from "../../Ripple/Client";
+import Ripple from "../../Ripple/Client";
 
-export default class extends Command {
+export default class extends Command<Ripple> {
     public constructor() {
         const name = "yesorno";
         super(name, {
@@ -12,12 +12,11 @@ export default class extends Command {
     }
 
     public async exec(msg: Message) {
-        const client = this.client as RippleClient;
-        const _enum = Math.floor(Math.random() * 2);
+        const num = Math.floor(Math.random() * 2);
         return msg.reply(
-            client.Embed()
+            this.client.Embed()
                 .setTitle("✅ Yes Or No ❌")
-                .setDescription(`Your answer: ${_enum === 1 ? "Yes" : "No"}.`)
+                .setDescription(`Your answer: ${num === 1 ? "Yes" : "No"}.`)
         );
     }
 }

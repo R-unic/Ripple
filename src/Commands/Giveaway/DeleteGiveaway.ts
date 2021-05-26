@@ -1,9 +1,9 @@
 import { Command } from "discord-akairo";
 import { Message } from "discord.js";
 import { Arg } from "../../Ripple/Util";
-import RippleClient from "../../Ripple/Client";
+import Ripple from "../../Ripple/Client";
 
-export default class extends Command {
+export default class extends Command<Ripple> {
     public constructor() {
         const name = "deletegiveaway";
         super(name, {
@@ -19,12 +19,10 @@ export default class extends Command {
     }
 
     public async exec(msg: Message, { giveawayMessage }: { giveawayMessage: Message }) {
-        const client = this.client as RippleClient;
-
         return !giveawayMessage? 
-            client.Logger.MissingArgError(msg, "giveawayMessage")
+            this.client.Logger.MissingArgError(msg, "giveawayMessage")
             :
-            client.Giveaways.delete(giveawayMessage.id)
+            this.client.Giveaways.delete(giveawayMessage.id)
             .then(() => msg.reply("Giveaway sucessfully deleted!"))
             .catch(() => msg.reply(`No giveaway with message ID ${giveawayMessage.id} exists.`));
     }

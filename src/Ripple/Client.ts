@@ -5,9 +5,10 @@ import { RippleLogger } from "./Logger";
 import { Options } from "./Options";
 import { readdirSync } from "fs";
 import { env } from "process";
+import Events from "./Events";
 import * as db from "quick.db";
 
-export default class RippleClient extends AkairoClient {
+export default class Ripple extends AkairoClient {
     public readonly Logger = new RippleLogger(this);
     public readonly Giveaways = new GiveawaysManager(this, Options.GiveawayManager);
     public readonly Package = require(__dirname + "/../../package.json");
@@ -17,11 +18,9 @@ export default class RippleClient extends AkairoClient {
     public readonly Website = "https://alpharunic.github.io/Ripple";
     public CommandCount = 0;
 
-    private readonly commandHandler = new CommandHandler<RippleClient>(this, Options.CommandHandler);
+    private readonly commandHandler = new CommandHandler<Ripple>(this, Options.CommandHandler);
 
-    public constructor(
-        private events: Map<keyof ClientEvents, Function>
-    ) {
+    public constructor() {
         super({
             ownerID: ["415233686758359051", "686418809720012843"]
         }, {
@@ -116,7 +115,7 @@ export default class RippleClient extends AkairoClient {
     }
 
     private HandleEvents() {
-        this.events.forEach((callback, event) => 
+        Events.forEach((callback, event) => 
             this.on(event, (...args: any[]) => callback(this, ...args))
         );
     }

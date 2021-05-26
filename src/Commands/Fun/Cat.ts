@@ -1,10 +1,10 @@
 import { Command } from "discord-akairo";
 import { Message } from "discord.js";
-import RippleClient from "../../Ripple/Client";
-import fetch from "node-fetch";
 import { StripISO } from "../../Ripple/Util";
+import Ripple from "../../Ripple/Client";
+import fetch from "node-fetch";
 
-export default class extends Command {
+export default class extends Command<Ripple> {
     public constructor() {
         const name = "cat";
         super(name, {
@@ -14,10 +14,9 @@ export default class extends Command {
     }
 
     public async exec(msg: Message) {
-        const client = this.client as RippleClient;
         const res = ((await this.requestAPI(msg)) as { img: string, date: string })
         return msg.reply(
-            client.Embed()
+            this.client.Embed()
                 .setTitle('🐱 Meow! 🐱')
                 .setAuthor(res.date)
                 .setImage(res.img)

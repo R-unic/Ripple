@@ -1,9 +1,9 @@
 import { Command } from "discord-akairo";
 import { Message, MessageReaction, User } from "discord.js";
 import { SecondsToMS } from "../../Ripple/Util";
-import RippleClient from "../../Ripple/Client";
+import Ripple from "../../Ripple/Client";
 
-export default class extends Command {
+export default class extends Command<Ripple> {
     public constructor() {
         const name = "rockpaperscissors";
         super(name, {
@@ -13,10 +13,9 @@ export default class extends Command {
     }
 
     public async exec(msg: Message) {
-        const client = this.client as RippleClient;
         const choose = ["🗻", "📰", "✂"];
 
-        const embed = client.Embed()
+        const embed = this.client.Embed()
             .setTitle("Add a reaction to one of these emojis to play the game!");
 
         msg.reply(embed)

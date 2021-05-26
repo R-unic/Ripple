@@ -1,10 +1,10 @@
 import { Command } from "discord-akairo";
 import { Message } from "discord.js";
 import { Arg } from "../../Ripple/Util";
-import RippleClient from "../../Ripple/Client";
+import Ripple from "../../Ripple/Client";
 import axios from "axios";
 
-export default class extends Command<RippleClient> {
+export default class extends Command<Ripple> {
     public constructor() {
         const name = "urbandictionary";
         super(name, {

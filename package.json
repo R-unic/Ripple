@@ -4,7 +4,7 @@
   "description": "All-purpose TypeScript Discord bot",
   "main": "Main.js",
   "scripts": {
-    "start": "nodemon --trace-warnings out/Main.js -e .ts,.js",
+    "start": "nodemon --trace-warnings out/Main.js -e .ts,.js,.json",
     "test": "echo \"no test specified\""
   },
   "repository": {

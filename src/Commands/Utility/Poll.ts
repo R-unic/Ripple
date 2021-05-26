@@ -1,7 +1,7 @@
 import { Command } from "discord-akairo";
 import { Message } from "discord.js";
 import { Arg } from "../../Ripple/Util";
-import RippleClient from "../../Ripple/Client";
+import Ripple from "../../Ripple/Client";
 
 export default class extends Command {
     public constructor() {
@@ -18,7 +18,7 @@ export default class extends Command {
     }
 
     public async exec(msg: Message, { pollQuestion }: { pollQuestion: string }) {
-        const client = this.client as RippleClient;
+        const client = this.client as Ripple;
 
         if (!pollQuestion)
             return client.Logger.MissingArgError(msg, "pollQuestion");

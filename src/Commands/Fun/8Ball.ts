@@ -1,9 +1,9 @@
 import { Command } from "discord-akairo";
 import { Message } from "discord.js";
-import RippleClient from "../../Ripple/Client";
+import Ripple from "../../Ripple/Client";
 const { floor, random } = Math;
 
-export default class extends Command {
+export default class extends Command<Ripple> {
     public constructor() {
         const name = "8ball";
         super(name, {
@@ -16,7 +16,6 @@ export default class extends Command {
     }
 
     public async exec(msg: Message) {
-        const client = this.client as RippleClient;
         const answers = [
             "It is certain.",
             "It is decidedly so.",
@@ -41,7 +40,7 @@ export default class extends Command {
         ];
 
         return msg.channel.send(
-            client.Embed()
+            this.client.Embed()
                 .setTitle("🎱 Magic 8-Ball 🎱")
                 .setDescription(answers[floor(random() * answers.length)])
         );

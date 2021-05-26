@@ -2,9 +2,9 @@ import { Command } from "discord-akairo";
 import { Message } from "discord.js";
 import { Arg } from "../../Ripple/Util";
 import { requestLyricsFor, requestTitleFor, requestIconFor, requestAuthorFor } from "solenolyrics";
-import RippleClient from "../../Ripple/Client";
+import Ripple from "../../Ripple/Client";
 
-export default class extends Command<RippleClient> {
+export default class extends Command<Ripple> {
     public constructor() {
         const name = "lyrics";
         super(name, {

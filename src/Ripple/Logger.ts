@@ -1,9 +1,9 @@
 import { Message } from "discord.js";
-import RippleClient from "./Client";
+import Ripple from "./Client";
 
 export class RippleLogger {
     public constructor(
-        private client: RippleClient
+        private client: Ripple
     ) {}
 
     public DatabaseError(msg: Message, errorMsg?: string): Promise<Message> {

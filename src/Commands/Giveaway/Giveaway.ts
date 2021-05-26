@@ -1,10 +1,10 @@
 import { Command } from "discord-akairo";
 import { Message, TextChannel } from "discord.js";
 import { Arg } from "../../Ripple/Util";
-import RippleClient from "../../Ripple/Client";
+import Ripple from "../../Ripple/Client";
 import ms = require("ms");
 
-export default class extends Command {
+export default class extends Command<Ripple> {
     public constructor() {
         const name = "giveaway";
         super(name, {
@@ -25,14 +25,12 @@ export default class extends Command {
     }
 
     public async exec(msg: Message, { prize, time, winnerAmount, channel }: { prize: string, time: string, winnerAmount: number, channel?: TextChannel }) {
-        const client = this.client as RippleClient;
-
         if (!time)
-            return client.Logger.MissingArgError(msg, "time");
+            return this.client.Logger.MissingArgError(msg, "time");
         if (!prize)
-            return client.Logger.MissingArgError(msg, "prize");
+            return this.client.Logger.MissingArgError(msg, "prize");
 
-        return client.Giveaways.start(channel ?? msg.channel as TextChannel, {
+        return this.client.Giveaways.start(channel ?? msg.channel as TextChannel, {
             time: ms(time),
             winnerCount: winnerAmount,
             prize: prize

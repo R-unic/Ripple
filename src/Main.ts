@@ -1,11 +1,10 @@
 import { error } from "console";
 import { on } from "process";
-import RippleClient from "./Ripple/Client";
-import Events from "./Ripple/Events";
+import Ripple from "./Ripple/Client";
 import * as dotenv from "dotenv";
 
 dotenv.config();
 
-new RippleClient(Events);
+new Ripple;
 
 on("unhandledRejection", error);

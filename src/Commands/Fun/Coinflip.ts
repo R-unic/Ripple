@@ -1,8 +1,8 @@
 import { Command } from "discord-akairo";
 import { Message } from "discord.js";
-import RippleClient from "../../Ripple/Client";
+import Ripple from "../../Ripple/Client";
 
-export default class extends Command {
+export default class extends Command<Ripple> {
     public constructor() {
         const name = "coinflip";
         super(name, {
@@ -12,12 +12,11 @@ export default class extends Command {
     }
 
     public async exec(msg: Message) {
-        const client = this.client as RippleClient;
-        const _enum = Math.floor(Math.random() * 2);
+        const num = Math.floor(Math.random() * 2);
         return msg.reply(
-            client.Embed()
+            this.client.Embed()
                 .setTitle("🪙 Coinflip 🪙")
-                .setDescription(`I flipped a coin for you, ${msg.member}. It was ${_enum === 1 ? "Heads" : "Tails"}!`)
+                .setDescription(`I flipped a coin for you, ${msg.member}. It was ${num === 1 ? "Heads" : "Tails"}!`)
         );
     }
 }

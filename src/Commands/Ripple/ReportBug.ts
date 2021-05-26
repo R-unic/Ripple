@@ -1,6 +1,6 @@
 import { Command } from "discord-akairo";
 import { Message, TextChannel } from "discord.js";
-import RippleClient from "../../Ripple/Client";
+import Ripple from "../../Ripple/Client";
 
 export default class extends Command {
     public constructor() {
@@ -21,7 +21,7 @@ export default class extends Command {
     }
 
     public async exec(msg: Message, { bug }: { bug: string }) {
-        const client = this.client as RippleClient;
+        const client = this.client as Ripple;
 
         return !bug?
             client.Logger.MissingArgError(msg, "bug")

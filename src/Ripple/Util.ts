@@ -1,4 +1,4 @@
-import { ArgumentOptions, ArgumentType, ArgumentTypeCaster } from "discord-akairo";
+import { Argument, ArgumentOptions, ArgumentType, ArgumentTypeCaster } from "discord-akairo";
 
 export function Hyperlink(url: string, text?: string): string {
     return text ? `[${text}](${url})` : url;
