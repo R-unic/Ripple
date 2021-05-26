@@ -14,6 +14,8 @@
   •
   <a href="#installation">Installation</a>
   •
+  <a href="#using-source-code">Using Source Code</a>
+  •
   <a href="#credits">Credits</a>
 </p>
 
@@ -32,6 +34,12 @@ Here's an example: `::say "hello, world!"`
 
 Ripple can be added to your server in just a few seconds!  
 Just click this link: [Invite Me! 🔗](https://bit.ly/2SjjB3d)
+
+## Using Source Code
+
+Ripple can be cloned directly from it's repository for the latest version. To make things easier, an NPM package is provided to help install everything cleanly.  
+
+Install via `npm install ripple-discord-ts` or visit the [NPM package page](https://www.npmjs.com/package/ripple-discord-ts).
 
 ## Credits
 
