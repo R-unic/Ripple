@@ -1,6 +1,7 @@
-import { Command } from "discord-akairo";
+import { Argument, Command } from "discord-akairo";
 import { GuildMember, Message } from "discord.js";
 import RippleClient from "../../Ripple/Client";
+import { Arg } from "../../Ripple/Util";
 
 export default class extends Command {
     public constructor() {
@@ -15,14 +16,8 @@ export default class extends Command {
                 usage: "<@member> <reason?>"
             },
             args: [
-                {
-                    id: "member",
-                    type: "member"
-                },
-                {
-                    id: "reason",
-                    type: "string"
-                }
+                Arg("member", "member"),
+                Arg("reason", "string")
             ],
         });
     }

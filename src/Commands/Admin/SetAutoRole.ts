@@ -1,5 +1,6 @@
 import { Command } from "discord-akairo";
 import { Message, Role } from "discord.js";
+import { Arg } from "../../Ripple/Util";
 import RippleClient from "../../Ripple/Client";
 
 export default class extends Command {
@@ -12,13 +13,10 @@ export default class extends Command {
             cooldown: 3,
             description: {
                 content: "Sets a role to be assigned upon a user joining.",
-                usage: "<role?>"
+                usage: "<@role?>"
             },
             args: [
-                {
-                    id: "role",
-                    type: "role"
-                }
+                Arg("role", "role")
             ],
         });
     }

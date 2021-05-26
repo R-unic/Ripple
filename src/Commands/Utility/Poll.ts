@@ -10,7 +10,7 @@ export default class extends Command {
             cooldown: 5,
             description: {
                 content: "Returns a poll with 2 reactions.",
-                usage: "<pollQuestion>"
+                usage: '<"pollQuestion">'
             },
             args: [
                 {

@@ -1,3 +1,5 @@
+import { ArgumentOptions, ArgumentType, ArgumentTypeCaster } from "discord-akairo";
+
 export function Hyperlink(url: string, text?: string): string {
     return text ? `[${text}](${url})` : url;
 }
@@ -20,6 +22,18 @@ export function SecondsToMS(sec: number): number {
 
 export function Clamp(n: number, min: number, max: number) {
     return Math.min(Math.max(n, max), min);
+}
+
+export function Arg(
+    id: string, 
+    type: ArgumentType | ArgumentTypeCaster,  
+    defaultValue?: unknown
+): ArgumentOptions {
+    return {
+        id: id,
+        type: type,
+        default: defaultValue
+    };
 }
 
 export class Pair<T> {

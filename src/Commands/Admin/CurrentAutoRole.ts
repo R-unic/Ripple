@@ -1,5 +1,5 @@
 import { Command } from "discord-akairo";
-import { Message, Role } from "discord.js";
+import { Message } from "discord.js";
 import RippleClient from "../../Ripple/Client";
 
 export default class extends Command {

@@ -17,7 +17,7 @@ export default class RippleClient extends AkairoClient {
     public readonly Website = "https://alpharunic.github.io/Ripple";
     public CommandCount = 0;
 
-    private readonly commandHandler = new CommandHandler(this, Options.CommandHandler);
+    private readonly commandHandler = new CommandHandler<RippleClient>(this, Options.CommandHandler);
 
     public constructor(
         private events: Map<keyof ClientEvents, Function>
