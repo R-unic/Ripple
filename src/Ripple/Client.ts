@@ -1,10 +1,10 @@
 import { AkairoClient, CommandHandler } from "discord-akairo";
-import { ClientEvents, GuildMember, MessageEmbed } from "discord.js";
+import { ClientEvents, GuildMember, MessageEmbed, Message } from "discord.js";
 import { GiveawaysManager } from "discord-giveaways";
 import { RippleLogger } from "./Logger";
-import { readdirSync } from "fs";
 import { Options } from "./Options";
-import { Message } from "discord.js";
+import { readdirSync } from "fs";
+import { env } from "process";
 import * as db from "quick.db";
 
 export default class RippleClient extends AkairoClient {
@@ -27,7 +27,7 @@ export default class RippleClient extends AkairoClient {
         }, {
             disableMentions: "everyone"
         });
-
+        
         this.HandleEvents();
         this.LoadCommands();
 
@@ -39,6 +39,26 @@ export default class RippleClient extends AkairoClient {
                     .filter(file => file.endsWith(".ts") || file.endsWith(".js"))
                     .forEach(() => this.CommandCount++)
             );
+
+        this.Login();
+    }
+
+    public async Login() {
+        return super.login(env.LOGIN_TOKEN)
+            .then(res => {
+                this.UpdatePresence();
+                return res;
+            });
+    }
+
+    public UpdatePresence() {
+        this.user.setPresence({
+            status: "online",
+            activity: {
+                name: `${this.guilds.cache.size} servers | ::help`,
+                type: "WATCHING"
+            }
+        })
     }
 
     public async GetPrefix(m: Message | GuildMember, defaultValue?: unknown) {

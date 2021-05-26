@@ -1,5 +1,6 @@
 import { Command } from "discord-akairo";
 import { Message } from "discord.js";
+import { Arg } from "../../Ripple/Util";
 import RippleClient from "../../Ripple/Client";
 
 export default class extends Command {
@@ -12,12 +13,7 @@ export default class extends Command {
                 content: "Returns a poll with 2 reactions.",
                 usage: '<"pollQuestion">'
             },
-            args: [
-                {
-                    id: "pollQuestion",
-                    type: "string"
-                }
-            ]
+            args: [ Arg("pollQuestion", "string") ]
         });
     }
 

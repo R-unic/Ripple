@@ -1,8 +1,9 @@
 import { Command } from "discord-akairo";
-import { Message, Role } from "discord.js";
+import { Message } from "discord.js";
+import { Arg } from "../../Ripple/Util";
 import RippleClient from "../../Ripple/Client";
 
-export default class extends Command {
+export default class extends Command<RippleClient> {
     public constructor() {
         const name = "setprefix";
         super(name, {
@@ -14,20 +15,14 @@ export default class extends Command {
                 content: "Sets the bot prefix for the server executed in.",
                 usage: "<newPrefix?>"
             },
-            args: [
-                {
-                    id: "prefix",
-                    type: "string"
-                }
-            ],
+            args: [ Arg("prefix", "string") ],
         });
     }
 
     public async exec(msg: Message, { prefix }: { prefix: string }) {
-        const client = this.client as RippleClient;
-        client.SetPrefix(msg, prefix ?? "::");
+        this.client.SetPrefix(msg, prefix ?? "::");
         return msg.reply(
-            client.Success()
+            this.client.Success()
                 .setDescription(prefix ? `Successfully set prefix to \`${prefix}\`.` : `Successfully reset prefix.`)
         );
     }

@@ -1,8 +1,9 @@
 import { Command } from "discord-akairo";
 import { GuildMember, Message } from "discord.js";
+import { Arg } from "../../Ripple/Util";
 import RippleClient from "../../Ripple/Client";
 
-export default class extends Command {
+export default class extends Command<RippleClient> {
     public constructor() {
         const name = "avatar";
         super(name, {
@@ -11,21 +12,13 @@ export default class extends Command {
                 content: "Returns a user's avatar or your own.",
                 usage: "<@user?>"
             },
-            args: [
-                {
-                    id: "member",
-                    type: "member",
-                    default: null
-                }
-            ]
+            args: [ Arg("member", "member") ]
         });
     }
 
-    public async exec(msg: Message, { member = msg.member }: { member: (GuildMember | null) }) {
-        const client = this.client as RippleClient;
-
+    public async exec(msg: Message, { member = msg.member }: { member?: GuildMember }) {
         return msg.reply(
-            client.Embed()
+            this.client.Embed()
                 .setTitle(`${member.displayName}'s Avatar`)
                 .setImage(member.user.displayAvatarURL({ dynamic: true }))
         );

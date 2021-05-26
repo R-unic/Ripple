@@ -2,7 +2,7 @@ import { Command } from "discord-akairo";
 import { Message } from "discord.js";
 import RippleClient from "../../Ripple/Client";
 
-export default class extends Command {
+export default class extends Command<RippleClient> {
     public constructor() {
         const name = "commandcount";
         super(name, {
@@ -12,7 +12,6 @@ export default class extends Command {
     }
 
     public async exec(msg: Message) {
-        const client = this.client as RippleClient;
-        return msg.channel.send(`Ripple has ${client.CommandCount} commands implemented.`);
+        return msg.channel.send(`Ripple has ${this.client.CommandCount} commands implemented.`);
     }
 }

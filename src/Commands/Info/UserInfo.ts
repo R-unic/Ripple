@@ -1,9 +1,9 @@
 import { Command } from "discord-akairo";
 import { GuildMember, Message } from "discord.js";
-import { StripISO } from "../../Ripple/Util";
+import { Arg, StripISO } from "../../Ripple/Util";
 import RippleClient from "../../Ripple/Client";
 
-export default class extends Command {
+export default class extends Command<RippleClient> {
     public constructor() {
         const name = "userinfo";
         super(name, {
@@ -12,20 +12,13 @@ export default class extends Command {
                 content: "Returns information about the user provided, or yourself.",
                 usage: "<@member?>"
             },
-            args: [
-                {
-                    id: "member",
-                    type: "member"
-                }
-            ]
+            args: [ Arg("member", "member") ]
         });
     }
 
     public async exec(msg: Message, { member = msg.member }: { member: GuildMember }) {
-        const client = this.client as RippleClient;
-
         return msg.reply(
-            client.Embed()
+            this.client.Embed()
                 .setTitle(member.user.username + "#" + member.user.discriminator)
                 .setThumbnail(member.user.displayAvatarURL({ dynamic: true }))
                 .addField("Joined Discord On", StripISO(member.user.createdAt), true)

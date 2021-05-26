@@ -1,6 +1,7 @@
 import { Command } from "discord-akairo";
 import { Message, TextChannel } from "discord.js";
 import RippleClient from "../../Ripple/Client";
+import { Arg } from "../../Ripple/Util";
 
 export default class extends Command {
     public constructor() {
@@ -11,12 +12,7 @@ export default class extends Command {
                 content: "Sends feedback to the #feedback channel in the Ripple server.",
                 usage: '<"feedback">'
             },
-            args: [
-                {
-                    id: "feedback",
-                    type: "string"
-                }
-            ]
+            args: [ Arg("feedback", "string") ]
         });
     }
 

@@ -2,6 +2,7 @@ import { Command } from "discord-akairo";
 import { TextChannel } from "discord.js";
 import { Message } from "discord.js";
 import RippleClient from "../../Ripple/Client";
+import { Arg } from "../../Ripple/Util";
 
 const toTitleCase = (item: string) => {
     return item
@@ -11,7 +12,7 @@ const toTitleCase = (item: string) => {
         .replace(/\b[a-z]/g, t => t.toUpperCase());
 };
 
-export default class extends Command {
+export default class extends Command<RippleClient> {
     public constructor() {
         const name = "help";
         super(name, {
@@ -20,28 +21,22 @@ export default class extends Command {
                 content: "DMs you a help menu.",
                 usage: "<commandName?>"
             },
-            args: [
-                {
-                    id: "command",
-                    type: "commandAlias"
-                }
-            ]
+            args: [ Arg("command", "commandAlias") ]
         });
     }
 
     public async exec(msg: Message, { command }: { command: Command }) {
-        const client = this.client as RippleClient;
-        const prefix = await client.GetPrefix(msg, "::");
+        const prefix = await this.client.GetPrefix(msg, "::");
 
         if (!command)
-            return this.defaultHelpMenu(client, msg);
+            return this.defaultHelpMenu(prefix, msg);
 
         const clientPermissions = command.clientPermissions as string[];
         const userPermissions = command.userPermissions as string[];
         const examples: string[] = command.description.examples;
-        const embed = client.Embed()
+        const embed = this.client.Embed()
             .setTitle(`${prefix}${command} ${command.description.usage ? command.description.usage : ""}`)
-            .setDescription(typeof command.description === "string" ? command.description : command.description.content)
+            .setDescription(typeof command.description === "string" ? command.description : command.description.content);
 
         if (clientPermissions)
             embed.addField("Required Bot Permissions", clientPermissions);
@@ -55,10 +50,9 @@ export default class extends Command {
         return msg.reply(embed);
     }
 
-    public async defaultHelpMenu(client: RippleClient, msg: Message) {
-        const prefix = await client.GetPrefix(msg, "::");
-        const embed = client.Embed()
-            .setTitle("Commands")
+    public async defaultHelpMenu(prefix: string, msg: Message) {
+        const embed = this.client.Embed()
+            .setTitle("Help Menu")
             .setDescription([
                 msg.guild ? `This server's prefix is \`${prefix}\`` : "",
                 `For more info about a command, see: \`${prefix}help <commandName?>\`\n`,
@@ -82,7 +76,7 @@ export default class extends Command {
 
             if (!msg.guild) parentCommands = parentCommands.filter(c => c.channel !== "guild");
             if (title && parentCommands.size)
-                embed.addField(title, parentCommands.map(c => `\`${c.aliases[0]}\``).join(", "));
+                embed.addField(title, parentCommands.map(c => `\`${c.aliases[0]}\``).join(", "), true);
         }
 
         embed.fields = embed.fields.sort((a, b) => a.name > b.name ? 1 : (a.name < b.name ? -1 : 0));

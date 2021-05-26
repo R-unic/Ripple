@@ -1,8 +1,9 @@
 import { Command } from "discord-akairo";
 import { GuildMember, Message } from "discord.js";
+import { Arg } from "../../Ripple/Util";
 import RippleClient from "../../Ripple/Client";
 
-export default class extends Command {
+export default class extends Command<RippleClient> {
     public constructor() {
         const name = "softban";
         super(name, {
@@ -15,30 +16,19 @@ export default class extends Command {
                 usage: "<@member> <days> <reason?>"
             },
             args: [
-                {
-                    id: "member",
-                    type: "member"
-                },
-                {
-                    id: "days",
-                    type: "number"
-                },
-                {
-                    id: "reason",
-                    type: "string"
-                }
+                Arg("member", "member"),
+                Arg("days", "number"),
+                Arg("reason", "string")
             ],
         });
     }
 
     public async exec(msg: Message, { member, days, reason }: { member: GuildMember, days: number, reason?: string }) {
-        const client = this.client as RippleClient;
-
         if (!member)
-            return client.Logger.MissingArgError(msg, "member");
+            return this.client.Logger.MissingArgError(msg, "member");
 
         if (!days)
-            return client.Logger.MissingArgError(msg, "days");
+            return this.client.Logger.MissingArgError(msg, "days");
 
         return member.ban({
             reason: reason,

@@ -1,5 +1,6 @@
 import { Command } from "discord-akairo";
-import { Message, TextChannel } from "discord.js";
+import { Message } from "discord.js";
+import { Arg } from "../../Ripple/Util";
 import RippleClient from "../../Ripple/Client";
 
 export default class extends Command {
@@ -9,15 +10,11 @@ export default class extends Command {
             aliases: [name, "delgiveaway", "deletega", "delga"],
             userPermissions: "MANAGE_CHANNELS",
             description: {
-                content: "Deletes a giveaway.",
-                usage: '<messageID>'
+                content: "Deletes a giveaway via message ID.",
+                usage: '<messageID>',
+                examples: ['846958982743588864']
             },
-            args: [
-                {
-                    id: "giveawayMessage",
-                    type: "message"
-                }
-            ]
+            args: [ Arg("giveawayMessage", "message") ]
         });
     }
 
