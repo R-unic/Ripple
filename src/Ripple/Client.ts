@@ -12,7 +12,6 @@ export default class RippleClient extends AkairoClient {
     public readonly Giveaways = new GiveawaysManager(this, Options.GiveawayManager);
     public readonly Package = require(__dirname + "/../../package.json");
     public readonly Version = `v${this.Package.version}`;
-    public readonly Prefix = "::";
     public readonly InviteLink = "https://bit.ly/2SjjB3d";
     public readonly GitHubRepo = "https://github.com/AlphaRunic/Ripple";
     public readonly Website = "https://alpharunic.github.io/Ripple";
@@ -32,12 +31,22 @@ export default class RippleClient extends AkairoClient {
         this.HandleEvents();
         this.LoadCommands();
 
+        this.commandHandler.prefix = msg => this.GetPrefix(msg, "::");
+
         readdirSync(`${__dirname}/../Commands`)
             .forEach(folder => 
                 readdirSync(`${__dirname}/../Commands/${folder}`)
                     .filter(file => file.endsWith(".ts") || file.endsWith(".js"))
                     .forEach(() => this.CommandCount++)
             );
+    }
+
+    public async GetPrefix(m: Message | GuildMember, defaultValue?: unknown) {
+        return await this.Get(m, "prefix", defaultValue);
+    }
+
+    public async SetPrefix(m: Message | GuildMember, newPrefix: string) {
+        return await this.Set(m, "prefix", newPrefix);
     }
 
     public async Get(m: Message | GuildMember, key: string, defaultValue?: unknown): Promise<any> {

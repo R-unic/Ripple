@@ -23,7 +23,7 @@ export default class extends Command {
                 `)
                 .setThumbnail(client.user.displayAvatarURL({ dynamic: true }))
                 .addField("Developer", (client.ownerID as string[]).map(id => `<@!${id}>`).join(", "), true)
-                .addField("Prefix", client.Prefix, true)
+                .addField("Prefix", await client.GetPrefix(msg, "::"), true)
                 .addField("Commands", client.CommandCount, true)
                 .addField("Created On", StripISO(client.user.createdAt), true)
                 .addField("Version", client.Version, true)

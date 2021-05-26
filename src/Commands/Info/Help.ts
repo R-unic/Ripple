@@ -31,7 +31,7 @@ export default class extends Command {
 
     public async exec(msg: Message, { command }: { command: Command }) {
         const client = this.client as RippleClient;
-        const prefix = client.Prefix;
+        const prefix = await client.GetPrefix(msg, "::");
 
         if (!command)
             return this.defaultHelpMenu(client, msg);
@@ -56,14 +56,13 @@ export default class extends Command {
     }
 
     public async defaultHelpMenu(client: RippleClient, msg: Message) {
-        const prefix = client.Prefix;
+        const prefix = await client.GetPrefix(msg, "::");
         const embed = client.Embed()
             .setTitle("Commands")
             .setDescription([
                 msg.guild ? `This server's prefix is \`${prefix}\`` : "",
                 `For more info about a command, see: \`${prefix}help <commandName?>\`\n`,
                 !msg.guild
-                    // tslint:disable-next-line:prefer-template
                     ? "\nThere are commands that are only usable in servers." +
                     " If you would like to see them, please trigger this command in a server."
                     : "",
