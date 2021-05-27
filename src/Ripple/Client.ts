@@ -41,8 +41,13 @@ export default class Ripple extends AkairoClient {
         this.Login();
     }
 
-    public async Login() {
-        return super.login(env.LOGIN_TOKEN)
+    /**
+     * @description Log in with a token or env.LOGIN_TOKEN
+     * @param token
+     * @returns Promise of token
+     */
+    public async Login(token?: string) {
+        return super.login(token ?? env.LOGIN_TOKEN)
             .then(res => {
                 this.UpdatePresence();
                 return res;
