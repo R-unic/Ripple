@@ -1,35 +1,6 @@
 import { Message } from "discord.js";
 import Ripple from "./Client";
-
-/** 
- * @class Error Logger
- * @description Stores an array of errors that can be manipulated or added to.
-*/
-class ErrorLogger {
-    public readonly Log: Error[] = [];
-
-    /**
-     * @method ClearLog
-     * @description Clear the error log
-    */
-    public ClearLog() {
-        this.Log.forEach(() => this.Log.pop());
-    }
-
-    /**
-     * @method ReportError
-     * @description Throw & catch an error then log it
-     * @param errorMsg 
-     * @returns Index of error inside of log array
-    */
-    public ReportError(errorMsg: string): number {
-        try {
-            throw new Error(`Error: ${errorMsg}`);
-        } catch (err) {
-            return this.Log.push(err);
-        }
-    }
-}
+import { ErrorLogger } from "./ErrorLogger";
 
 export class RippleLogger {
     private errorLogger = new ErrorLogger;
