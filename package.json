@@ -2,7 +2,7 @@
   "name": "ripple-discord-ts",
   "version": "1.6.1",
   "description": "All-purpose TypeScript Discord bot",
-  "main": "Main.js",
+  "main": "out/Index.js",
   "scripts": {
     "start": "nodemon --trace-warnings out/Main.js -e .ts,.js,.json",
     "test": "echo \"no test specified\""

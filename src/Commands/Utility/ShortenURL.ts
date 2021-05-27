@@ -3,7 +3,6 @@ import { Message } from "discord.js";
 import { Arg } from "../../Ripple/Util";
 import Ripple from "../../Ripple/Client";
 import fetch from "node-fetch";
-import { log } from "console";
 
 export default class extends Command<Ripple> {
     public constructor() {
