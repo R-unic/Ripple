@@ -11,16 +11,17 @@ import Events from "./Events";
 export default class Ripple extends AkairoClient {
     public readonly Logger = new RippleLogger(this);
     public readonly Giveaways = new GiveawaysManager(this, Options.GiveawayManager);
-    public readonly Package = require(__dirname + "/../../package.json");
+    public readonly Package: any = require(__dirname + "/../../package.json");
     public readonly Version = `v${this.Package.version}`;
     public readonly InviteLink = "https://bit.ly/2SjjB3d";
     public readonly GitHubRepo = "https://github.com/AlphaRunic/Ripple";
     public readonly Website = "https://alpharunic.github.io/Ripple";
     public CommandCount = 0;
+    public BotName: string;
 
     private readonly commandHandler = new CommandHandler<Ripple>(this, Options.CommandHandler);
 
-    public constructor() {
+    public constructor(public readonly DefaultPrefix: string = "::") {
         super({
             ownerID: ["415233686758359051", "686418809720012843"]
         }, {
@@ -29,7 +30,7 @@ export default class Ripple extends AkairoClient {
         
         this.HandleEvents();
         this.LoadCommands();
-        this.commandHandler.prefix = msg => this.GetPrefix(msg, "::");
+        this.commandHandler.prefix = msg => this.GetPrefix(msg, DefaultPrefix);
 
         readdirSync(`${__dirname}/../Commands`)
             .forEach(folder => 
@@ -38,7 +39,8 @@ export default class Ripple extends AkairoClient {
                     .forEach(() => this.CommandCount++)
             );
 
-        this.Login();
+        this.Login()
+            .then(() => this.BotName = this.user.username);
     }
 
     /**
@@ -102,7 +104,7 @@ export default class Ripple extends AkairoClient {
     public Embed(): MessageEmbed {
         return new MessageEmbed()
             .setColor("RANDOM")
-            .setFooter(`Ripple ${this.Version}`, this.user.displayAvatarURL({ dynamic: true }))
+            .setFooter(`${this.BotName} ${this.Version}`, this.user.displayAvatarURL({ dynamic: true }))
             .setTimestamp();
     }
 
