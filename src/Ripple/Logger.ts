@@ -10,15 +10,15 @@ export class RippleLogger {
     ) {}
 
     public APIError(msg: Message, errorMsg?: string): Promise<Message> {
-        return this.Error(msg, errorMsg ?? "There was an error with the API.");
+        return this.Error(msg, `API Error: ${errorMsg ?? "There was an error with the API."}`);
     }
 
     public DatabaseError(msg: Message, errorMsg?: string): Promise<Message> {
-        return this.Error(msg, errorMsg ?? "There was an error with the database.");
+        return this.Error(msg, `Database Error: ${errorMsg ?? "There was an error with the database."}`);
     }
 
     public MissingArgError(msg: Message, argName: string): Promise<Message> {
-        return this.Error(msg, `Missing argument "${argName}".`);
+        return this.Error(msg, `Missing argument: "${argName}".`);
     }
 
     private Error(msg: Message, errorMsg: string, log?: boolean): Promise<Message> {

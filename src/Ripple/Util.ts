@@ -1,4 +1,9 @@
-import { Argument, ArgumentOptions, ArgumentType, ArgumentTypeCaster } from "discord-akairo";
+import { 
+    ArgumentOptions, 
+    ArgumentPromptOptions, 
+    ArgumentType, 
+    ArgumentTypeCaster 
+} from "discord-akairo";
 
 export function Hyperlink(url: string, text?: string): string {
     return text ? `[${text}](${url})` : url;
@@ -27,12 +32,14 @@ export function Clamp(n: number, min: number, max: number) {
 export function Arg(
     id: string, 
     type: ArgumentType | ArgumentTypeCaster,  
-    defaultValue?: unknown
+    defaultValue?: unknown,
+    prompt?: boolean | ArgumentPromptOptions
 ): ArgumentOptions {
     return {
         id: id,
         type: type,
-        default: defaultValue
+        default: defaultValue,
+        prompt: prompt
     };
 }
 

@@ -12,11 +12,11 @@ export default class extends Command<Ripple> {
                 content: "Returns information about the user provided, or yourself.",
                 usage: "<@member?>"
             },
-            args: [ Arg("member", "member") ]
+            args: [ Arg("member", "member", msg => msg.member) ]
         });
     }
 
-    public async exec(msg: Message, { member = msg.member }: { member: GuildMember }) {
+    public async exec(msg: Message, { member }: { member: GuildMember }) {
         return msg.reply(
             this.client.Embed()
                 .setTitle(member.user.username + "#" + member.user.discriminator)

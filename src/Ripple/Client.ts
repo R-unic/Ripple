@@ -21,7 +21,9 @@ export default class Ripple extends AkairoClient {
 
     private readonly commandHandler = new CommandHandler<Ripple>(this, Options.CommandHandler);
 
-    public constructor(public readonly DefaultPrefix: string = "::") {
+    public constructor(
+        public readonly DefaultPrefix: string = "::"
+    ) {
         super({
             ownerID: ["415233686758359051", "686418809720012843"]
         }, {
