@@ -13,21 +13,21 @@ export default class extends Command<Ripple> {
     }
 
     public async exec(msg: Message) {
-        return this.requestAPI(msg)
-            .then((res: { tags: string[], content: string, author: string }) => {
-                return msg.reply(
-                    this.client.Embed()
-                        .setTitle('Random Quote')
-                        .setAuthor(res.author)
-                        .setDescription(`${res.content}\nTags: ${res.tags}`)
-                );
-            }).catch(() => 
-                this.client.Logger.APIError(msg, "Please try again momentarily. This could be an API error.")
-            );
+        return this.RequestAPI<{ 
+            tags: string[], 
+            content: string, 
+            author: string 
+        }>().then(res =>  msg.reply(
+                this.client.Embed()
+                    .setTitle('📢 Random Quote 📢')
+                    .setAuthor(res.author)
+                    .setDescription(`${res.content}\nTags: ${res.tags}`)
+            )
+        ).catch(() => this.client.Logger.APIError(msg, "Please try again momentarily. This could be an API error."));
     }
 
-    private async requestAPI(msg: Message): Promise<any> {
+    private async RequestAPI<ResponseType>(): Promise<ResponseType> {
         return fetch("http://api.quotable.io/random")
-            .then(response => response.json());
+            .then(response => response.json())
     }
 }
