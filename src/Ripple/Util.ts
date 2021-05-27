@@ -29,6 +29,10 @@ export function Clamp(n: number, min: number, max: number) {
     return Math.min(Math.max(n, max), min);
 }
 
+export function Random<T = unknown>(a: T[]): T {
+    return a[Math.round(Math.random() * a.length)];
+}
+
 export function Arg(
     id: string, 
     type: ArgumentType | ArgumentTypeCaster,  
