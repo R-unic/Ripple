@@ -1,4 +1,11 @@
-import { GuildMember, MessageEmbed, Message } from "discord.js";
+import { 
+    GuildMember, 
+    MessageEmbed, 
+    ActivityType,  
+    PresenceStatusData, 
+    Presence,
+    Message
+} from "discord.js";
 import { AkairoClient, CommandHandler } from "discord-akairo";
 import { GiveawaysManager } from "discord-giveaways";
 import { RippleLogger } from "./Logger";
@@ -58,14 +65,14 @@ export default class Ripple extends AkairoClient {
             });
     }
 
-    public UpdatePresence() {
-        this.user.setPresence({
-            status: "online",
+    public UpdatePresence(activity?: string, activityType?: number | ActivityType, status?: PresenceStatusData): Promise<Presence> {
+        return this.user.setPresence({
+            status: status?? "online",
             activity: {
-                name: `${this.guilds.cache.size} servers | ::help`,
-                type: "WATCHING"
+                name: activity?? `${this.guilds.cache.size} servers | ${this.DefaultPrefix}help`,
+                type: activityType?? "WATCHING"
             }
-        })
+        });
     }
 
     public async GetPrefix(m: Message | GuildMember, defaultValue?: unknown) {
@@ -98,13 +105,13 @@ export default class Ripple extends AkairoClient {
     }
 
     public Success(): MessageEmbed {
-        return this.Embed()
-            .setTitle("Success! ✅")
-            .setColor("#10EB00")
+        return this.Embed("Success! ✅")
+            .setColor("#10EB00");
     }
 
-    public Embed(): MessageEmbed {
+    public Embed(title?: string): MessageEmbed {
         return new MessageEmbed()
+            .setTitle(title?? "")
             .setColor("RANDOM")
             .setFooter(`${this.BotName} ${this.Version}`, this.user.displayAvatarURL({ dynamic: true }))
             .setTimestamp();
