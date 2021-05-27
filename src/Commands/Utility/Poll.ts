@@ -3,7 +3,7 @@ import { Message } from "discord.js";
 import { Arg } from "../../Ripple/Util";
 import Ripple from "../../Ripple/Client";
 
-export default class extends Command {
+export default class extends Command<Ripple> {
     public constructor() {
         const name = "poll";
         super(name, {
@@ -18,13 +18,11 @@ export default class extends Command {
     }
 
     public async exec(msg: Message, { pollQuestion }: { pollQuestion: string }) {
-        const client = this.client as Ripple;
-
         if (!pollQuestion)
-            return client.Logger.MissingArgError(msg, "pollQuestion");
+            return this.client.Logger.MissingArgError(msg, "pollQuestion");
 
         return msg.reply(
-            client.Embed()
+            this.client.Embed()
                 .setTitle("Poll")
                 .setDescription(pollQuestion + "?")
         )

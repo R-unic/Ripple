@@ -1,9 +1,9 @@
 import { Command } from "discord-akairo";
 import { Message, TextChannel } from "discord.js";
-import Ripple from "../../Ripple/Client";
 import { Arg } from "../../Ripple/Util";
+import Ripple from "../../Ripple/Client";
 
-export default class extends Command {
+export default class extends Command<Ripple> {
     public constructor() {
         const name = "feedback";
         super(name, {
@@ -17,18 +17,16 @@ export default class extends Command {
     }
 
     public async exec(msg: Message, { feedback }: { feedback: string }) {
-        const client = this.client as Ripple;
-
         return !feedback?
-            client.Logger.MissingArgError(msg, "feedback")
+            this.client.Logger.MissingArgError(msg, "feedback")
             :
-            client.guilds.fetch("846604279288168468")
+            this.client.guilds.fetch("846604279288168468")
                 .then(guild => {
                     return guild.channels.cache.find(channel => channel.id === "846605592054857728");
                 })
                 .then(async (feedbackChannel: TextChannel) => {
                     return feedbackChannel.send(
-                        client.Embed()
+                        this.client.Embed()
                             .setTitle(`${msg.author.username} Says`)
                             .setDescription(feedback)
                             .setThumbnail(feedbackChannel.guild.iconURL({ dynamic: true }))

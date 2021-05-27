@@ -1,12 +1,12 @@
+import { GuildMember, MessageEmbed, Message } from "discord.js";
 import { AkairoClient, CommandHandler } from "discord-akairo";
-import { ClientEvents, GuildMember, MessageEmbed, Message } from "discord.js";
 import { GiveawaysManager } from "discord-giveaways";
 import { RippleLogger } from "./Logger";
 import { Options } from "./Options";
 import { readdirSync } from "fs";
 import { env } from "process";
-import Events from "./Events";
 import * as db from "quick.db";
+import Events from "./Events";
 
 export default class Ripple extends AkairoClient {
     public readonly Logger = new RippleLogger(this);
@@ -29,7 +29,6 @@ export default class Ripple extends AkairoClient {
         
         this.HandleEvents();
         this.LoadCommands();
-
         this.commandHandler.prefix = msg => this.GetPrefix(msg, "::");
 
         readdirSync(`${__dirname}/../Commands`)

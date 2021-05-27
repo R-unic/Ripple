@@ -1,6 +1,6 @@
 import { on as On } from "process";
-import Ripple from "./Ripple/Client";
 import { config as InitiateDotEnv } from "dotenv";
+import Ripple from "./Ripple/Client";
 
 InitiateDotEnv();
 new Ripple;
