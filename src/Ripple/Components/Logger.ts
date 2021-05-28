@@ -26,7 +26,7 @@ export class RippleLogger {
     }
 
     public MissingArgError(msg: Message, argName: string): Promise<Message> {
-        return this.Error(msg, `Missing argument: "${argName}".`);
+        return this.Error(msg, `Missing required argument: "${argName}".`);
     }
 
     private Error(msg: Message, errorMsg: string, log?: boolean): Promise<Message> {

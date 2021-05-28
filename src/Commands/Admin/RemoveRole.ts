@@ -7,7 +7,7 @@ export default class extends Command<Ripple> {
     public constructor() {
         const name = "removerole";
         super(name, {
-            aliases: [name, "deleterole", "delrole", "unrol"],
+            aliases: [name, "deleterole", "delrole", "unrole", "unrank", "demote"],
             userPermissions: "MANAGE_ROLES",
             clientPermissions: "MANAGE_ROLES",
             cooldown: 5,
