@@ -5,7 +5,7 @@
   "main": "out/Index.js",
   "scripts": {
     "start": "nodemon --trace-warnings out/Main.js -e .ts,.js,.json",
-    "test": "echo \"no test specified\""
+    "test": "node out/UnitTesting/Run.js"
   },
   "repository": {
     "type": "git",

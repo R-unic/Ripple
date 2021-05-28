@@ -35,7 +35,8 @@ export default class Ripple extends AkairoClient {
     private readonly commandHandler = new CommandHandler<Ripple>(this, Options.CommandHandler);
 
     public constructor(
-        public readonly DefaultPrefix: string = "::"
+        public readonly DefaultPrefix: string = "::",
+        immediateLogin: boolean = true
     ) {
         super({
             ownerID: ["415233686758359051", "686418809720012843"]
@@ -54,8 +55,10 @@ export default class Ripple extends AkairoClient {
                     .forEach(() => this.CommandCount++)
             );
 
-        this.Login()
-            .then(() => this.BotName = this.user.username);
+        immediateLogin? 
+            this.Login()
+            :
+            undefined;
     }
 
     /**
@@ -67,6 +70,9 @@ export default class Ripple extends AkairoClient {
         return super.login(token ?? env.LOGIN_TOKEN)
             .then(res => {
                 this.UpdatePresence();
+                return res;
+            }).then(res => {
+                this.BotName = this.user.username;
                 return res;
             });
     }
