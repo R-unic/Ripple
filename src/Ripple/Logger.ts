@@ -9,6 +9,10 @@ export class RippleLogger {
         private client: Ripple
     ) {}
 
+    public DiscordAPIError(msg: Message, err: Error | string): Promise<Message> {
+        return this.Error(msg, `Discord API Error: ${typeof err === "string" ? err : err.message}`);
+    }
+
     public InvalidArgError(msg: Message, errorMsg: string): Promise<Message> {
         return this.Error(msg, `Invalid Argument: ${errorMsg}`);
     }

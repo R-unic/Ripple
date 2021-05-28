@@ -17,7 +17,6 @@ export const Options = {
     CommandHandler: {
         automateCategories: true,
         directory: __dirname + "/../Commands/",
-        blockBots: true,
         blockClient: true,
         commandUtil: true,
         argumentDefaults: {
