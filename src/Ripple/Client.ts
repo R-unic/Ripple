@@ -20,11 +20,9 @@ type GuildObject =
     | Message 
     | GuildMember;
 
-
 /**
  * @extends AkairoClient
  * @description Ripple Discord client
- * @todo Add welcome message command
 */
 export default class Ripple extends AkairoClient {
     public readonly Logger = new RippleLogger(this);
@@ -52,7 +50,6 @@ export default class Ripple extends AkairoClient {
         
         this.HandleEvents();
         this.LoadCommands();
-        this.commandHandler.prefix = msg => this.GetPrefix(msg, DefaultPrefix);
 
         readdirSync(`${__dirname}/../Commands`)
             .forEach(folder => 
@@ -63,14 +60,12 @@ export default class Ripple extends AkairoClient {
 
         immediateLogin? 
             this.Login()
-            :
-            undefined;
+            :undefined;        
     }
 
     /**
      * @description Log in with a token or env.LOGIN_TOKEN
      * @param token
-     * @returns Promise of token
      */
     public async Login(token?: string) {
         return super.login(token ?? env.LOGIN_TOKEN)
@@ -93,25 +88,25 @@ export default class Ripple extends AkairoClient {
         });
     }
 
-    public async GetPrefix(m: GuildObject, defaultValue?: unknown) {
-        return await this.Get(m, "prefix", defaultValue);
+    public async GetPrefix(m: GuildObject, defaultValue?: string) {
+        return await this.Get<string>(m, "prefix", defaultValue ?? this.DefaultPrefix);
     }
 
     public async SetPrefix(m: GuildObject, newPrefix: string) {
         return await this.Set(m, "prefix", newPrefix);
     }
 
-    public async Get(m: GuildObject, key: string, defaultValue?: unknown, userID?: string): Promise<any> {
+    public async Get<ResType extends any = any>(m: GuildObject, key: string, defaultValue?: unknown, userID?: string): Promise<ResType> {
         return new Promise((resolve, reject) => {
             try {
-                resolve(db.get(this.Tag(key, m.guild.id, userID)) ?? defaultValue);
+                resolve((db.get(this.Tag(key, m.guild.id, userID)) ?? defaultValue) as ResType);
             } catch (err) {
                 reject(err);
             }
         });
     }
 
-    public Set(m: GuildObject, key: string, value: any, userID?: string): Promise<any> {
+    public Set(m: GuildObject, key: string, value: any, userID?: string): Promise<boolean> {
         return new Promise((resolve, reject) => {
             try {
                 db.set(this.Tag(key, m.guild.id, userID), value)
@@ -144,6 +139,7 @@ export default class Ripple extends AkairoClient {
     }
 
     private LoadCommands() {
+        this.commandHandler.prefix = msg => this.GetPrefix(msg, this.DefaultPrefix);
         this.commandHandler.loadAll();
     }
 

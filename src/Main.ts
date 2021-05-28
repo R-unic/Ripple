@@ -8,6 +8,5 @@ new Ripple;
 On("unhandledRejection", err => new Error(
     typeof err === "string"? 
     err 
-    : 
-    "Unhandled Promise Rejection" + "\n" + err
+    :"Unhandled Promise Rejection" + "\n" + err
 ));

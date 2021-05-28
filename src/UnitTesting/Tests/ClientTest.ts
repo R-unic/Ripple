@@ -1,14 +1,15 @@
 import { AkairoClient } from "discord-akairo";
 import { Client } from "discord.js";
-import { Assert, Test } from "../TestAPI";
+import { Assert } from "../API/Assert";
+import { Test } from "../API/Test";
 import Ripple from "../../Ripple/Client";
 
 export class ClientTest implements Test {
+    public readonly TestClient = new Ripple(undefined, false);
     public Run() {        
-        const testClient = new Ripple(undefined, false);
-        Assert.Defined(testClient);
-        Assert.Defined(testClient.Version);
-        Assert.True(testClient instanceof Client)
-        Assert.True(testClient instanceof AkairoClient);
+        Assert.Defined(this.TestClient);
+        Assert.Defined(this.TestClient.Version);
+        Assert.True(this.TestClient instanceof Client)
+        Assert.True(this.TestClient instanceof AkairoClient);
     }
 }
