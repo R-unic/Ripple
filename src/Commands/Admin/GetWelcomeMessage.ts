@@ -15,10 +15,10 @@ export default class extends Command<Ripple> {
     }
 
     public async exec(msg: Message) {
-        return this.client.Get(msg, "welcomemsg", "Welcome message is disabled for this server.")
+        return this.client.WelcomeMessage.Get(msg, "Welcome message is disabled for this server.")
             .then(welcomeMessage => msg.reply(
                 this.client.Embed(`Welcome Message In \`${msg.guild.name}\``)
-                    .setDescription(welcomeMessage.replace(/{server}/, msg.guild.name))
+                    .setDescription(welcomeMessage)
             ));
     }
 }

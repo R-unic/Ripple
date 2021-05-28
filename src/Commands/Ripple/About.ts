@@ -1,13 +1,13 @@
 import { Command } from "discord-akairo";
 import { version as discordJSVersion, Message } from "discord.js";
-import { Hyperlink, StripISO } from "../../Ripple/Util";
+import { Hyperlink, StripISO, User } from "../../Ripple/Util";
 import Ripple from "../../Ripple/Client";
 
 export default class extends Command<Ripple> {
     public constructor() {
-        const name = "botinfo";
+        const name = "about";
         super(name, {
-            aliases: [name, "rippleinfo", "aboutripple", "about"],
+            aliases: [name, "rippleinfo", "aboutripple", "botinfo"],
             description: "Returns information about Ripple."
         });
     }
@@ -21,8 +21,8 @@ export default class extends Command<Ripple> {
                 ${Hyperlink(this.client.InviteLink, "Invite")} | ${Hyperlink(this.client.Website, "Website")} | ${Hyperlink(this.client.GitHubRepo, "GitHub Repository")}
                 `)
                 .setThumbnail(this.client.user.displayAvatarURL({ dynamic: true }))
-                .addField("Developer", (this.client.ownerID as string[]).map(id => `<@!${id}>`).join(", "), true)
-                .addField("Prefix", await this.client.GetPrefix(msg, "::"), true)
+                .addField("Developer", (this.client.ownerID as string[]).map(User).join(", "), true)
+                .addField("Prefix", await this.client.Prefix.Get(msg), true)
                 .addField("Commands", this.client.CommandCount, true)
                 .addField("Created On", StripISO(this.client.user.createdAt), true)
                 .addField("Version", this.client.Version, true)

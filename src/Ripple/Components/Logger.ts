@@ -1,6 +1,6 @@
 import { Message } from "discord.js";
-import Ripple from "./Client";
 import { ErrorLogger } from "./ErrorLogger";
+import Ripple from "../Client";
 
 export class RippleLogger {
     private readonly errorLogger = new ErrorLogger;

@@ -4,6 +4,7 @@ import {
     ArgumentType, 
     ArgumentTypeCaster 
 } from "discord-akairo";
+import { GuildMember, Message } from "discord.js";
 
 export function Hyperlink(url: string, text?: string): string {
     return text ? `[${text}](${url})` : url;
@@ -11,6 +12,10 @@ export function Hyperlink(url: string, text?: string): string {
 
 export function User(id: string): string {
     return `<@!${id}>`;
+}
+
+export function Role(id: string): string {
+    return `<@&${id}>`;
 }
 
 export function Channel(id: string): string {
@@ -53,3 +58,7 @@ export class Pair<T> {
         public Second: T
     ) {}
 }
+
+export type GuildObject = 
+    | Message 
+    | GuildMember;

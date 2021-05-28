@@ -1,24 +1,22 @@
 import { 
-    GuildMember, 
     MessageEmbed, 
     ActivityType,  
     PresenceStatusData, 
-    Presence,
-    Message
+    Presence
 } from "discord.js";
 import { AkairoClient, CommandHandler } from "discord-akairo";
 import { GiveawaysManager } from "discord-giveaways";
-import { RippleLogger } from "./Logger";
+import { RippleLogger } from "./Components/Logger";
+import { ReputationManager } from "./Components/DataManagement/ReputationManager";
+import { PrefixManager } from "./Components/DataManagement/PrefixManager";
+import { AutoWelcomeManager } from "./Components/DataManagement/AutoWelcomeManager";
+import { GuildObject } from "./Util";
 import { Options } from "./Options";
-import { ReputationManager } from "./ReputationManager";
 import { readdirSync } from "fs";
 import { env } from "process";
 import * as db from "quick.db";
 import Events from "./Events";
-
-type GuildObject = 
-    | Message 
-    | GuildMember;
+import { AutoRoleManager } from "./Components/DataManagement/AutoRoleManager";
 
 /**
  * @extends AkairoClient
@@ -28,12 +26,14 @@ export default class Ripple extends AkairoClient {
     public readonly Logger = new RippleLogger(this);
     public readonly Giveaways = new GiveawaysManager(this, Options.GiveawayManager);
     public readonly Reputation = new ReputationManager(this);
+    public readonly Prefix = new PrefixManager(this);
+    public readonly WelcomeMessage = new AutoWelcomeManager(this);
+    public readonly AutoRole = new AutoRoleManager(this);
     public readonly Package: any = require(__dirname + "/../../package.json");
     public readonly Version = `v${this.Package.version}`;
     public readonly InviteLink = "https://bit.ly/2SjjB3d";
     public readonly GitHubRepo = "https://github.com/AlphaRunic/Ripple";
     public readonly Website = "https://alpharunic.github.io/Ripple";
-    public CommandCount = 0;
     public BotName: string;
 
     private readonly commandHandler = new CommandHandler<Ripple>(this, Options.CommandHandler);
@@ -50,13 +50,6 @@ export default class Ripple extends AkairoClient {
         
         this.HandleEvents();
         this.LoadCommands();
-
-        readdirSync(`${__dirname}/../Commands`)
-            .forEach(folder => 
-                readdirSync(`${__dirname}/../Commands/${folder}`)
-                    .filter(file => file.endsWith(".ts") || file.endsWith(".js"))
-                    .forEach(() => this.CommandCount++)
-            );
 
         immediateLogin? 
             this.Login()
@@ -78,6 +71,18 @@ export default class Ripple extends AkairoClient {
             });
     }
 
+    public get CommandCount() {
+        let count = 0;
+        readdirSync(`${__dirname}/../Commands`)
+            .forEach(folder => 
+                readdirSync(`${__dirname}/../Commands/${folder}`)
+                    .filter(file => file.endsWith(".ts") || file.endsWith(".js"))
+                    .forEach(() => count++)
+                );
+        
+        return count;
+    }
+
     public UpdatePresence(activity?: string, activityType?: number | ActivityType, status?: PresenceStatusData): Promise<Presence> {
         return this.user.setPresence({
             status: status?? "online",
@@ -88,18 +93,11 @@ export default class Ripple extends AkairoClient {
         });
     }
 
-    public async GetPrefix(m: GuildObject, defaultValue?: string) {
-        return await this.Get<string>(m, "prefix", defaultValue ?? this.DefaultPrefix);
-    }
-
-    public async SetPrefix(m: GuildObject, newPrefix: string) {
-        return await this.Set(m, "prefix", newPrefix);
-    }
-
-    public async Get<ResType extends any = any>(m: GuildObject, key: string, defaultValue?: unknown, userID?: string): Promise<ResType> {
+    public async Get<ResType = any>(m: GuildObject, key: string, defaultValue?: ResType, userID?: string): Promise<ResType> {
         return new Promise((resolve, reject) => {
             try {
-                resolve((db.get(this.Tag(key, m.guild.id, userID)) ?? defaultValue) as ResType);
+                const tag = this.Tag(key, m.guild.id, userID);
+                resolve((db.get(tag) ?? defaultValue) as ResType);
             } catch (err) {
                 reject(err);
             }
@@ -109,7 +107,8 @@ export default class Ripple extends AkairoClient {
     public Set(m: GuildObject, key: string, value: any, userID?: string): Promise<boolean> {
         return new Promise((resolve, reject) => {
             try {
-                db.set(this.Tag(key, m.guild.id, userID), value)
+                const tag = this.Tag(key, m.guild.id, userID);
+                db.set(tag, value);
                 resolve(true);
             } catch (err) {
                 reject(err);
@@ -130,16 +129,16 @@ export default class Ripple extends AkairoClient {
             .setTimestamp();
     }
 
-    public Seconds(ms: number): number {
-        return ms * 1000;
+    public Seconds(secs: number): number {
+        return secs * 1000;
     }
 
     private Tag(tag: string, gid: string, uid?: string): string {
-        return `${tag}_${gid}` + uid ? `_${uid}` : "";
+        return !uid ? `${tag}_${gid}` : `${tag}_${gid}_${uid}`;
     }
 
     private LoadCommands() {
-        this.commandHandler.prefix = msg => this.GetPrefix(msg, this.DefaultPrefix);
+        this.commandHandler.prefix = async msg => await this.Prefix.Get(msg);
         this.commandHandler.loadAll();
     }
 

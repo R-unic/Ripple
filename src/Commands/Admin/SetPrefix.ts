@@ -19,8 +19,8 @@ export default class extends Command<Ripple> {
         });
     }
 
-    public async exec(msg: Message, { prefix }: { prefix: string }) {
-        this.client.SetPrefix(msg, prefix ?? "::");
+    public async exec(msg: Message, { prefix }: { prefix?: string }) {
+        await this.client.Prefix.Set(msg, prefix);
         return msg.reply(
             this.client.Success()
                 .setDescription(prefix ? `Successfully set prefix to \`${prefix}\`.` : `Successfully reset prefix.`)

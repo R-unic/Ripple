@@ -18,29 +18,23 @@ export default class extends Command<Ripple> {
                 examples: ['"Welcome to {server}, {member}!"']
             },
             args: [ 
-                Arg("welcomeMessage", "string"),
-                Arg("channel", "textChannel", msg => msg.channel)
+                Arg("welcomeMessage", "string")
             ],
         });
     }
 
-    public async exec(msg: Message, { welcomeMessage, channel }: { welcomeMessage: string, channel: TextChannel }) {
+    public async exec(msg: Message, { welcomeMessage }: { welcomeMessage?: string }) {
         if (!welcomeMessage)
-            return this.client.Set(msg, "welcomemsg", undefined)
-                .then(success => success ? msg.reply(
+            return this.client.WelcomeMessage.Set(msg, undefined)
+                .then(() => msg.reply(
                     this.client.Success()
                         .setDescription(`Successfully disabled welcome message.`)                    
-                ) : this.client.Logger.DatabaseError(msg))
-                .catch(err => this.client.Logger.DatabaseError(msg, err));
+                )).catch(err => this.client.Logger.DatabaseError(msg, err));
 
-        if (!channel)
-            return this.client.Logger.InvalidArgError(msg, "Current or provided channel is invalid. Please fix provided channel or provide a channel.");
-
-        return this.client.Set(msg, "welcomemsg", welcomeMessage)
-            .then(success => success ? msg.reply(
+        return this.client.WelcomeMessage.Set(msg, welcomeMessage)
+            .then(() => msg.reply(
                 this.client.Success()
-                    .setDescription(`Successfully set welcome message to "${welcomeMessage.replace(/{server}/, msg.guild.name)}".`)
-            ) : this.client.Logger.DatabaseError(msg))
-            .catch(err => this.client.Logger.DatabaseError(msg, err));
+                    .setDescription(`Successfully set welcome message to "${welcomeMessage}".`)
+            )).catch(err => this.client.Logger.DatabaseError(msg, err));
     }
 }

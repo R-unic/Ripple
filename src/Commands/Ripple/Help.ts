@@ -26,7 +26,7 @@ export default class extends Command<Ripple> {
     }
 
     public async exec(msg: Message, { command }: { command: Command }) {
-        const prefix = await this.client.GetPrefix(msg, "::");
+        const prefix = await this.client.Prefix.Get(msg);
 
         if (!command)
             return this.defaultHelpMenu(prefix, msg);

@@ -1,5 +1,6 @@
 import { Command } from "discord-akairo";
 import { Message } from "discord.js";
+import { Role } from "../../Ripple/Util";
 import Ripple from "../../Ripple/Client";
 
 export default class extends Command<Ripple> {
@@ -13,7 +14,7 @@ export default class extends Command<Ripple> {
     }
 
     public async exec(msg: Message) {
-        const roleID = (await this.client.Get(msg, "autorole")) as string | undefined;
-        return msg.reply(`The current role set for autorole is: ${roleID ? `<@&${roleID}>` : "None"}`);
+        const roleID = await this.client.AutoRole.Get(msg);
+        return msg.reply(`The current role set for autorole is: ${roleID ? Role(roleID) : "None"}`);
     }
 }
