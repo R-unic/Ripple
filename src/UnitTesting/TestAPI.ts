@@ -11,7 +11,7 @@ export class TestRunner {
     public static Go(...testArgs: any[]) {
         this.tests.forEach(test => test.Run(...testArgs));
         console.log(`Test run successful! (${this.tests.length} test(s))`);
-        exit(200);
+        exit(1);
     }
 
     public static Add(test: Test) {

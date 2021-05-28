@@ -1,6 +1,6 @@
 import { AkairoClient } from "discord-akairo";
 import { Client } from "discord.js";
-import { Assert, Test } from "../Test";
+import { Assert, Test } from "../TestAPI";
 import Ripple from "../../Ripple/Client";
 
 export class ClientTest implements Test {
