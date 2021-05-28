@@ -1,10 +1,8 @@
-import { Command } from "discord-akairo";
+import { APICommand } from "../../Ripple/Components/Commands/APICommand";
 import { Message } from "discord.js";
 import { StripISO } from "../../Ripple/Util";
-import Ripple from "../../Ripple/Client";
-import fetch from "node-fetch";
 
-export default class extends Command<Ripple> {
+export default class extends APICommand {
     public constructor() {
         const name = "cat";
         super(name, {
@@ -14,25 +12,17 @@ export default class extends Command<Ripple> {
     }
 
     public async exec(msg: Message) {
-        const res = ((await this.requestAPI(msg)) as { img: string, date: string })
-        return msg.reply(
-            this.client.Embed()
-                .setTitle('🐱 Meow! 🐱')
-                .setAuthor(res.date)
-                .setImage(res.img)
-        );
-    }
+        const baseURL = "https://cataas.com";
 
-    private async requestAPI(msg: Message) {
-        try {
-            const base = "https://cataas.com";
-            const res = await (await fetch(base + "/cat?json=true")).json();
-            return {
-                img: base + res.url,
-                date: StripISO(res.created_at)
-            };
-        } catch (err) {
-            return msg.reply("Please try again momentarily. This could be an API error.");
-        }
+        return this.RequestAPI<{ 
+            img: string, 
+            date: string 
+        }>(msg, baseURL + "/cat?json=true")
+            .then(({ date, img }) => msg.reply(
+                this.client.Embed()
+                    .setTitle('🐱 Meow! 🐱')
+                    .setAuthor(StripISO(date))
+                    .setImage(baseURL + img)
+            ));
     }
 }

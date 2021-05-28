@@ -1,9 +1,7 @@
-import { Command } from "discord-akairo";
+import { APICommand } from "../../Ripple/Components/Commands/APICommand";
 import { Message } from "discord.js";
-import Ripple from "../../Ripple/Client";
-import fetch from "node-fetch";
 
-export default class extends Command<Ripple> {
+export default class extends APICommand {
     public constructor() {
         const name = "dog";
         super(name, {
@@ -13,19 +11,13 @@ export default class extends Command<Ripple> {
     }
 
     public async exec(msg: Message) {
-        return msg.reply(
-            this.client.Embed()
-                .setTitle('🐶 Woof! 🐶')
-                .setImage(await this.getImage(msg))
-        );
-    }
-
-    private async getImage(msg: Message) {
-        try {
-            const res = await fetch("https://dog.ceo/api/breeds/image/random");
-            return (await res.json()).message;
-        } catch (err) {
-            return msg.reply("Please try again momentarily. This could be an API error.");
-        }
+        return this.RequestAPI<{ 
+            message: string 
+        }>(msg, "https://dog.ceo/api/breeds/image/random")
+            .then(({ message }) => msg.reply(
+                this.client.Embed()
+                    .setTitle('🐶 Woof! 🐶')
+                    .setImage(message)
+            ));
     }
 }
