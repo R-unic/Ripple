@@ -10,11 +10,11 @@ import { AkairoClient, CommandHandler } from "discord-akairo";
 import { GiveawaysManager } from "discord-giveaways";
 import { RippleLogger } from "./Logger";
 import { Options } from "./Options";
+import { ReputationManager } from "./ReputationManager";
 import { readdirSync } from "fs";
 import { env } from "process";
 import * as db from "quick.db";
 import Events from "./Events";
-import { ReputationManager } from "./ReputationManager";
 
 type GuildObject = 
     | Message 
