@@ -2,13 +2,13 @@ import { Command } from "discord-akairo";
 import { GuildMember, Message } from "discord.js";
 import { Arg } from "../../Ripple/Util";
 import Ripple from "../../Ripple/Client";
-import ms from "ms";
 
 export default class extends Command<Ripple> {
     public constructor() {
         const name = "reputation";
         super(name, {
             aliases: [name, "rep", "addrep", "giverep"],
+            cooldown: 3600,
             description: {
                 content: "Adds a reputation point to the given user.",
                 usage: "<@member>"
