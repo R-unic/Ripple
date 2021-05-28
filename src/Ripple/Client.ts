@@ -20,6 +20,12 @@ type GuildObject =
     | Message 
     | GuildMember;
 
+
+/**
+ * @extends AkairoClient
+ * @description Ripple Discord client
+ * @todo Add welcome message command
+*/
 export default class Ripple extends AkairoClient {
     public readonly Logger = new RippleLogger(this);
     public readonly Giveaways = new GiveawaysManager(this, Options.GiveawayManager);
