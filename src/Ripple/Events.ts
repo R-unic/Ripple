@@ -6,10 +6,11 @@ import Ripple from "./Client";
 const Events = new Map<keyof ClientEvents, Function>([
     ["ready", (client: Ripple) => log(`Ripple ${client.Version} is now online.`)],
     ["error", (_, err) => error(err)],
-    ["guildMemberAdd", (client: Ripple, member: GuildMember) => {
+    ["guildMemberAdd", async (client: Ripple, member: GuildMember) => {
         if (member.user === client.user) {
-            client.UpdatePresence();
-            member.guild.systemChannel.send("Thanks for inviting me! My prefix is `::`. If you need any help, just say `::help`.");
+            await client.UpdatePresence();
+            const prefix = client.GetPrefix(member, "::")
+            member.guild.systemChannel.send(`Thanks for inviting me! My prefix is \`${prefix}\`. If you need any help, just say \`${prefix}help\`.`);
         }
 
         client.Get(member, "autorole")

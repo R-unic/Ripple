@@ -26,6 +26,11 @@ export default class extends Command<Ripple> {
         if (!member)
             return this.client.Logger.MissingArgError(msg, "member");
 
-        return member.kick(reason);
+        return member.kick(reason)
+            .then(kickedMember => msg.reply(
+                this.client.Success()
+                    .setDescription(`${kickedMember.user.tag} was successfully kicked.`)
+                    .addField("Reason", reason ?? "n/a")
+            ));
     }
 }

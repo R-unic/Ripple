@@ -3,7 +3,7 @@ import Ripple from "./Client";
 import { ErrorLogger } from "./ErrorLogger";
 
 export class RippleLogger {
-    private errorLogger = new ErrorLogger;
+    private readonly errorLogger = new ErrorLogger;
 
     public constructor(
         private client: Ripple

@@ -33,6 +33,10 @@ export default class extends Command<Ripple> {
         return member.ban({
             reason: reason,
             days: days
-        });
+        }).then(bannedMember => msg.reply(
+            this.client.Success()
+                .setDescription(`${bannedMember.user.tag} was successfully temp-banned.`)
+                .addField("Reason", reason ?? "n/a")
+        ));;
     }
 }

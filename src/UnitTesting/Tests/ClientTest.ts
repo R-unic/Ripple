@@ -10,8 +10,5 @@ export class ClientTest implements Test {
         Assert.Defined(testClient.Version);
         Assert.True(testClient instanceof Client)
         Assert.True(testClient instanceof AkairoClient);
-
-        testClient.on("customEmitTest", success => Assert.True(success));
-        testClient.emit("customEmitTest", true);
     }
 }
