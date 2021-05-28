@@ -1,5 +1,4 @@
 import { assert } from "console";
-import { exit } from "process";
 
 export class Test {
     public Run(...args: any[]): void {};
@@ -11,7 +10,6 @@ export class TestRunner {
     public static Go(...testArgs: any[]) {
         this.tests.forEach(test => test.Run(...testArgs));
         console.log(`Test run successful! (${this.tests.length} test(s))`);
-        exit(1);
     }
 
     public static Add(test: Test) {
