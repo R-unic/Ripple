@@ -14,10 +14,16 @@ import { readdirSync } from "fs";
 import { env } from "process";
 import * as db from "quick.db";
 import Events from "./Events";
+import { ReputationManager } from "./ReputationManager";
+
+type GuildObject = 
+    | Message 
+    | GuildMember;
 
 export default class Ripple extends AkairoClient {
     public readonly Logger = new RippleLogger(this);
     public readonly Giveaways = new GiveawaysManager(this, Options.GiveawayManager);
+    public readonly Reputation = new ReputationManager(this);
     public readonly Package: any = require(__dirname + "/../../package.json");
     public readonly Version = `v${this.Package.version}`;
     public readonly InviteLink = "https://bit.ly/2SjjB3d";
@@ -75,28 +81,28 @@ export default class Ripple extends AkairoClient {
         });
     }
 
-    public async GetPrefix(m: Message | GuildMember, defaultValue?: unknown) {
+    public async GetPrefix(m: GuildObject, defaultValue?: unknown) {
         return await this.Get(m, "prefix", defaultValue);
     }
 
-    public async SetPrefix(m: Message | GuildMember, newPrefix: string) {
+    public async SetPrefix(m: GuildObject, newPrefix: string) {
         return await this.Set(m, "prefix", newPrefix);
     }
 
-    public async Get(m: Message | GuildMember, key: string, defaultValue?: unknown): Promise<any> {
+    public async Get(m: GuildObject, key: string, defaultValue?: unknown, userID?: string): Promise<any> {
         return new Promise((resolve, reject) => {
             try {
-                resolve(db.get(this.Tag(key, m.guild.id)) ?? defaultValue);
+                resolve(db.get(this.Tag(key, m.guild.id, userID)) ?? defaultValue);
             } catch (err) {
                 reject(err);
             }
         });
     }
 
-    public Set(m: Message | GuildMember, key: string, value: any): Promise<any> {
+    public Set(m: GuildObject, key: string, value: any, userID?: string): Promise<any> {
         return new Promise((resolve, reject) => {
             try {
-                db.set(this.Tag(key, m.guild.id), value)
+                db.set(this.Tag(key, m.guild.id, userID), value)
                 resolve(true);
             } catch (err) {
                 reject(err);
@@ -121,8 +127,8 @@ export default class Ripple extends AkairoClient {
         return ms * 1000;
     }
 
-    private Tag(tag: string, id: string): string {
-        return `${tag}_${id}`;
+    private Tag(tag: string, gid: string, uid?: string): string {
+        return `${tag}_${gid}` + uid ? `_${uid}` : "";
     }
 
     private LoadCommands() {

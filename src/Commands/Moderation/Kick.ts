@@ -26,6 +26,6 @@ export default class extends Command<Ripple> {
         if (!member)
             return this.client.Logger.MissingArgError(msg, "member");
 
-        return member.kick(reason)
+        return member.kick(reason);
     }
 }

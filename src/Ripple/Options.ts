@@ -1,3 +1,4 @@
+import { CommandHandlerOptions } from "discord-akairo";
 import { Message, PermissionResolvable } from "discord.js";
 
 export const Options = {
@@ -16,8 +17,6 @@ export const Options = {
     CommandHandler: {
         automateCategories: true,
         directory: __dirname + "/../Commands/",
-        prefix: "::",
-        defaultCooldown: 5e3,
         blockBots: true,
         blockClient: true,
         commandUtil: true,
@@ -32,5 +31,5 @@ export const Options = {
                 timeout: (msg: Message) => `${msg.author}, command expired.`
             }
         },
-    }
+    } as CommandHandlerOptions
 }
