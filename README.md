@@ -27,7 +27,7 @@ If you liked this repository, please leave a star ⭐ to help promote Ripple!
 
 ## Features
 
-Ripple is a small bot currently, but has 40+ commands. Ripple also supports quoted arguments. This means that if you want a string with spaces in it to be treated as one argument while executing a command, you may surround it in quotation marks.  
+Ripple is a small bot currently, but has 50+ commands. Ripple also supports quoted arguments. This means that if you want a string with spaces in it to be treated as one argument while executing a command, you may surround it in quotation marks.  
 Here's an example: `::say "hello, world!"`
 
 ## Installation
