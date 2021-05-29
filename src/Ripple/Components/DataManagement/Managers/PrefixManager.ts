@@ -1,12 +1,12 @@
-import { GuildObject } from "../../Util";
-import { GuildDataManager } from "./Base/GuildDataManager";
-import Ripple from "../../Client";
+import { GuildObject } from "../../../Util";
+import { GuildDataManager } from "../Base/GuildDataManager";
+import Ripple from "../../../Client";
 
 export class PrefixManager implements GuildDataManager<string> {
     public Tag = "prefix";
 
     public constructor(
-        public Client: Ripple
+        public readonly Client: Ripple
     ) {}
 
     public async Get(m: GuildObject, defaultValue: string = this.Client.DefaultPrefix): Promise<string> {

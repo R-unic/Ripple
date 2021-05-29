@@ -1,7 +1,7 @@
 import { GuildMember } from "discord.js";
 import Ripple from "../../../Client";
 
-export abstract class MemberDataManager<T> {
+export abstract class GuildMemberDataManager<T> {
     public readonly Tag: string;
     
     public constructor(

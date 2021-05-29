@@ -2,21 +2,25 @@ import {
     MessageEmbed, 
     ActivityType,  
     PresenceStatusData, 
-    Presence
+    Presence,
+    User
 } from "discord.js";
+import { 
+    AutoRoleManager, 
+    AutoWelcomeManager, 
+    PrefixManager, 
+    PremiumManager, 
+    ReputationManager 
+} from "./Components/DataManagement";
 import { AkairoClient, CommandHandler } from "discord-akairo";
 import { GiveawaysManager } from "discord-giveaways";
 import { RippleLogger } from "./Components/Logger";
-import { ReputationManager } from "./Components/DataManagement/ReputationManager";
-import { PrefixManager } from "./Components/DataManagement/PrefixManager";
-import { AutoWelcomeManager } from "./Components/DataManagement/AutoWelcomeManager";
 import { GuildObject } from "./Util";
 import { Options } from "./Options";
 import { readdirSync } from "fs";
 import { env } from "process";
 import * as db from "quick.db";
 import Events from "./Events";
-import { AutoRoleManager } from "./Components/DataManagement/AutoRoleManager";
 
 /**
  * @extends AkairoClient
@@ -29,6 +33,7 @@ export default class Ripple extends AkairoClient {
     public readonly Prefix = new PrefixManager(this);
     public readonly WelcomeMessage = new AutoWelcomeManager(this);
     public readonly AutoRole = new AutoRoleManager(this);
+    public readonly Premium = new PremiumManager(this);
     public readonly Package: any = require(__dirname + "/../../package.json");
     public readonly Version = `v${this.Package.version}`;
     public readonly InviteLink = "https://bit.ly/2SjjB3d";
@@ -93,11 +98,34 @@ export default class Ripple extends AkairoClient {
         });
     }
 
+    public async GetForUser<ResType = any>(user: User, key: string, defaultValue?: ResType): Promise<ResType> {
+        return new Promise((resolve, reject) => {
+            try {
+                const tag = this.Tag(key, user.id);
+                resolve((db.get(tag)?? defaultValue) as ResType);
+            } catch (err) {
+                reject(err);
+            }
+        });
+    }
+
+    public SetForUser(user: User, key: string, value: any): Promise<boolean> {
+        return new Promise((resolve, reject) => {
+            try {
+                const tag = this.Tag(key, user.id);
+                db.set(tag, value);
+                resolve(true);
+            } catch (err) {
+                reject(err);
+            }
+        });
+    }
+
     public async Get<ResType = any>(m: GuildObject, key: string, defaultValue?: ResType, userID?: string): Promise<ResType> {
         return new Promise((resolve, reject) => {
             try {
                 const tag = this.Tag(key, m.guild.id, userID);
-                resolve((db.get(tag) ?? defaultValue) as ResType);
+                resolve((db.get(tag)?? defaultValue) as ResType);
             } catch (err) {
                 reject(err);
             }

@@ -1,12 +1,12 @@
 import { GuildMember } from "discord.js";
-import Ripple from "../../Client";
-import { MemberDataManager } from "./Base/MemberDataManager";
+import { GuildMemberDataManager } from "../Base/GuildMemberDataManager";
+import Ripple from "../../../Client";
 
-export class ReputationManager implements MemberDataManager<number> {
+export class ReputationManager implements GuildMemberDataManager<number> {
     public Tag = "reputation";
 
     public constructor(
-        public Client: Ripple
+        public readonly Client: Ripple
     ) {}
 
     public async Get(user: GuildMember) {

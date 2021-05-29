@@ -1,4 +1,4 @@
-import { APICommand } from "../../Ripple/Components/Commands/APICommand";
+import { APICommand } from "../../Ripple/Components/CommandClasses/APICommand";
 import { Message } from "discord.js";
 import { StripISO } from "../../Ripple/Util";
 
