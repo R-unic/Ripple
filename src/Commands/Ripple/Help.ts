@@ -16,7 +16,7 @@ export default class extends Command<Ripple> {
     public constructor() {
         const name = "help";
         super(name, {
-            aliases: [name, "cmds", "helpme"],
+            aliases: [name, "cmds", "helpmenu", "helpme"],
             description: {
                 content: "DMs you a help menu.",
                 usage: "<commandName?>"

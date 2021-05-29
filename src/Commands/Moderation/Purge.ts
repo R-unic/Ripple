@@ -33,7 +33,7 @@ export default class extends Command<Ripple> {
         }).then(messages => {
             return channel
                 .bulkDelete(messages)
-                .then(() => channel.send(`Bulk delete successful. Total messages removed: ${messages.size}`))
+                .then(() => channel.send(this.client.Success(`Bulk delete successful. Total messages removed: ${messages.size}`)))
                 .then(sent => sent.delete({ timeout: this.client.Seconds(10) }));
         });
     }

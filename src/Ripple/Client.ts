@@ -116,9 +116,10 @@ export default class Ripple extends AkairoClient {
         });
     }
 
-    public Success(): MessageEmbed {
+    public Success(description?: string): MessageEmbed {
         return this.Embed("Success! ✅")
-            .setColor("#10EB00");
+            .setColor("#10EB00")
+            .setDescription(description?? "");
     }
 
     public Embed(title?: string): MessageEmbed {

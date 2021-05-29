@@ -19,15 +19,16 @@ export const Options = {
         directory: __dirname + "/../Commands/",
         blockClient: true,
         commandUtil: true,
+        allowMention: true,
         argumentDefaults: {
             prompt: {
-                cancel: (msg: Message) => `${msg.author}, command cancelled.`,
-                ended: (msg: Message) => `${msg.author}, command declined.`,
-                modifyRetry: (msg, text) => text && `${msg.author}, ${text}\n\nType \`cancel\` to cancel this command.`,
-                modifyStart: (msg, text) => text && `${msg.author}, ${text}\n\nType \`cancel\` to cancel this command.`,
+                cancel: (msg: Message) => `${msg.member}, command cancelled.`,
+                ended: (msg: Message) => `${msg.member}, command declined.`,
+                modifyRetry: (msg, text) => text && `${msg.member}, ${text}\n\nType \`cancel\` to cancel this command.`,
+                modifyStart: (msg, text) => text && `${msg.member}, ${text}\n\nType \`cancel\` to cancel this command.`,
                 retries: 3,
                 time: 30000,
-                timeout: (msg: Message) => `${msg.author}, command expired.`
+                timeout: (msg: Message) => `${msg.member}, command expired.`
             }
         },
     } as CommandHandlerOptions

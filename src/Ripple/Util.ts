@@ -31,7 +31,11 @@ export function SecondsToMS(sec: number): number {
 }
 
 export function Clamp(n: number, min: number, max: number) {
-    return Math.min(Math.max(n, max), min);
+    if (n < min)
+        return min;
+    if (n > max)
+        return max;
+    return n;
 }
 
 export function Random<T = unknown>(a: T[]): T {
