@@ -22,7 +22,7 @@ export default class extends Command<Ripple> {
             return this.client.Logger.MissingArgError(msg, "achievement");
 
         if (achievement.length > 21)
-            return this.client.Logger.InvalidArgError(msg, "Text is longer than 21 characters.");
+            return this.client.Logger.InvalidArgError(msg, "Text may be no longer than 21 characters.");
 
         return msg.reply(
             this.client.Embed("Minecraft Achievement")

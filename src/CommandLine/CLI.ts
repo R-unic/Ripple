@@ -11,12 +11,13 @@ program
 program
     .command("update")
     .description("update the Ripple CLI")
-    .action(() => RippleCLI.Update());
+    .arguments("<version>")
+    .action(version => RippleCLI.Update(version));
 
 program
     .command("start")
     .description("start the daemon process for the Discord bot")
-    .action(() => RippleCLI.Start())
+    .action(() => RippleCLI.Start());
 
 program
     .version(pkg.version)
