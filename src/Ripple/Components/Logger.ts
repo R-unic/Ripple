@@ -9,6 +9,14 @@ export class RippleLogger {
         private client: Ripple
     ) {}
 
+    public get Collection() {
+        return this.errorLogger.Log;
+    }
+
+    public Clear() {
+        this.errorLogger.ClearLog();
+    }
+
     public DiscordAPIError(msg: Message, err: Error | string): Promise<Message> {
         return this.Error(msg, `Discord API Error: ${typeof err === "string" ? err : err.message}`);
     }
@@ -31,7 +39,7 @@ export class RippleLogger {
 
     private Error(msg: Message, errorMsg: string, log?: boolean): Promise<Message> {
         if (log)
-            this.errorLogger.ReportError(errorMsg);
+            this.errorLogger.Report(errorMsg);
         return msg.reply(
             this.client.Embed()
                 .setTitle("Error! ❌")
