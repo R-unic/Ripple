@@ -7,6 +7,9 @@
     "start": "nodemon --trace-warnings out/Program.js -e .ts,.js,.json",
     "test": "node out/UnitTesting/Run.js"
   },
+  "bin": {
+    "ripple": "./bin/ripple"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/AlphaRunic/Ripple.git"
@@ -30,6 +33,7 @@
     "@types/sequelize": "^4.28.9",
     "@types/sqlite3": "^3.1.7",
     "axios": "^0.21.1",
+    "commander": "^7.2.0",
     "discord-akairo": "^8.1.0",
     "discord-giveaways": "^4.5.1",
     "discord.js": "^12.5.3",

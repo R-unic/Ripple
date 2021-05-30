@@ -16,7 +16,7 @@ export const Options = {
     },
     CommandHandler: {
         automateCategories: true,
-        directory: __dirname + "/../Commands/",
+        directory: __dirname + "/Commands/",
         blockClient: true,
         commandUtil: true,
         allowMention: true,

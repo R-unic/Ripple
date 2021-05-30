@@ -39,13 +39,13 @@ export default class extends Command<Ripple> {
             .setDescription(typeof command.description === "string" ? command.description : command.description.content);
 
         if (clientPermissions)
-            embed.addField("Required Bot Permissions", clientPermissions);
+            embed.addField("Required Bot Permissions", clientPermissions, true);
         if (userPermissions)
-            embed.addField("Required User Permissions:", userPermissions);
+            embed.addField("Required User Permissions:", userPermissions, true);
         if (command.aliases.length > 1)
-            embed.addField("Aliases", command.aliases.slice(1).map(a => `\`${a}\``).join(", "));
+            embed.addField("Aliases", command.aliases.slice(1).map(a => `\`${a}\``).join(", "), true);
         if (examples)
-            embed.addField("Examples", examples.map(e => `${prefix}${command} ${e}`).join("\n"));
+            embed.addField("Examples", examples.map(e => `${prefix}${command} ${e}`).join("\n"), true);
 
         return msg.reply(embed);
     }
@@ -82,6 +82,8 @@ export default class extends Command<Ripple> {
         embed.fields = embed.fields.sort((a, b) => a.name > b.name ? 1 : (a.name < b.name ? -1 : 0));
 
         return msg.member.send(embed)
-            .then(() => msg.reply("I sent you a help menu in your DMs! 💖"));;
+            .then(() => msg.reply(
+                this.client.Success("I sent you a help menu in your DMs! 💖")
+            ));
     }
 }

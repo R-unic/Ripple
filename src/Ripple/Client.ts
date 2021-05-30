@@ -16,22 +16,18 @@ import {
 import { AkairoClient, CommandHandler } from "discord-akairo";
 import { GiveawaysManager } from "discord-giveaways";
 import { RippleLogger } from "./Components/Logger";
+import { DonationAPI } from "./APIWrappers/Donation";
 import { GuildObject } from "./Util";
 import { Options } from "./Options";
-import { DonationAPI } from "./APIWrappers/Donation";
+import { Package } from "./Package";
 import { readdirSync } from "fs";
 import { env } from "process";
 import * as db from "quick.db";
 import Events from "./Events";
 
-interface Package {
-    version: string
-}
-
 /**
  * @extends AkairoClient
  * @description Ripple Discord client
- * @todo Implement Donation API
 */
 export default class Ripple extends AkairoClient {
     public readonly Logger = new RippleLogger(this);
