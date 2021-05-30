@@ -12,15 +12,13 @@ export default class extends Command<Ripple> {
     }
 
     public async exec(msg: Message) {
-        const uptime = new Date(this.client.uptime);
+        const uptime = new Date(Date.now() - this.client.uptime);
 
         return msg.channel.send(
-            this.client.Embed()
-                .setTitle("⏲️ Uptime ⏲️")
-                .addField("Days", uptime.getDay() - 3)
-                .addField("Hours", uptime.getHours() - 16)
-                .addField("Minutes", uptime.getMinutes())
-                .addField("Seconds", uptime.getSeconds())
+            this.client.Embed("⏲️ Uptime ⏲️")
+                .setDescription("Ripple has been online since:")
+                .addField("Date", uptime.toLocaleDateString(), true)
+                .addField("Time", uptime.toLocaleTimeString(), true)
         );
     }
 }
