@@ -1,30 +1,37 @@
 import { 
-    MessageEmbed, 
-    ActivityType,  
-    PresenceStatusData, 
+    ActivityType,
+    ClientEvents,
+    MessageEmbed,
+    PresenceStatusData,
     Presence,
     User
 } from "discord.js";
 import { 
-    AutoRoleManager, 
-    AutoWelcomeManager, 
-    PrefixManager, 
-    PremiumManager, 
-    ReputationManager 
+    AutoRoleManager,
+    AutoWelcomeManager,
+    PrefixManager,
+    PremiumManager,
+    ReputationManager
 } from "./Components/DataManagement";
 import { AkairoClient, CommandHandler } from "discord-akairo";
 import { GiveawaysManager } from "discord-giveaways";
 import { RippleLogger } from "./Components/Logger";
 import { GuildObject } from "./Util";
 import { Options } from "./Options";
+import { DonationAPI } from "../APIWrappers/Donation";
 import { readdirSync } from "fs";
 import { env } from "process";
 import * as db from "quick.db";
 import Events from "./Events";
 
+interface Package {
+    version: string
+}
+
 /**
  * @extends AkairoClient
  * @description Ripple Discord client
+ * @todo Implement Donation API
 */
 export default class Ripple extends AkairoClient {
     public readonly Logger = new RippleLogger(this);
@@ -34,11 +41,13 @@ export default class Ripple extends AkairoClient {
     public readonly WelcomeMessage = new AutoWelcomeManager(this);
     public readonly AutoRole = new AutoRoleManager(this);
     public readonly Premium = new PremiumManager(this);
-    public readonly Package: any = require(__dirname + "/../../package.json");
+    public readonly Donations = new DonationAPI(this, env.DONATE_BOT_API);
+    public readonly Package: Package = require(__dirname + "/../../package.json");
     public readonly Version = `v${this.Package.version}`;
     public readonly InviteLink = "https://bit.ly/2SjjB3d";
     public readonly GitHubRepo = "https://github.com/AlphaRunic/Ripple";
     public readonly Website = "https://alpharunic.github.io/Ripple";
+    public readonly DonateLink = "https://donatebot.io/checkout/846604279288168468"
     public BotName: string;
 
     private readonly commandHandler = new CommandHandler<Ripple>(this, Options.CommandHandler);
@@ -52,9 +61,6 @@ export default class Ripple extends AkairoClient {
         }, {
             disableMentions: "everyone"
         });
-        
-        this.HandleEvents();
-        this.LoadCommands();
 
         immediateLogin? 
             this.Login()
@@ -65,8 +71,8 @@ export default class Ripple extends AkairoClient {
      * @description Log in with a token or env.LOGIN_TOKEN
      * @param token
      */
-    public async Login(token?: string) {
-        return super.login(token ?? env.LOGIN_TOKEN)
+    public async Login(token?: string): Promise<string> {
+        const p = super.login(token ?? env.LOGIN_TOKEN)
             .then(res => {
                 this.UpdatePresence();
                 return res;
@@ -74,6 +80,15 @@ export default class Ripple extends AkairoClient {
                 this.BotName = this.user.username;
                 return res;
             });
+
+        await this.Initialize();
+        return p;
+    }
+
+    private async Initialize() {
+        this.HandleEvents(Events);
+        this.LoadCommands();
+        await this.Donations.StartTransactionsLoop();
     }
 
     public get CommandCount() {
@@ -171,8 +186,8 @@ export default class Ripple extends AkairoClient {
         this.commandHandler.loadAll();
     }
 
-    private HandleEvents() {
-        Events.forEach((callback, event) => 
+    private HandleEvents(eventMap: Map<keyof ClientEvents, Function>) {
+        eventMap.forEach((callback, event) => 
             this.on(event, (...args: any[]) => callback(this, ...args))
         );
     }

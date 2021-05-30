@@ -1,4 +1,4 @@
-import { Clamp, Pair } from "../Ripple/Util";
+import { Clamp, Pair } from "../../Ripple/Util";
 import { Area } from "./Area";
 
 export class World {

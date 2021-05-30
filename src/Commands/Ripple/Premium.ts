@@ -4,17 +4,17 @@ import Ripple from "../../Ripple/Client";
 
 export default class extends Command<Ripple> {
     public constructor() {
-        const name = "invite";
+        const name = "premium";
         super(name, {
-            aliases: [name, "invitelink", "inviteme", "invitebot"],
-            description: "Returns an invite link for Ripple."
+            aliases: [name, "ripplepremium", "donate", "getpremium"],
+            description: "Returns a donation link to purchase Ripple Premium."
         });
     }
 
     public async exec(msg: Message) {
         return msg.reply(
-            this.client.Embed("Invite Me! 🔗")
-                .setURL(this.client.InviteLink)
+            this.client.Embed("Donate! 💰")
+                .setURL(this.client.DonateLink)
         );
     }
 }

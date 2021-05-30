@@ -1,4 +1,4 @@
-import { Pair } from "../Ripple/Util";
+import { Pair } from "../../Ripple/Util";
 import { Area } from "./Area";
 import { World } from "./World";
 

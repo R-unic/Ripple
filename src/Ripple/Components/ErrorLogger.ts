@@ -17,7 +17,7 @@ export class ErrorLogger {
      * @param errorMsg
      * @returns Index of error inside of log array
     */
-    public ReportError(errorMsg: string): number {
+    public Report(errorMsg: string): number {
         try {
             throw new Error(`Error: ${errorMsg}`);
         } catch (err) {
