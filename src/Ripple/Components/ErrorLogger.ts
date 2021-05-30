@@ -1,27 +1,39 @@
+import { Collection } from "discord.js";
+
 /**
  * @class Error Logger
  * @description Stores an array of errors that can be manipulated or added to.
 */
 export class ErrorLogger {
-    public readonly Log: Error[] = [];
+    public readonly Log = new Collection<Date, Error | string>();
 
     /**
      * @description Clear the error log
     */
     public ClearLog() {
-        this.Log.forEach(() => this.Log.pop());
+        this.Log.clear();
     }
 
     /**
-     * @description Throw & catch an error then log it
-     * @param errorMsg
+     * @description Report an error message
+     * @param errorMsg Content of error message
+     * @param createdAt Date the error message was created at
      * @returns Index of error inside of log array
     */
-    public Report(errorMsg: string): number {
-        try {
-            throw new Error(`Error: ${errorMsg}`);
-        } catch (err) {
-            return this.Log.push(err);
-        }
+    public Report(errorMsg: string, createdAt: Date): ErrorLogger {
+        console.error(errorMsg);
+        this.Log.set(createdAt, errorMsg);
+        return this;
+    }
+
+    /**
+     * @description Throw an error then log it
+     * @param errorMsg Content of error message
+     * @returns Index of error inside of log array
+    */
+    public Throw(errorMsg: string, createdAt: Date): ErrorLogger {
+        const err = new Error(errorMsg);
+        this.Log.set(createdAt, err);
+        return this;
     }
 }

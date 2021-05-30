@@ -14,8 +14,7 @@ export default class extends Command<Ripple> {
     public async exec(msg: Message) {
         const num = Math.floor(Math.random() * 2);
         return msg.reply(
-            this.client.Embed()
-                .setTitle("🪙 Coinflip 🪙")
+            this.client.Embed("🪙 Coinflip 🪙")
                 .setDescription(`I flipped a coin for you, ${msg.member}. It was ${num === 1 ? "Heads" : "Tails"}!`)
         );
     }

@@ -14,8 +14,7 @@ export default class extends Command<Ripple> {
     public async exec(msg: Message) {
         const diceNumber = Math.round(Math.random() * 6);
         return msg.reply(
-            this.client.Embed()
-                .setTitle("🎲 Dice Roll 🎲")
+            this.client.Embed("🎲 Dice Roll 🎲")
                 .setDescription(`I rolled a dice for you, ${msg.member}. It landed on ${diceNumber}!`)
         );
     }
