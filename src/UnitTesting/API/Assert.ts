@@ -1,40 +1,48 @@
 import { AssertionError } from "assert";
 
 export class Assert {
-    public static Undefined(value: any, stackFn?: Function, errorMessage?: string) {
-        this.True(value == null || value == undefined, stackFn, errorMessage);
+    public static Undefined(value?: any, stackFn?: Function, errorMessage?: string) {        
+        this.False(value ? true : false, "undefined", stackFn, errorMessage);
     }
 
-    public static Defined(value: any, stackFn?: Function, errorMessage?: string) {
-        this.True(value !== null && value !== undefined, stackFn, errorMessage);
+    public static Defined(value?: any, stackFn?: Function, errorMessage?: string) {        
+        this.True(value ? true : false, "defined", stackFn, errorMessage);
     }
 
-    public static False(value: any, stackFn?: Function, errorMessage?: string) {
-        this.Assert(value === false, false, stackFn, errorMessage);
+    public static Falsy(value: any, expected: any = false, stackFn?: Function, errorMessage?: string) {
+        this.Assert(value == false, expected, stackFn, errorMessage, "Falsy");
     }
 
-    public static True(value: any, stackFn?: Function, errorMessage?: string) {
-        this.Assert(value === true, true, stackFn, errorMessage);
+    public static Truthy(value: any, expected: any = true, stackFn?: Function, errorMessage?: string) {
+        this.Assert(value == true, expected, stackFn, errorMessage, "Truthy");
+    }
+
+    public static False(value: any, expected: any = false, stackFn?: Function, errorMessage?: string) {
+        this.Assert(value === false, expected, stackFn, errorMessage, "False");
+    }
+
+    public static True(value: any, expected: any = true, stackFn?: Function, errorMessage?: string) {
+        this.Assert(value === true, expected, stackFn, errorMessage, "True");
     }
 
     public static FuzzyNotEquals(first: any, second: any, stackFn?: Function, errorMessage?: string) {
-        this.True(first != second, stackFn, errorMessage);
+        this.True(first != second, `${first} != ${second}`, stackFn, errorMessage);
     }
 
     public static NotEquals(first: any, second: any, stackFn?: Function, errorMessage?: string) {
-        this.True(first !== second, stackFn, errorMessage);
+        this.True(first !== second, `${first} !== ${second}`, stackFn, errorMessage);
     }
 
     public static FuzzyEquals(first: any, second: any, stackFn?: Function, errorMessage?: string) {
-        this.True(first == second, stackFn, errorMessage);
+        this.True(first == second, `${first} == ${second}`, stackFn, errorMessage);
     }
 
     public static Equals(first: any, second: any, stackFn?: Function, errorMessage?: string) {
-        this.True(first === second, stackFn, errorMessage);
+        this.True(first === second, `${first} === ${second}`, stackFn, errorMessage);
     }
 
-    private static Assert(value: any, expected: any, stackFn?: Function, errorMessage?: string) {
-        if ((expected != value) ?? (value == null || value == undefined || value == false))
+    private static Assert(value: any, expected: any, stackFn?: Function, errorMessage?: string, op?: string) {
+        if (!value)
             throw new AssertionError({
                 message: `
     Assertion failed!
@@ -45,7 +53,8 @@ export class Assert {
                 `,
                 actual: value,
                 expected: expected,
-                stackStartFn: stackFn
+                stackStartFn: stackFn,
+                operator: op
             });
     }
 }
