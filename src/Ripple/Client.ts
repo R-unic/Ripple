@@ -18,7 +18,7 @@ import { GiveawaysManager } from "discord-giveaways";
 import { RippleLogger } from "./Components/Logger";
 import { GuildObject } from "./Util";
 import { Options } from "./Options";
-import { DonationAPI } from "../APIWrappers/Donation";
+import { DonationAPI } from "./APIWrappers/Donation";
 import { readdirSync } from "fs";
 import { env } from "process";
 import * as db from "quick.db";
