@@ -14,15 +14,14 @@ export default class extends Command<Ripple> {
 
     public async exec(msg: Message) {
         return msg.reply(
-            this.client.Embed()
-                .setTitle(`Ripple`)
+            this.client.Embed("Ripple")
                 .setDescription(`
                 An open-source all-purpose Discord bot built with TypeScript.
                 ${Hyperlink(this.client.InviteLink, "Invite")} | ${Hyperlink(this.client.Website, "Website")} | ${Hyperlink(this.client.GitHubRepo, "GitHub Repository")}
                 `)
                 .setThumbnail(this.client.user.displayAvatarURL({ dynamic: true }))
                 .addField("Developer", (this.client.ownerID as string[]).map(User).join(", "), true)
-                .addField("Prefix", await this.client.Prefix.Get(msg), true)
+                .addField("Default Prefix", this.client.DefaultPrefix, true)
                 .addField("Commands", this.client.CommandCount, true)
                 .addField("Created On", StripISO(this.client.user.createdAt), true)
                 .addField("Version", this.client.Version, true)

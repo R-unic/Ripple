@@ -13,13 +13,11 @@ export default class extends Command<Ripple> {
             clientPermissions: "MANAGE_GUILD",
             cooldown: 3,
             description: {
-                content: "Sets the welcome message said when a user joins the server.\nUse {member} for the user joining, and {server} for the name of the server.",
+                content: "Sets the welcome message said when a user joins the server.\nUse {member} for the user joining, and {server} to refer to the server.",
                 usage: '<"welcomeMessage">',
-                examples: ['"Welcome to {server}, {member}!"']
+                examples: ['"Welcome to {server.name}, {member}! You are the {server.member_count}th member!"']
             },
-            args: [ 
-                Arg("welcomeMessage", "string")
-            ],
+            args: [  Arg("welcomeMessage", "string") ],
         });
     }
 
