@@ -2,7 +2,7 @@ import { ToTitleCase } from "../../Util";
 import { World } from "./World";
 import { Worlds as WorldList } from "./WorldList";
 
-namespace Wizard101 {
+export namespace Wizard101 {
     export const Worlds = new Map<string, World>(Object.entries(WorldList));
     export function GetWorld(worldName: string): World {
         let world = Wizard101.Worlds.get(
@@ -25,5 +25,3 @@ namespace Wizard101 {
         return world;
     }
 }
-
-export default Wizard101;

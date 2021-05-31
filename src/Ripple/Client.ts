@@ -9,6 +9,7 @@ import {
 import { 
     AutoRoleManager,
     AutoWelcomeManager,
+    LevelManager,
     PrefixManager,
     PremiumManager,
     ReputationManager
@@ -17,15 +18,15 @@ import { AkairoClient, CommandHandler } from "discord-akairo";
 import { GiveawaysManager } from "discord-giveaways";
 import { RippleLogger } from "./Components/Logger";
 import { DonationAPI } from "./APIWrappers/Donation";
-import { GuildObject } from "./Util";
+import { Wizard101 } from "./APIWrappers/Wizard101";import { GuildObject } from "./Util";
 import { Options } from "./Options";
 import { Package } from "./Package";
+import { Events } from "./Events";
 import { pkg } from "../CommandLine/RippleCLI";
 import { readdirSync } from "fs";
 import { env } from "process";
 import * as db from "quick.db";
-import Wizard101 from "./APIWrappers/Wizard101";
-import Events from "./Events";
+
 
 /**
  * @extends AkairoClient
@@ -39,6 +40,7 @@ export default class Ripple extends AkairoClient {
     public readonly WelcomeMessage = new AutoWelcomeManager(this);
     public readonly AutoRole = new AutoRoleManager(this);
     public readonly Premium = new PremiumManager(this);
+    public readonly Stats = new LevelManager(this);
     public readonly Donations = new DonationAPI(this, env.DONATE_BOT_API);
     public readonly Wizard101 = Wizard101;
     public readonly Package: Package = pkg;
