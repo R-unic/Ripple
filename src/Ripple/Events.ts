@@ -1,37 +1,50 @@
-import { error, log } from "console";
 import { ClientEvents, GuildMember, Message } from "discord.js";
-import { User } from "./Util";
+import { error, log } from "console";
+import { Channel, User } from "./Util";
+import { ErrorLogger } from "./Components/ErrorLogger";
 import Ripple from "./Client";
 
-const Events = new Map<keyof ClientEvents, Function>([
-    ["ready", (client: Ripple) => log(`Ripple ${client.Version} is now online.`)],
-    ["error", (_, err) => error(err)],
+const ReportErrorNow = err => 
+    EventErrorLogger.Report(err, new Date(Date.now()));
+
+export const EventErrorLogger = new ErrorLogger;
+export const Events = new Map<keyof ClientEvents, Function>([
+    ["ready", (client: Ripple) => log(`${client.BotName} ${client.Version} is now online.`)],
+    ["error", (_, err) => EventErrorLogger.Report(err, new Date(Date.now()))],
     ["message", async (client: Ripple, msg: Message) => {
         if (msg.content === "##FixPrefix*")
             client.Prefix.Set(msg, await client.Prefix.Get(msg))
                 .then(() => msg.reply(
-                    client.Success()
-                        .setDescription(`Successfully fixed server prefix, which is now \`${client.DefaultPrefix}\`.`)
-                ));
+                    client.Success(`Successfully fixed server prefix, which is now \`${client.DefaultPrefix}\`.`)
+                )).catch(ReportErrorNow);
     }],
     ["guildMemberAdd", async (client: Ripple, member: GuildMember) => {
         if (member.user === client.user)
             return client.UpdatePresence();
         
-        const welcomeMsg: string | undefined = await client.WelcomeMessage.Get(member);
-        if (welcomeMsg)
+        const welcomeMsg = await client.WelcomeMessage.Get(member, undefined);
+        if (welcomeMsg != undefined)
             member.guild.systemChannel.send(
-                welcomeMsg
-                    .replace(/{server}/, member.guild.name)
-                    .replace(/{member}/, User(member.id))
-            );
+                client.Embed(member.guild.name)
+                    .setThumbnail(member.guild.iconURL({ dynamic: true }))
+                    .setDescription(
+                        welcomeMsg
+                            .replace(/{member}/, User(member.id))
+                            .replace(/{server.name}/, member.guild.name)
+                            .replace(/{server.memberCount}/, member.guild.memberCount.toString())
+                            .replace(/{server.rulesChannel}/, Channel(member.guild.rulesChannelID))
+                    )
+            ).catch(ReportErrorNow);
 
         return client.AutoRole.Get(member)
-            .then(roleID => {
-                return member.guild.roles.resolve(roleID);
-            }).then(role => role ? member.roles.add(role) : undefined)
-            .catch(async err => client.Logger.DiscordAPIError(await ((await member.guild.systemChannel.send("Error!")).delete()), err));
+            .then(roleID => member.guild.roles.resolve(roleID))
+            .then(role => role ? member.roles.add(role) : undefined)
+            .catch(async err => {
+                ReportErrorNow(err);
+                member.guild.systemChannel.send("Error!")
+                    .then(msg => msg.delete())
+                    .then(msg => client.Logger.DiscordAPIError(msg, err))
+                    .catch(ReportErrorNow);
+            });
     }]
 ]);
-
-export default Events;

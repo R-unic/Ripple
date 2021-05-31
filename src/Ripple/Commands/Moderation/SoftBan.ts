@@ -34,9 +34,8 @@ export default class extends Command<Ripple> {
             reason: reason,
             days: days
         }).then(bannedMember => msg.reply(
-            this.client.Success()
-                .setDescription(`${bannedMember.user.tag} was successfully temp-banned.`)
+            this.client.Success(`${bannedMember.user.tag} was successfully temp-banned.`)
                 .addField("Reason", reason ?? "n/a")
-        ));;
+        )).catch(err => this.client.Logger.DiscordAPIError(msg, err));
     }
 }
