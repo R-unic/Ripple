@@ -1,16 +1,8 @@
 import { Command } from "discord-akairo";
 import { TextChannel } from "discord.js";
 import { Message } from "discord.js";
-import Ripple from "../../Client";
 import { Arg } from "../../Util";
-
-const toTitleCase = (item: string) => {
-    return item
-        .toLowerCase()
-        .replace(/guild/g, 'Server')
-        .replace(/_/g, ' ')
-        .replace(/\b[a-z]/g, t => t.toUpperCase());
-};
+import Ripple from "../../Client";
 
 export default class extends Command<Ripple> {
     public constructor() {

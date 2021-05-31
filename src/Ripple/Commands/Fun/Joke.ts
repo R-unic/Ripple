@@ -2,7 +2,6 @@ import { Command } from "discord-akairo";
 import { Message } from "discord.js";
 import Ripple from "../../Client";
 import fetch from "node-fetch";
-import { MessageEmbed } from "discord.js";
 
 export default class extends Command<Ripple> {
     public constructor() {
@@ -19,11 +18,10 @@ export default class extends Command<Ripple> {
                 if(res.didError)
                     this.client.Logger.APIError(msg, "Please try again momentarily. This could be an API error.");
 
-                return this.client.Embed()
-                        .setTitle('Random Joke')
+                return this.client.Embed("Random Joke")
                         .setAuthor(res.category)
                         .setDescription(res.joke);
-            }).then(embed => msg.reply(embed));
+            }).then(msg.reply);
     }
         
 

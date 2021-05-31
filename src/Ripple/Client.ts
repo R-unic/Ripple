@@ -24,6 +24,7 @@ import { pkg } from "../CommandLine/RippleCLI";
 import { readdirSync } from "fs";
 import { env } from "process";
 import * as db from "quick.db";
+import Wizard101 from "./APIWrappers/Wizard101";
 import Events from "./Events";
 
 /**
@@ -39,6 +40,7 @@ export default class Ripple extends AkairoClient {
     public readonly AutoRole = new AutoRoleManager(this);
     public readonly Premium = new PremiumManager(this);
     public readonly Donations = new DonationAPI(this, env.DONATE_BOT_API);
+    public readonly Wizard101 = Wizard101;
     public readonly Package: Package = pkg;
     public readonly Version = `v${this.Package.version}`;
     public readonly InviteLink = "https://bit.ly/2SjjB3d";

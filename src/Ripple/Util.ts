@@ -4,7 +4,10 @@ import {
     ArgumentType, 
     ArgumentTypeCaster 
 } from "discord-akairo";
-import { GuildMember, Message } from "discord.js";
+import { 
+    GuildMember, 
+    Message 
+} from "discord.js";
 
 export function Hyperlink(url: string, text?: string): string {
     return text ? `[${text}](${url})` : url;
@@ -54,6 +57,14 @@ export function Arg(
         default: defaultValue,
         prompt: prompt
     };
+}
+
+export function ToTitleCase(item: string): string {
+    return item
+        .toLowerCase()
+        .replace(/guild/g, 'Server')
+        .replace(/_/g, ' ')
+        .replace(/\b[a-z]/g, t => t.toUpperCase());
 }
 
 export class Pair<T> {

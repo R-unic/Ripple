@@ -8,7 +8,7 @@ export class World {
         public readonly LevelRange: Pair<number>,
         public readonly Abbreviation: string,
         public readonly Areas: Area[]
-    ) { }
+    ) {}
 
     public Progress(current: number) {
         current = Clamp(current, 1, this.Quests);
