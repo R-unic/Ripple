@@ -18,11 +18,13 @@ export default class extends Command<Ripple> {
             .setDescription(`__**There are \`${Wizard101.Worlds.size}\` worlds in Wizard101:**__`);
 
         Wizard101.Worlds.forEach(
-            world => embed.addField(`${world.Name} (${world.Abbreviation})`,
-                `Levels: ${world.LevelRange.First}-${world.LevelRange.Second}
-                Quests: ${world.Quests}
-                Areas: ${world.Areas.length === 0 ? "N/A" : world.Areas.length}
-                `, true)
+            world => embed.addField(
+                    `${world.Name} (${world.Abbreviation})`,
+                    `Levels: ${world.LevelRange.First}-${world.LevelRange.Second}
+                    Quests: ${world.Quests}
+                    Areas: ${world.Areas.length === 0 ? "N/A" : world.Areas.length}`, 
+                    true
+                )
             );
 
         return msg.reply(embed);

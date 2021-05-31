@@ -12,6 +12,6 @@ export class World {
 
     public Progress(current: number) {
         current = Clamp(current, 1, this.Quests);
-        return Math.round(current / this.Quests * 100);
+        return (current / this.Quests * 100).toString().slice(0, 4);
     }
 }
