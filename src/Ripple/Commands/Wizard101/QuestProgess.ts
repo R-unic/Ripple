@@ -16,7 +16,7 @@ export default class extends Command<Ripple> {
             },
             args: [
                 Arg("quest", "number", 0),
-                Arg("worldName", "string")
+                Arg("worldName", "lowercase")
             ]
         });
     }

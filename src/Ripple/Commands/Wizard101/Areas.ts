@@ -14,7 +14,7 @@ export default class extends Command<Ripple> {
                 usage: "<world>",
                 examples: ["kt", "ms", "dragonspyre"]
             },
-            args: [ Arg("worldName", "string") ]
+            args: [ Arg("worldName", "lowercase") ]
         });
     }
 
