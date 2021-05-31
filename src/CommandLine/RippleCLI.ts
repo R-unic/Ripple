@@ -19,23 +19,38 @@ export class RippleCLI {
      * @param {string} version
      * @description Packs the NPM package into a tarball then installs it globally to update binaries
     */
-    public static async Update(version: string) {
+    public static async Update(version: string): Promise<void> {
+        const INVALID_VSN = "Invalid version number. (semver) / Failed to install package globally.";
+        const PACK_FAIL = "Failed to pack into tarball.";
+
+        if (!version.includes("."))
+            return log(INVALID_VSN);
+
         const pkgName = `${pkg.name}-${version}`;
-        log("Updating Ripple CLI...");
-        await exec("npm pack").catch(err => log("FATAL: Failed to pack into tarball.", err));
+        log(`Updating Ripple CLI to v${version}...`);
+        log("Packing into tarball...")
+        await exec("npm pack").catch(err => {
+            const e = new Error(PACK_FAIL);
+            e.name = "PACK_FAIL";
+            e.stack = err;
+        });
         log("Installing new version globally...");
-        await exec(`npm i ${pkgName}.tgz --save -g`).catch(err => log("FATAL: Failed to install tarball globally.", err));
+        await exec(`npm i ${pkgName}.tgz --save -g`).catch(err => {
+            const e = new Error(INVALID_VSN);
+            e.name = "INVALID_VSN";
+            throw e;
+        });
         log("Removing package tarball...");
         await exec(`rm ${pkgName}.tgz`).catch(err => log("WARN: Failed to remove tarball.", err));
-        log("Successfully updated Ripple CLI!");
+        return log(`Successfully updated Ripple CLI! Version: ${version}`);
     }
 
     /**
      * @async
-     * @description Starts Ripple child process as a daemon
+     * @description Starts Ripple via nodemon
     */
-    public static async Start() {
-        this.RunIndefiniteCommand(`nodemon`, nodemonOpts, "Ripple")
+    public static async Start(): Promise<void> {
+        return this.RunIndefiniteCommand(`nodemon`, nodemonOpts, "Ripple")
             .then(log)
             .catch(error);
     }
