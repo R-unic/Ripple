@@ -92,9 +92,9 @@ export default class Ripple extends AkairoClient {
 
     public get CommandCount() {
         let count = 0;
-        readdirSync(`${__dirname}/../Commands`)
+        readdirSync(`${__dirname}/Commands`)
             .forEach(folder => 
-                readdirSync(`${__dirname}/../Commands/${folder}`)
+                readdirSync(`${__dirname}/Commands/${folder}`)
                     .filter(file => file.endsWith(".ts") || file.endsWith(".js"))
                     .forEach(() => count++)
                 );
