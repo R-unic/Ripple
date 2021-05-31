@@ -3,7 +3,6 @@ import { error, log } from "console";
 import { promisify } from "util";
 import * as cp from "child_process";
 const exec = promisify(cp.exec);
-const spawn = cp.spawn;
 
 export const pkg: Package = require(__dirname + "/../../package.json");
 const programFile = "out/Program.js";
@@ -51,7 +50,7 @@ export class RippleCLI {
     */
     private static async RunIndefiniteCommand(command: string, args: string[], programAlias: string): Promise<string> {
         return new Promise((resolve, reject) => {
-            exec(`${command} ${args.join(" ")} &`);
+            exec(`${command} ${args.join(" ")} &`).catch(reject);
             resolve(`${programAlias} is now running.`);
         })
     }

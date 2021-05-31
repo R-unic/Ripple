@@ -15,7 +15,7 @@ export default class extends Command<Ripple> {
                 examples: ["24 wc", "45 karamelle"]
             },
             args: [
-                Arg("quest", "number"),
+                Arg("quest", "number", 0),
                 Arg("worldName", "string")
             ]
         });
@@ -29,6 +29,13 @@ export default class extends Command<Ripple> {
             return this.client.Logger.MissingArgError(msg, "quest");
 
         const world = Wizard101.GetWorld(worldName);
+        if (quest > world.Quests)
+            quest = world.Quests;
+        else if (quest <= 0)
+            quest = Math.abs(quest);
+        else if (quest < 1)
+            quest = 1;
+
         const progress = world.Progress(quest);
         return msg.reply(
             this.client.Embed(`You are \`${progress}%\` through \`${world.Name}\`.`)

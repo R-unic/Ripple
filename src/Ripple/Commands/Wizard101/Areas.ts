@@ -6,12 +6,12 @@ import Ripple from "../../Client";
 
 export default class extends Command<Ripple> {
     public constructor() {
-        const name = "questprogress";
+        const name = "areas";
         super(name, {
-            aliases: [name, "questprog", "quest"],
+            aliases: [name, "areasinworld", "areain"],
             description: {
-                content: "Returns the amount of areas in the specified world in Wizard101.",
-                usage: "<quest> <world>",
+                content: "Returns the areas in a specified world in Wizard101.",
+                usage: "<world>",
                 examples: ["kt", "ms", "dragonspyre"]
             },
             args: [ Arg("worldName", "string") ]
@@ -24,10 +24,9 @@ export default class extends Command<Ripple> {
 
         const world = Wizard101.GetWorld(worldName)
         const embed = this.client.Embed(`Areas in \`${world.Name}\``)
-            .setDescription(`There are \`${world.Areas.length}\` areas in \`${world.Name}\`.`);
+            .setDescription(`__**There are \`${world.Areas.length}\` areas in \`${world.Name}\`:**__
 
-        for (const area of world.Areas)
-            embed.addField(area.Name, "", true);
+            ${world.Areas.map(area => area.Name).join("\n")}`);
 
         return msg.reply(embed);
     }
