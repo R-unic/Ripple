@@ -3,14 +3,14 @@ import { ErrorLogger } from "./ErrorLogger";
 import Ripple from "../Client";
 
 export class RippleLogger {
-    private readonly errorLogger = new ErrorLogger;
+    public readonly ErrorLogger = new ErrorLogger;
 
     public constructor(
         private client: Ripple
     ) {}
 
     public get Collection() {
-        return this.errorLogger.Log;
+        return this.ErrorLogger.Log;
     }
 
     public get ErrorCount() {
@@ -21,7 +21,7 @@ export class RippleLogger {
      * @description Clear the error log
     */
     public Clear() {
-        this.errorLogger.ClearLog();
+        this.ErrorLogger.ClearLog();
     }
 
     public UtilError(msg: Message, errorMsg?: string): Promise<Message> {
@@ -54,7 +54,7 @@ export class RippleLogger {
 
     private async Error(msg: Message, errorMsg: string, log: boolean = true): Promise<Message> {
         if (log)
-            this.errorLogger.Report(errorMsg, msg.createdAt);
+            this.ErrorLogger.Report(errorMsg, msg.createdAt);
 
         return msg.reply(
             this.client.Embed("Error! ❌")

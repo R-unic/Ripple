@@ -10,7 +10,12 @@ export class ErrorLogger {
      * @readonly
      * @description The internal storage unit for each error or error message
     */
-    public readonly Log = new Collection<Date, string | Error>();
+    public Log = new Collection<Date, string | Error>();
+
+    public constructor(...base: ErrorLogger[]) {
+        base.forEach(logger => 
+            this.Log = this.Log.concat(logger.Log));
+    }
 
     /**
      * @public
@@ -27,7 +32,7 @@ export class ErrorLogger {
      * @alias this.Log.clear()
     */
     public ClearLog() {
-        this.Log.clear();
+        this.Log = new Collection<Date, string | Error>();
     }
 
     /**

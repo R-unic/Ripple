@@ -1,6 +1,8 @@
 import { Command } from "discord-akairo";
 import { Message } from "discord.js";
-import Ripple from "../../Client";
+import { ErrorLogger } from "../../Components/ErrorLogger";
+import { EventErrorLogger } from "../../Events";import Ripple from "../../Client";
+
 
 export default class extends Command<Ripple> {
     public constructor() {
@@ -13,15 +15,16 @@ export default class extends Command<Ripple> {
     }
 
     public async exec(msg: Message) {
+        const logger = new ErrorLogger(this.client.Logger.ErrorLogger, EventErrorLogger);
         let log: string = "";
-        this.client.Logger.Collection
+        logger.Log
             .forEach((err, date) => log += 
                 `(${typeof err === "string"? err : err.message}) - (${date.toLocaleDateString()} | ${date.toLocaleTimeString()})\n`
             );
 
         return msg.reply(
             this.client.Embed("Error Logs")
-                .setDescription(log === "" ? "Nothing logged yet." : log.slice(0, 1020))
+                .setDescription(log === "" ? "Nothing logged yet." : log.slice(0, 1023))
         );
     }
 }
