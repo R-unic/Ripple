@@ -8,28 +8,26 @@ export default class extends Command<Ripple> {
         const name = "reputation";
         super(name, {
             aliases: [name, "rep", "addrep", "giverep"],
-            cooldown: 3600,
+            cooldown: 3600e3,
             description: {
                 content: "Adds a reputation point to the given user.",
                 usage: "<@member>"
             },
-            args: [
-                Arg("member", "member"),
-            ],
+            args: [ Arg("user", "member") ]
         });
     }
 
-    public async exec(msg: Message, { member }: { member: GuildMember }) {
-        if (member === msg.member)
+    public async exec(msg: Message, { user }: { user: GuildMember }) {
+        if (user === msg.member)
             return this.client.Logger.InvalidArgError(msg, "You cannot give a reputation point to yourself.");
 
-        if (member.user.bot)
+        if (user.user.bot)
             return this.client.Logger.InvalidArgError(msg, "You cannot give a reputation point to a bot.");
 
-        return this.client.Reputation.Increment(member)
+        return this.client.Reputation.Increment(user)
             .then(async () => msg.reply(
                 this.client.Success()
-                    .setDescription(`Successfully added a reputation point to ${member}. They now have ${await this.client.Reputation.Get(member)} reputation.`)  
+                    .setDescription(`Successfully added a reputation point to ${user}. They now have ${await this.client.Reputation.Get(user)} reputation.`)  
             ));
     }
 }

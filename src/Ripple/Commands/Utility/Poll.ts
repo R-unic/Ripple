@@ -8,7 +8,7 @@ export default class extends Command<Ripple> {
         const name = "poll";
         super(name, {
             aliases: [name, "newpoll"],
-            cooldown: 5,
+            cooldown: 5e3,
             description: {
                 content: "Returns a poll with 2 reactions.",
                 usage: '<"pollQuestion">'

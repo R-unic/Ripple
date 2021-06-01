@@ -1,6 +1,6 @@
 import { Command } from "discord-akairo";
 import { GuildMember, Message } from "discord.js";
-import { Arg } from "../../Util";
+import { Arg, CommaNumber, RomanNumeral } from "../../Util";
 import Ripple from "../../Client";
 import ms from "ms";
 
@@ -9,7 +9,7 @@ export default class extends Command<Ripple> {
         const name = "profile";
         super(name, {
             aliases: [name, "socialprofile", "stats"],
-            cooldown: 3,
+            cooldown: 3e3,
             description: {
                 content: "Gets a user's or your own profile.",
                 usage: "<@member?>"
@@ -28,16 +28,20 @@ export default class extends Command<Ripple> {
             const xp = await this.client.Stats.GetXP(member);
             const untilNext = await this.client.Stats.XPUntilNextLevel(member);
             const rep = await this.client.Reputation.Get(member);
-            
-            return msg.channel.send(
-                this.client.Embed(`${member.user.tag}'s Profile`)
-                    .setThumbnail(member.user.avatarURL({ dynamic: true }))
-                    .addField("Prestige", prestige, true)
-                    .addField("Level", level, true)
-                    .addField("Experience", xp, true)
-                    .addField("XP Until Next Level", untilNext, true)
-                    .addField("Reputation", rep, true)
-            );
+
+            try {
+                return msg.channel.send(
+                    this.client.Embed(`${member.user.tag}'s Profile`)
+                        .setThumbnail(member.user.avatarURL({ dynamic: true }))
+                        .addField("Prestige", prestige === 0 ? prestige : RomanNumeral(prestige), true)
+                        .addField("Level", (prestige !== 0 ? `${RomanNumeral(prestige)}-` : "") + (level === 100 ? `${level} (max)` : level), true)
+                        .addField("Experience", level === 100 ? "MAX" : CommaNumber(xp), true)
+                        .addField("XP Until Next Level", level === 100 ? "MAX" : CommaNumber(untilNext), true)
+                        .addField("Reputation", rep, true)
+                );
+            } catch (err) {
+                return this.client.Logger.UtilError(msg);
+            }
         }, ms(".5s"));
     }
 }

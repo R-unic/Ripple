@@ -9,6 +9,7 @@ export default class extends Command<Ripple> {
         const name = "lyrics";
         super(name, {
             aliases: [name, "songlyrics"],
+            cooldown: 3e3,
             description: {
                 content: "Returns the lyrics to a song.",
                 usage: '<"song">' 

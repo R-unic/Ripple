@@ -1,6 +1,6 @@
 import { Command } from "discord-akairo";
 import { GuildMember, Message } from "discord.js";
-import { Arg, Random } from "../../Util";
+import { Arg, RandomElement } from "../../Util";
 import Ripple from "../../Client";
 
 export default class extends Command<Ripple> {
@@ -31,7 +31,7 @@ export default class extends Command<Ripple> {
     }
 
     private GenerateInsult() {
-        return `${Random(start)} ${Random(middle)} ${Random(end)}`
+        return `${RandomElement(start)} ${RandomElement(middle)} ${RandomElement(end)}`
     }
 }
 

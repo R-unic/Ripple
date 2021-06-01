@@ -10,7 +10,7 @@ export default class extends Command<Ripple> {
             aliases: [name, "setjoinrole", "autorole", "joinrole"],
             userPermissions: "MANAGE_ROLES",
             clientPermissions: "MANAGE_ROLES",
-            cooldown: 3,
+            cooldown: 3e3,
             description: {
                 content: "Sets a role to be assigned upon a user joining.",
                 usage: "<@role?>"

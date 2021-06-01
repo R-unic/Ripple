@@ -9,6 +9,7 @@ export default class extends Command<Ripple> {
         const name = "shortenurl";
         super(name, {
             aliases: [name, "urlshorten", "shortenlink"],
+            cooldown: 5e3,
             description: {
                 content: "Shortens the provided URL via shrtco.de",
                 usage: '<"url">',

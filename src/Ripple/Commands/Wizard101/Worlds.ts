@@ -8,6 +8,7 @@ export default class extends Command<Ripple> {
         const name = "worlds";
         super(name, {
             aliases: [name, "wizard101worlds", "wizworlds", "worldlist"],
+            cooldown: 2e3,
             description: "Returns a list of worlds in Wizard101."
         });
     }

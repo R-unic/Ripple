@@ -9,7 +9,7 @@ export default class extends Command<Ripple> {
         super(name, {
             aliases: [name, "directmsg", "privmsg", "pm", "dm"],
             userPermissions: "MANAGE_GUILD",
-            cooldown: 10,
+            cooldown: 10e3,
             description: {
                 content: "Sends a DM to a member as Ripple.",
                 usage: '<@member> <"content">'

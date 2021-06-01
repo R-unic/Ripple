@@ -1,6 +1,6 @@
 import { Command } from "discord-akairo";
 import { Message } from "discord.js";
-import { Random } from "../../Util";
+import { RandomElement } from "../../Util";
 import Ripple from "../../Client";
 import fetch from "node-fetch";
 
@@ -26,7 +26,7 @@ export default class extends Command<Ripple> {
                 }[]
             }
         }>().then(res => {
-            const meme = Random(res.data.children).data;
+            const meme = RandomElement(res.data.children).data;
             return msg.reply(
                 this.client.Embed()
                     .setTitle('😂 Random Meme 😂')

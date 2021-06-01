@@ -24,6 +24,10 @@ export class RippleLogger {
         this.errorLogger.ClearLog();
     }
 
+    public UtilError(msg: Message, errorMsg?: string): Promise<Message> {
+        return this.Error(msg, `Util Error: ${errorMsg?? "There was a problem with an internal utility function."}`);
+    }
+
     public NoPremiumError(msg: Message): Promise<Message> {
         return this.Error(msg, `This command is Premium-only! If you would like to purchase Ripple Premium, visit [here](${this.client.DonateLink}). Only a one-time payment of USD$10!`);
     }
@@ -33,7 +37,7 @@ export class RippleLogger {
     }
 
     public InvalidArgError(msg: Message, errorMsg: string): Promise<Message> {
-        return this.Error(msg, `Invalid Argument: ${errorMsg}`);
+        return this.Error(msg, `Invalid Argument Error: ${errorMsg}`);
     }
 
     public APIError(msg: Message, errorMsg?: string): Promise<Message> {
@@ -45,7 +49,7 @@ export class RippleLogger {
     }
 
     public MissingArgError(msg: Message, argName: string): Promise<Message> {
-        return this.Error(msg, `Missing required argument: "${argName}"`);
+        return this.Error(msg, `Missing required argument error: "${argName}"`);
     }
 
     private async Error(msg: Message, errorMsg: string, log: boolean = true): Promise<Message> {

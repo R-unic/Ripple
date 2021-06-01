@@ -1,6 +1,6 @@
 import { Command } from "discord-akairo";
 import { Message, MessageReaction, User } from "discord.js";
-import { Random, SecondsToMS } from "../../Util";
+import { RandomElement, SecondsToMS } from "../../Util";
 import Ripple from "../../Client";
 
 export default class extends Command<Ripple> {
@@ -18,7 +18,7 @@ export default class extends Command<Ripple> {
 
         msg.reply(embed)
             .then(game => this.PromptMessage(game, msg.author, 30, choose))
-            .then(({ reacted, game }) => this.GetResult(reacted, Random(choose), game))
+            .then(({ reacted, game }) => this.GetResult(reacted, RandomElement(choose), game))
             .then(({ result, botChoice, meChoice, game }) => {
                 game.reactions.removeAll().catch(() => msg.reply("Failed to remove reactions."));
                 embed

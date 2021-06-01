@@ -9,6 +9,7 @@ export default class extends Command<Ripple> {
         super(name, {
             aliases: [name, "delgiveaway", "deletega", "delga"],
             userPermissions: "MANAGE_CHANNELS",
+            cooldown: 3e3,
             description: {
                 content: "Deletes a giveaway via message ID.",
                 usage: '<messageID>',

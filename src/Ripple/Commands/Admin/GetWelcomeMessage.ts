@@ -9,7 +9,7 @@ export default class extends Command<Ripple> {
             aliases: [name, "currentwelcomemessage", "currentwelcomemsg", "getwelcomemsg",  "getautowelcome"],
             userPermissions: "MANAGE_GUILD",
             clientPermissions: "MANAGE_GUILD",
-            cooldown: 3,
+            cooldown: 3e3,
             description: "Returns the welcome message said when a user joins the server.",
         });
     }

@@ -10,7 +10,7 @@ export default class extends Command<Ripple> {
             aliases: [name, "setserverprefix", "serverprefix", "prefix"],
             userPermissions: "MANAGE_GUILD",
             clientPermissions: "MANAGE_GUILD",
-            cooldown: 3,
+            cooldown: 3e3,
             description: {
                 content: "Sets the bot prefix for the server executed in.",
                 usage: "<newPrefix?>"

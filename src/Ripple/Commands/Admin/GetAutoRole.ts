@@ -8,7 +8,7 @@ export default class extends Command<Ripple> {
         const name = "getautorole";
         super(name, {
             aliases: [name, "currentjoinrole", "currentautorole", "getjoinrole"],
-            cooldown: 2,
+            cooldown: 3e3,
             description: "Returns the role applied to a user when they join."
         });
     }

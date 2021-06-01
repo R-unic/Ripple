@@ -10,6 +10,7 @@ export default class extends Command<Ripple> {
         super(name, {
             aliases: [name, "newgiveaway", "startgiveaway", "ga"],
             userPermissions: "MANAGE_CHANNELS",
+            cooldown: 10e3,
             description: {
                 content: "Starts a new giveaway.",
                 usage: '<"prize"> <time> <winnerAmount?> <channel?>',

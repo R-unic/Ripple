@@ -2,7 +2,7 @@ import { GuildMember } from "discord.js";
 import { GuildMemberDataManager } from "../Base/GuildMemberDataManager";
 import Ripple from "../../../Client";
 
-interface Stats {
+export interface Stats {
     Prestige: number,
     Level: number,
     XP: number
@@ -11,6 +11,7 @@ interface Stats {
 export class LevelManager implements GuildMemberDataManager<Stats> {
     public Tag = "stats";
     public MaxLevel = 100;
+    public MaxPrestige = 25;
 
     public constructor(
         public readonly Client: Ripple
@@ -30,6 +31,8 @@ export class LevelManager implements GuildMemberDataManager<Stats> {
 
     public async AddPrestige(user: GuildMember, amount: number = 1): Promise<boolean> {
         const prestige: number = await this.GetPrestige(user);
+        if (prestige > this.MaxPrestige) return;
+
         await this.SetLevel(user, 1);
         await this.SetXP(user, 0)
         return this.SetPrestige(user, prestige + amount);
@@ -57,12 +60,16 @@ export class LevelManager implements GuildMemberDataManager<Stats> {
     }
 
     public async SetPrestige(user: GuildMember, prestige: number): Promise<boolean> {
+        if (prestige > this.MaxPrestige) return;
+        
         const stats: Stats = await this.Get(user);
         stats.Prestige = prestige;
         return this.Set(user, stats);
     }
 
     public async SetLevel(user: GuildMember, level: number): Promise<boolean> {
+        if (level > this.MaxLevel) return;
+        
         const stats: Stats = await this.Get(user);
         stats.Level = level;
         return this.Set(user, stats);

@@ -1,6 +1,6 @@
 import { ClientEvents, GuildMember, Message } from "discord.js";
 import { log } from "console";
-import { Channel, User } from "./Util";
+import { Channel, RomanNumeral, User } from "./Util";
 import { ErrorLogger } from "./Components/ErrorLogger";
 import Ripple from "./Client";
 
@@ -53,12 +53,13 @@ export const Events = new Map<keyof ClientEvents, Function>([
         const level: number = await client.Stats.GetLevel(member);
         
         await client.Stats.AddXP(member, xpGain);
-        const lvlAfterXPAdd = await client.Stats.GetLevel(member);
-
+        const lvlAfterXPAdd: number = await client.Stats.GetLevel(member);
+        const prestige: number = await client.Stats.GetPrestige(member);
+        
         if (level !== lvlAfterXPAdd)
             return msg.reply(
                 client.Embed(`Congratulations, ${member.user.tag}!`)
-                    .setDescription(`You leveled up! You are now level \`${lvlAfterXPAdd}\`.`)
+                    .setDescription(`You leveled up! You are now level \`${(prestige !== 0 ? RomanNumeral(prestige) + "-" : "") + lvlAfterXPAdd}\`.`)
             );
     }]
 ]);

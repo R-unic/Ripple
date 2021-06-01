@@ -1,6 +1,6 @@
 import { Command } from "discord-akairo";
 import { Message } from "discord.js";
-import { Random } from "../../Util";
+import { RandomElement } from "../../Util";
 import Ripple from "../../Client";
 
 export default class extends Command<Ripple> {
@@ -42,7 +42,7 @@ export default class extends Command<Ripple> {
         return msg.channel.send(
             this.client.Embed()
                 .setTitle("🎱 Magic 8-Ball 🎱")
-                .setDescription(Random(answers))
+                .setDescription(RandomElement(answers))
         );
     }
 }
