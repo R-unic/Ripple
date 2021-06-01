@@ -18,22 +18,27 @@ export class LevelManager implements GuildMemberDataManager<Stats> {
 
     public async XPUntilNextLevel(user: GuildMember): Promise<number> {
         const level: number = await this.GetLevel(user);
-        return 200 + Math.round(((1.1 ^ level) * (300 / (level / 2))) * 10);
+        const prestige: number = await this.GetPrestige(user);
+        return 500 + ((((8 * level) ^ 1.5) / ((prestige + 1) ^ .5)) * 9);
     }
 
     public async XPGain(user: GuildMember): Promise<number> {
         const level: number = await this.GetLevel(user);
-        return 50 + Math.round(Math.random() * (level ^ 1.25) * 7);
+        const prestige: number = await this.GetPrestige(user);
+        return Math.round(50 + Math.random() * (50 + (level ^ 1.25) * 7 * ((prestige + 1) ^ .45)));
     }
 
     public async AddPrestige(user: GuildMember, amount: number = 1): Promise<boolean> {
         const prestige: number = await this.GetPrestige(user);
+        await this.SetLevel(user, 1);
+        await this.SetXP(user, 0)
         return this.SetPrestige(user, prestige + amount);
     }
 
     public async AddLevel(user: GuildMember, amount: number = 1): Promise<boolean> {
         const level: number = await this.GetLevel(user);
-        return this.SetLevel(user, level + amount);
+        await this.SetLevel(user, level + amount);
+        return this.SetXP(user, 0);
     }
 
     public async AddXP(user: GuildMember, amount: number): Promise<boolean | undefined> {
@@ -43,12 +48,9 @@ export class LevelManager implements GuildMemberDataManager<Stats> {
         if (level === this.MaxLevel) return;
 
         if (xp >= untilNext) {
-            const remainder = Math.min(xp - untilNext, 0);
-            const p = this.AddLevel(user);
-            if (remainder > 0)
-                return this.AddXP(user, Math.round(remainder));
-            else
-                return p;
+            const diff = xp - untilNext;
+            await this.AddLevel(user, 1);
+            return this.AddXP(user, diff);
         }
 
         return this.SetXP(user, xp + amount);

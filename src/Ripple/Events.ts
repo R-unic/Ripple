@@ -1,5 +1,5 @@
 import { ClientEvents, GuildMember, Message } from "discord.js";
-import { error, log } from "console";
+import { log } from "console";
 import { Channel, User } from "./Util";
 import { ErrorLogger } from "./Components/ErrorLogger";
 import Ripple from "./Client";
@@ -48,17 +48,16 @@ export const Events = new Map<keyof ClientEvents, Function>([
             });
     }],
     ["message", async (client: Ripple, msg: Message) => {
-        const user: GuildMember = msg.member;
-        const xpGain: number = await client.Stats.XPGain(user);
-        const level: number = await client.Stats.GetLevel(user);
-        await client.Stats.AddXP(user, xpGain);
-        const lvlAfterXPAdd = await client.Stats.GetLevel(user);
-
-        log(`added ${xpGain} xp, now level ${lvlAfterXPAdd}`);
+        const member: GuildMember = msg.member;
+        const xpGain: number = await client.Stats.XPGain(member);
+        const level: number = await client.Stats.GetLevel(member);
+        
+        await client.Stats.AddXP(member, xpGain);
+        const lvlAfterXPAdd = await client.Stats.GetLevel(member);
 
         if (level !== lvlAfterXPAdd)
             return msg.reply(
-                client.Embed(user.toString())
+                client.Embed(`Congratulations, ${member.user.tag}!`)
                     .setDescription(`You leveled up! You are now level \`${lvlAfterXPAdd}\`.`)
             );
     }]

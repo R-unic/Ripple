@@ -1,7 +1,6 @@
 import { Command } from "discord-akairo";
 import { Message } from "discord.js";
-import { Arg } from "../../Util";
-import Wizard101 from "../../APIWrappers/Wizard101";
+import { Wizard101 } from "../../APIWrappers/Wizard101";
 import Ripple from "../../Client";
 
 export default class extends Command<Ripple> {
