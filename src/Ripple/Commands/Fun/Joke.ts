@@ -1,9 +1,7 @@
-import { Command } from "discord-akairo";
+import { APICommand } from "../../Components/CommandClasses/APICommand";
 import { Message } from "discord.js";
-import Ripple from "../../Client";
-import fetch from "node-fetch";
 
-export default class extends Command<Ripple> {
+export default class extends APICommand {
     public constructor() {
         const name = "joke";
         super(name, {
@@ -13,20 +11,20 @@ export default class extends Command<Ripple> {
     }
 
     public async exec(msg: Message) {
-        return this.RequestAPI()
-            .then((res: { category: string, joke: string, didError: boolean }) => {
-                if(res.didError)
-                    this.client.Logger.APIError(msg, "Please try again momentarily. This could be an API error.");
+        return this.RequestAPI<{ 
+            category: string, 
+            joke: string, 
+            didError: boolean 
+        }>(msg, "https://v2.jokeapi.dev/joke/Any?blacklistFlags=political,racist,sexist&type=single")
+            .then(({ category, joke, didError }) => {
+                if(didError)
+                    this.client.Logger.APIError(msg);
 
-                return this.client.Embed("Random Joke")
-                        .setAuthor(res.category)
-                        .setDescription(res.joke);
-            }).then(msg.reply);
-    }
-        
-
-    private async RequestAPI(): Promise<any> {
-        return fetch("https://v2.jokeapi.dev/joke/Any?blacklistFlags=political,racist,sexist&type=single")
-            .then(response => response.json());
+                return msg.reply(
+                    this.client.Embed("😂 Random Joke 😂")
+                        .setAuthor(category)
+                        .setDescription(joke)
+                );
+            });
     }
 }

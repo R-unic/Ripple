@@ -1,9 +1,7 @@
-import { Command } from "discord-akairo";
+import { APICommand } from "../../Components/CommandClasses/APICommand";
 import { Message } from "discord.js";
-import Ripple from "../../Client";
-import fetch from "node-fetch";
 
-export default class extends Command<Ripple> {
+export default class extends APICommand {
     public constructor() {
         const name = "quote";
         super(name, {
@@ -17,17 +15,13 @@ export default class extends Command<Ripple> {
             tags: string[], 
             content: string, 
             author: string 
-        }>().then(res =>  msg.reply(
-                this.client.Embed()
-                    .setTitle('📢 Random Quote 📢')
-                    .setAuthor(res.author)
-                    .setDescription(`${res.content}\nTags: ${res.tags}`)
-            )
-        ).catch(() => this.client.Logger.APIError(msg, "Please try again momentarily. This could be an API error."));
-    }
-
-    private async RequestAPI<ResponseType>(): Promise<ResponseType> {
-        return fetch("http://api.quotable.io/random")
-            .then(response => response.json())
+        }>(msg, "http://api.quotable.io/random")
+            .then(res =>  msg.reply(
+                    this.client.Embed()
+                        .setTitle('📢 Random Quote 📢')
+                        .setAuthor(res.author)
+                        .setDescription(`${res.content}\nTags: ${res.tags}`)
+                )
+            ).catch(err => this.client.Logger.APIError(msg, err));
     }
 }

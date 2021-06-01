@@ -41,11 +41,11 @@ export class RippleLogger {
     }
 
     public APIError(msg: Message, errorMsg?: string): Promise<Message> {
-        return this.Error(msg, `API Error: ${errorMsg ?? "There was an error with the API."}`);
+        return this.Error(msg, `API Error: ${errorMsg?? "Please try again momentarily. This could be an API error."}`);
     }
 
     public DatabaseError(msg: Message, errorMsg?: string): Promise<Message> {
-        return this.Error(msg, `Database Error: ${errorMsg ?? "There was an error with the database."}`);
+        return this.Error(msg, `Database Error: ${errorMsg?? "There was an error with the database."}`);
     }
 
     public MissingArgError(msg: Message, argName: string): Promise<Message> {

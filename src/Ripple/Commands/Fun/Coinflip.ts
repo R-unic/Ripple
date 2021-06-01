@@ -6,7 +6,7 @@ export default class extends Command<Ripple> {
     public constructor() {
         const name = "coinflip";
         super(name, {
-            aliases: [name, "flipcoin", "headsortails"],
+            aliases: [name, "flipcoin", "headsortails", "flip"],
             description: "Returns either 'Heads' or 'Tails'."
         });
     }
