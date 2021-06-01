@@ -10,7 +10,7 @@ export default class extends Command<Ripple> {
             aliases: [name, "permbanish", "permban", "banish"],
             userPermissions: "BAN_MEMBERS",
             clientPermissions: "BAN_MEMBERS",
-            cooldown: 5,
+            cooldown: 5e3,
             description: {
                 content: "Banishes a member from the server permanently.",
                 usage: "<@member> <reason?>"

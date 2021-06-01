@@ -10,7 +10,7 @@ export default class extends Command<Ripple> {
             aliases: [name, "bulkdel", "bulkdelete", "nuke", "clear", "prune"],
             userPermissions: "MANAGE_MESSAGES",
             clientPermissions: "MANAGE_MESSAGES",
-            cooldown: 10,
+            cooldown: 4e3,
             description: {
                 content: "Deletes a number of messages at once.",
                 usage: "<numberOfMessages>"

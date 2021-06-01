@@ -10,7 +10,7 @@ export default class extends Command<Ripple> {
             aliases: [name, "deleterole", "delrole", "unrole", "unrank", "demote"],
             userPermissions: "MANAGE_ROLES",
             clientPermissions: "MANAGE_ROLES",
-            cooldown: 5,
+            cooldown: 5e3,
             description: {
                 content: "Removes a role from a member.",
                 usage: "<@member> <@role>"

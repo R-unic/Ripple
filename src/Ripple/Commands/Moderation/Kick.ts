@@ -10,7 +10,7 @@ export default class extends Command<Ripple> {
             aliases: [name, "purgemember", "purgeuser"],
             userPermissions: "KICK_MEMBERS",
             clientPermissions: "KICK_MEMBERS",
-            cooldown: 5,
+            cooldown: 5e3,
             description: {
                 content: "Kicks a member from the server.",
                 usage: "<@member> <reason?>"

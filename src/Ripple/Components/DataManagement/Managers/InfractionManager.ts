@@ -2,17 +2,17 @@ import { GuildMember } from "discord.js";
 import { GuildMemberDataManager } from "../Base/GuildMemberDataManager";
 import Ripple from "../../../Client";
 
-export interface Infraction {
-    Issuer: GuildMember,
-    Recipient: GuildMember,
-    Reason: string,
-    Timestamp: Date
+export class Infraction {
+    public constructor(
+        public Issuer: GuildMember,
+        public Recipient: GuildMember,
+        public Reason: string,
+        public Timestamp: Date
+    ) {}
 }
 
 export class InfractionManager implements GuildMemberDataManager<Infraction[]> {
     public Tag = "infractions";
-    public MaxLevel = 100;
-    public MaxPrestige = 25;
 
     public constructor(
         public readonly Client: Ripple

@@ -26,6 +26,7 @@ import { pkg } from "../CommandLine/RippleCLI";
 import { readdirSync } from "fs";
 import { env } from "process";
 import * as db from "quick.db";
+import { InfractionManager } from "./Components/DataManagement/Managers/InfractionManager";
 
 
 /**
@@ -34,6 +35,7 @@ import * as db from "quick.db";
 */
 export default class Ripple extends AkairoClient {
     public readonly Logger = new RippleLogger(this);
+    public readonly Donations = new DonationAPI(this, env.DONATE_BOT_API);
     public readonly Giveaways = new GiveawaysManager(this, Options.GiveawayManager);
     public readonly Reputation = new ReputationManager(this);
     public readonly Prefix = new PrefixManager(this);
@@ -41,7 +43,7 @@ export default class Ripple extends AkairoClient {
     public readonly AutoRole = new AutoRoleManager(this);
     public readonly Premium = new PremiumManager(this);
     public readonly Stats = new LevelManager(this);
-    public readonly Donations = new DonationAPI(this, env.DONATE_BOT_API);
+    public readonly Infractions = new InfractionManager(this);
     public readonly Wizard101 = Wizard101;
     public readonly Package: Package = pkg;
     public readonly Version = `v${this.Package.version}`;
