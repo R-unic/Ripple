@@ -28,7 +28,7 @@ export default class extends Command<Ripple> {
         if (!content)
             return this.client.Logger.MissingArgError(msg, "content");
 
-        return this.client.Notes.Add(msg.member, new Note(title, content, new Date(Date.now())))
+        return this.client.Notes.Add(msg.author, new Note(title, content, new Date(Date.now())))
             .then(() => msg.reply(
                 this.client.Success(`Successfully created a new note with title "${title}".`)
             ));

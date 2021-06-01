@@ -21,7 +21,7 @@ export default class extends Command<Ripple> {
         if (!title)
             return this.client.Logger.MissingArgError(msg, "title");
 
-        return this.client.Notes.Remove(msg.member, title)
+        return this.client.Notes.Remove(msg.author, title)
             .then(() => msg.reply(
                 this.client.Success(`Successfully removed note titled "${title}"`)
             ));

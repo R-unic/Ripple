@@ -1,6 +1,7 @@
 import { GuildMember } from "discord.js";
-import { GuildMemberDataManager } from "../Base/GuildMemberDataManager";
+import { UserDataManager } from "../Base/UserDataManager";
 import Ripple from "../../../Client";
+import { User } from "discord.js";
 
 export class Note {
     public constructor(
@@ -10,35 +11,35 @@ export class Note {
     ) {}
 }
 
-export class NotesManager implements GuildMemberDataManager<Note[]> {
+export class NotesManager implements UserDataManager<Note[]> {
     public Tag = "notes";
 
     public constructor(
         public readonly Client: Ripple
     ) {}
 
-    public async Find(user: GuildMember, title: string): Promise<Note[]> {
+    public async Find(user: User, title: string): Promise<Note[]> {
         const notes = await this.Get(user);
         return notes.filter(note => note.Title === title);
     }
 
-    public async Remove(user: GuildMember, title: string): Promise<boolean> {
+    public async Remove(user: User, title: string): Promise<boolean> {
         const notes: Note[] = await this.Find(user, title);
         notes.splice(0, notes.length);
         return this.Set(user, notes);
     }
 
-    public async Add(user: GuildMember, note: Note): Promise<boolean> {
+    public async Add(user: User, note: Note): Promise<boolean> {
         const notes = await this.Get(user);
         notes.push(note);
         return this.Set(user, notes)
     }
 
-    public async Get(user: GuildMember): Promise<Note[]> {
-        return this.Client.Get(user, this.Tag, [], user.id);
+    public async Get(user: User): Promise<Note[]> {
+        return this.Client.GetForUser(user, this.Tag, []);
     }
 
-    public async Set(user: GuildMember, notes: Note[]): Promise<boolean> {
-        return this.Client.Set(user, this.Tag, notes, user.id);
+    public async Set(user: User, notes: Note[]): Promise<boolean> {
+        return this.Client.SetForUser(user, this.Tag, notes);
     }
 }
