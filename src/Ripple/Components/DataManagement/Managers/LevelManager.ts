@@ -10,24 +10,48 @@ interface Stats {
 
 export class LevelManager implements GuildMemberDataManager<Stats> {
     public Tag = "stats";
+    public MaxLevel = 100;
 
     public constructor(
         public readonly Client: Ripple
     ) {}
 
-    public async AddPrestige(user: GuildMember, amount: number = 1): Promise<boolean> {
-        const prestige = await this.GetPrestige(user);
-        return this.SetLevel(user, prestige + amount);
+    public async XPUntilNextLevel(user: GuildMember): Promise<number> {
+        const level: number = await this.GetLevel(user);
+        return 200 + Math.round(((1.1 ^ level) * (300 / (level / 2))) * 10);
     }
 
-    public async AddLevels(user: GuildMember, amount: number = 1): Promise<boolean> {
-        const level = await this.GetLevel(user);
+    public async XPGain(user: GuildMember): Promise<number> {
+        const level: number = await this.GetLevel(user);
+        return 50 + Math.round(Math.random() * (level ^ 1.25) * 7);
+    }
+
+    public async AddPrestige(user: GuildMember, amount: number = 1): Promise<boolean> {
+        const prestige: number = await this.GetPrestige(user);
+        return this.SetPrestige(user, prestige + amount);
+    }
+
+    public async AddLevel(user: GuildMember, amount: number = 1): Promise<boolean> {
+        const level: number = await this.GetLevel(user);
         return this.SetLevel(user, level + amount);
     }
 
-    public async AddXP(user: GuildMember, amount: number): Promise<boolean> {
-        const xp = await this.GetXP(user);
-        return this.SetLevel(user, xp + amount);
+    public async AddXP(user: GuildMember, amount: number): Promise<boolean | undefined> {
+        const xp: number = await this.GetXP(user);
+        const level: number = await this.GetLevel(user);
+        const untilNext: number = await this.XPUntilNextLevel(user);
+        if (level === this.MaxLevel) return;
+
+        if (xp >= untilNext) {
+            const remainder = Math.min(xp - untilNext, 0);
+            const p = this.AddLevel(user);
+            if (remainder > 0)
+                return this.AddXP(user, Math.round(remainder));
+            else
+                return p;
+        }
+
+        return this.SetXP(user, xp + amount);
     }
 
     public async SetPrestige(user: GuildMember, prestige: number): Promise<boolean> {

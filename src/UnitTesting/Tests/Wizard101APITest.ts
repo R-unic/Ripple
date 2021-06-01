@@ -1,6 +1,6 @@
 import { Assert } from "../API/Assert";
 import { Test } from "../API/Test";
-import Wizard101 from "../../Ripple/APIWrappers/Wizard101";
+import { Wizard101 } from "../../Ripple/APIWrappers/Wizard101";
 
 export default class Wizard101APITest implements Test {
     public Run() {

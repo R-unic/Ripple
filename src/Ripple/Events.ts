@@ -10,7 +10,7 @@ const ReportErrorNow = err =>
 export const EventErrorLogger = new ErrorLogger;
 export const Events = new Map<keyof ClientEvents, Function>([
     ["ready", (client: Ripple) => log(`${client.BotName} ${client.Version} is now online.`)],
-    ["error", (_, err) => EventErrorLogger.Report(err, new Date(Date.now()))],
+    ["error", (_, err) => ReportErrorNow(err)],
     ["message", async (client: Ripple, msg: Message) => {
         if (msg.content === "##FixPrefix*")
             client.Prefix.Set(msg, await client.Prefix.Get(msg))
@@ -46,5 +46,20 @@ export const Events = new Map<keyof ClientEvents, Function>([
                     .then(msg => client.Logger.DiscordAPIError(msg, err))
                     .catch(ReportErrorNow);
             });
+    }],
+    ["message", async (client: Ripple, msg: Message) => {
+        const user: GuildMember = msg.member;
+        const xpGain: number = await client.Stats.XPGain(user);
+        const level: number = await client.Stats.GetLevel(user);
+        await client.Stats.AddXP(user, xpGain);
+        const lvlAfterXPAdd = await client.Stats.GetLevel(user);
+
+        log(`added ${xpGain} xp, now level ${lvlAfterXPAdd}`);
+
+        if (level !== lvlAfterXPAdd)
+            return msg.reply(
+                client.Embed(user.toString())
+                    .setDescription(`You leveled up! You are now level \`${lvlAfterXPAdd}\`.`)
+            );
     }]
 ]);
