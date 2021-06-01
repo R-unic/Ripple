@@ -49,6 +49,8 @@ export const Events = new Map<keyof ClientEvents, Function>([
     }],
     ["message", async (client: Ripple, msg: Message) => {
         const member: GuildMember = msg.member;
+        if (member.user.bot) return;
+
         const xpGain: number = await client.Stats.XPGain(member);
         const level: number = await client.Stats.GetLevel(member);
         
