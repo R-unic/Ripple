@@ -27,20 +27,22 @@ export default class extends Command<Ripple> {
             return this.client.Logger.MissingArgError(msg, "member");
 
         if (member.user.bot)
-            return this.client.Logger.InvalidArgError(msg, "Cannot warn a bot.");
+            return this.client.Logger.InvalidArgError(msg, "You cannot warn a bot.");
+
+        // if (member === msg.member)
+        //     return this.client.Logger.InvalidArgError(msg, "You cannot warn yourself.");
 
         return this.client.Infractions.Add(member, new Infraction(
             msg.member,
             member,
-            reason?? "No reason provided.",
-            msg.createdAt
+            reason?? "No reason provided."
         )).then(async () => {
             const infractions = await this.client.Infractions.Get(member);
             const infractionAmount = infractions.length;
             const lastWarning = infractionAmount === 4;
 
             if (lastWarning)
-                await member.kick(reason);
+                await member.kick(reason).catch(err => this.client.Logger.DiscordAPIError(msg, err));
 
             return msg.reply(
                 this.client.Success(
@@ -48,10 +50,10 @@ export default class extends Command<Ripple> {
                     `Successfully kicked \`${member.user.tag}\`. This was their last infraction.`
                     :`Successfully warned \`${member.user.tag}\`. This is infraction number \`${infractionAmount}\`.`
                 )
-            ).then(() => lastWarning? 
-                this.client.Infractions.Set(member, undefined)
+            ).then(async () => lastWarning? 
+                await this.client.Infractions.Set(member, undefined)
                 :void 0
-            );
+            ).catch(err => this.client.Logger.UtilError(msg, err));
         });
     }
 }

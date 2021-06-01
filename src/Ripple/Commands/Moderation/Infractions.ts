@@ -9,13 +9,12 @@ export default class extends Command<Ripple> {
         const name = "infractions";
         super(name, {
             aliases: [name, "warnings"],
-            userPermissions: "MANAGE_MESSAGES",
             cooldown: 3e3,
             description: {
                 content: "Returns a list of a member's infractions.",
-                usage: "<@member>"
+                usage: "<@member?>"
             },
-            args: [ Arg("member", "member") ]
+            args: [ Arg("member", "member", msg => msg.member) ]
         });
     }
 
@@ -27,12 +26,19 @@ export default class extends Command<Ripple> {
             return this.client.Logger.InvalidArgError(msg, "Bots do not receive infractions.");
 
         const infractions: Infraction[] = await this.client.Infractions.Get(member);
-        const embed: MessageEmbed = this.client.Embed(`${member.user.username}'s Infractions`)
+        const embed: MessageEmbed = this.client.Embed(`${member.displayName}'s Infractions`)
             .setThumbnail(member.user.avatarURL({ dynamic: true }));
 
-        for (const infraction of infractions)
-            embed.addField(`Issued by ${infraction.Issuer.user.username} at ${infraction.Timestamp.toLocaleTimeString()}`, infraction.Reason);
-
+        if (!infractions || infractions.length === 0)
+            embed.setDescription(`${member.displayName} has no infractions.`);
+        else
+            for (const infraction of infractions)
+                embed.addField(
+                    `Issued by \`@${infraction?.Issuer.displayName}\``, 
+                    `For: ${infraction.Reason}`,
+                    true
+                );
+                
         return msg.reply(embed);
     }
 }

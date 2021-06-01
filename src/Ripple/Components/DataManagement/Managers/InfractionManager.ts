@@ -6,8 +6,7 @@ export class Infraction {
     public constructor(
         public Issuer: GuildMember,
         public Recipient: GuildMember,
-        public Reason: string,
-        public Timestamp: Date
+        public Reason: string
     ) {}
 }
 
