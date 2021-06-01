@@ -29,13 +29,8 @@ If you liked this repository, please [leave a star](https://github.com/AlphaRuni
 
 ## Features
 
-<<<<<<< HEAD
-Ripple is a small bot currently, but has 60+ commands. Ripple also supports quoted arguments. This means that if you want a string with spaces in it to be treated as one argument while executing a command, you may surround it in quotation marks.  
+Ripple is a small bot currently, but has 70+ commands. Ripple also supports quoted arguments. This means that if you want a string with spaces in it to be treated as one argument while executing a command, you may surround it in quotation marks.  
 Here's an example: `::giveaway "Discord Nitro" 2d`
-=======
-Ripple is a small bot currently, but has 50+ commands. Ripple also supports quoted arguments. This means that if you want a string with spaces in it to be treated as one argument while executing a command, you may surround it in quotation marks.  
-Here's an example: `::say "hello, world!"`
->>>>>>> e0336fa2946e7ee869fed0310ce437299cbdbe23
 
 ## Installation
 
