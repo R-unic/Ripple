@@ -8,6 +8,7 @@ export default class extends Command<Ripple> {
         const name = "poll";
         super(name, {
             aliases: [name, "newpoll"],
+            userPermissions: "MANAGE_GUILD",
             cooldown: 5e3,
             description: {
                 content: "Returns a poll with 2 reactions.",
@@ -23,13 +24,11 @@ export default class extends Command<Ripple> {
 
         return msg.reply(
             this.client.Embed()
-                .setTitle("Poll")
+                .setTitle("📈 Poll 📈")
                 .setDescription(pollQuestion + "?")
-        )
-            .then(sent => {
-                sent.react("👍");
-                return sent;
-            })
-            .then(sent => sent.react("👎"));
+        ).then(sent => {
+            sent.react("👍");
+            return sent;
+        }).then(sent => sent.react("👎"));  
     }
 }
