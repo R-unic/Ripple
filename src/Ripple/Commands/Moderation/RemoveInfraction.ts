@@ -32,7 +32,7 @@ export default class extends Command<Ripple> {
         if (member.user.bot)
             return this.client.Logger.InvalidArgError(msg, "Bots do not receive infractions.");
 
-        const infraction = await this.client.Infractions.Find(member, warningNumber - 1);
+        const infraction = await this.client.Infractions.Find(member, warningNumber);
         if (!infraction)
             return this.client.Logger.InvalidArgError(msg, `Could not find infraction with index \`${warningNumber}\`.`);
 

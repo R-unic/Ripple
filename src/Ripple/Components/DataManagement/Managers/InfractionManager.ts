@@ -19,7 +19,7 @@ export class InfractionManager implements GuildMemberDataManager<Infraction[]> {
 
     public async Find(user: GuildMember, index: number): Promise<Infraction> {
         const infractions: Infraction[] = await this.Get(user);
-        return infractions[index];
+        return infractions[index - 1];
     }
 
     public async Remove(user: GuildMember, infraction: Infraction): Promise<boolean> {

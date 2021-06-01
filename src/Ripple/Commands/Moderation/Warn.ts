@@ -8,7 +8,7 @@ export default class extends Command<Ripple> {
     public constructor() {
         const name = "warn";
         super(name, {
-            aliases: [name, "addinfraction", "addwarning", "infraction"],
+            aliases: [name, "addinfraction", "addwarning", "newinfraction", "newwarning"],
             userPermissions: "MANAGE_MESSAGES",
             cooldown: 5e3,
             description: {
