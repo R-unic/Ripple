@@ -27,6 +27,7 @@ import { readdirSync } from "fs";
 import { env } from "process";
 import * as db from "quick.db";
 import { InfractionManager } from "./Components/DataManagement/Managers/InfractionManager";
+import { NotesManager } from "./Components/DataManagement/Managers/NotesManager";
 
 
 /**
@@ -44,6 +45,7 @@ export default class Ripple extends AkairoClient {
     public readonly Premium = new PremiumManager(this);
     public readonly Stats = new LevelManager(this);
     public readonly Infractions = new InfractionManager(this);
+    public readonly Notes = new NotesManager(this);
     public readonly Wizard101 = Wizard101;
     public readonly Package: Package = pkg;
     public readonly Version = `v${this.Package.version}`;
@@ -54,6 +56,7 @@ export default class Ripple extends AkairoClient {
     public BotName: string;
 
     private readonly commandHandler = new CommandHandler<Ripple>(this, Options.CommandHandler);
+    
 
     public constructor(
         public readonly DefaultPrefix: string = "::",

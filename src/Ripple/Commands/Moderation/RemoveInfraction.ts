@@ -38,7 +38,7 @@ export default class extends Command<Ripple> {
 
         return this.client.Infractions.Remove(member, infraction)
             .then(() => msg.reply(
-                this.client.Success(`Successfully removed infraction issued by ${infraction.Issuer.displayName}.`)
+                this.client.Success(`Successfully removed infraction issued by \`@${infraction.Issuer.displayName}.\``)
             ));
     }
 }
