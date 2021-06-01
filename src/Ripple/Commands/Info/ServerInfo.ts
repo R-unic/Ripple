@@ -8,7 +8,7 @@ export default class extends Command<Ripple> {
         const name = "serverinfo";
         super(name, {
             aliases: [name, "guildinfo", "aboutserver"],
-            description: "Returns the amount of members in the guild executed in."
+            description: "Returns information about the server executed in."
         });
     }
 
