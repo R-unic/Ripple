@@ -23,7 +23,7 @@ export default class extends Command<Ripple> {
             return this.client.Logger.InvalidArgError(msg, "Bots do not have profiles.");
 
         setTimeout(async () => {
-            const prestige = await this.client.Stats.GetPrestige(member);
+            const prestige = await this.client.Stats.GetPrestige(member)
             const level = await this.client.Stats.GetLevel(member);
             const xp = await this.client.Stats.GetXP(member);
             const untilNext = await this.client.Stats.XPUntilNextLevel(member);
@@ -38,6 +38,7 @@ export default class extends Command<Ripple> {
                         .addField("Experience", level === 100 ? "MAX" : CommaNumber(xp), true)
                         .addField("XP Until Next Level", level === 100 ? "MAX" : CommaNumber(untilNext), true)
                         .addField("Reputation", rep, true)
+                        .addField("Ripple Premium", (await this.client.Premium.Get(member.user)) ? "Yes" : "No")
                 );
             } catch (err) {
                 return this.client.Logger.UtilError(msg);

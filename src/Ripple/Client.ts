@@ -55,7 +55,6 @@ export default class Ripple extends AkairoClient {
     public BotName: string;
 
     private readonly commandHandler = new CommandHandler<Ripple>(this, Options.CommandHandler);
-    
 
     public constructor(
         public readonly DefaultPrefix: string = "::",
@@ -77,7 +76,7 @@ export default class Ripple extends AkairoClient {
      * @param token
      */
     public async Login(token?: string): Promise<string> {
-        const p = super.login(token ?? env.LOGIN_TOKEN)
+        const p = super.login(token?? env.LOGIN_TOKEN)
             .then(res => {
                 this.UpdatePresence();
                 return res;
