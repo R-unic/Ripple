@@ -1,6 +1,6 @@
 import { GuildMember } from "discord.js";
-import { UserDataManager } from "../Base/UserDataManager";
-import Ripple from "../../../Client";
+import { UserDataManager } from "../../Base/UserDataManager";
+import Ripple from "../../../../Client";
 import { User } from "discord.js";
 
 export class Note {

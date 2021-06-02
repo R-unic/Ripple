@@ -1,6 +1,6 @@
 import { GuildMember } from "discord.js";
-import { GuildMemberDataManager } from "../Base/GuildMemberDataManager";
-import Ripple from "../../../Client";
+import { GuildMemberDataManager } from "../../Base/GuildMemberDataManager";
+import Ripple from "../../../../Client";
 
 export interface Stats {
     Prestige: number,

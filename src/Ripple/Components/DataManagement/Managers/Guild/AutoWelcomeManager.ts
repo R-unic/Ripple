@@ -1,6 +1,6 @@
-import { GuildObject } from "../../../Util";
-import { GuildDataManager } from "../Base/GuildDataManager";
-import Ripple from "../../../Client";
+import { GuildObject } from "../../../../Util";
+import { GuildDataManager } from "../../Base/GuildDataManager";
+import Ripple from "../../../../Client";
 
 export class AutoWelcomeManager implements GuildDataManager<string> {
     public Tag = "welcomemsg";

@@ -9,7 +9,9 @@ import {
 import { 
     AutoRoleManager,
     AutoWelcomeManager,
+    InfractionManager,
     LevelManager,
+    NotesManager,
     PrefixManager,
     PremiumManager,
     ReputationManager
@@ -26,9 +28,6 @@ import { pkg } from "../CommandLine/RippleCLI";
 import { readdirSync } from "fs";
 import { env } from "process";
 import * as db from "quick.db";
-import { InfractionManager } from "./Components/DataManagement/Managers/InfractionManager";
-import { NotesManager } from "./Components/DataManagement/Managers/NotesManager";
-
 
 /**
  * @extends AkairoClient

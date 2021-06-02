@@ -1,7 +1,7 @@
 import { Command } from "discord-akairo";
 import { GuildMember, Message } from "discord.js";
 import { Arg } from "../../Util";
-import { Infraction } from "../../Components/DataManagement/Managers/InfractionManager";
+import { Infraction } from "../../Components/DataManagement/Managers/GuildMember/InfractionManager";
 import Ripple from "../../Client";
 
 export default class extends Command<Ripple> {
