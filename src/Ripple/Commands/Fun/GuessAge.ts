@@ -22,6 +22,9 @@ export default class extends APICommand {
         if (!name)
             return this.client.Logger.MissingArgError(msg, "name");
 
+        if (!countryCode)
+            return this.client.Logger.MissingArgError(msg, "countryCode");
+
         return this.RequestAPI<{ 
             name: string;
             gender: string | null;
