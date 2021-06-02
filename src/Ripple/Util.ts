@@ -95,6 +95,8 @@ export const RomanNumeral = (original: number): string => {
 export const CommaNumber = (x: number) =>
     Math.round(x).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 
+export const Last = <T = any>(arr: T[]) => arr[arr.length - 1];
+
 export class Pair<T> {
     public constructor(
         public First: T,
