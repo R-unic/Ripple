@@ -7,7 +7,7 @@ export default class extends Command<Ripple> {
     public constructor() {
         const name = "userinfo";
         super(name, {
-            aliases: [name, "memberinfo"],
+            aliases: [name, "memberinfo", "whois", "identify"],
             description: {
                 content: "Returns information about the user provided, or yourself.",
                 usage: "<@member?>"
