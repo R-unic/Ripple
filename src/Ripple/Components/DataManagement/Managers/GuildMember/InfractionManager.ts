@@ -17,6 +17,13 @@ export class InfractionManager implements GuildMemberDataManager<Infraction[]> {
         public readonly Client: Ripple
     ) {}
 
+    public async Clear(user: GuildMember): Promise<number> {
+        const infractions: Infraction[] = await this.Get(user);
+        const amountCleared = infractions.length;
+        await this.Set(user, []);
+        return amountCleared;
+    }
+
     public async Find(user: GuildMember, index: number): Promise<Infraction> {
         const infractions: Infraction[] = await this.Get(user);
         return infractions[index - 1];

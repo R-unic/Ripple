@@ -7,7 +7,7 @@ export default class extends Command<Ripple> {
     public constructor() {
         const name = "about";
         super(name, {
-            aliases: [name, "rippleinfo", "aboutripple", "botinfo"],
+            aliases: [name, "rippleinfo", "aboutripple", "botinfo", "info"],
             description: "Returns information about Ripple."
         });
     }
