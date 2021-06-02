@@ -20,7 +20,9 @@ import { AkairoClient, CommandHandler } from "discord-akairo";
 import { GiveawaysManager } from "discord-giveaways";
 import { RippleLogger } from "./Components/Logger";
 import { DonationAPI } from "./APIWrappers/Donation";
-import { Wizard101 } from "./APIWrappers/Wizard101";import { GuildObject } from "./Util";
+import { IconFinderAPI } from "./APIWrappers/IconFinder";
+import { Wizard101 } from "./APIWrappers/Wizard101";
+import { GuildObject } from "./Util";
 import { Options } from "./Options";
 import { Package } from "./Package";
 import { Events } from "./Events";
@@ -36,6 +38,7 @@ import * as db from "quick.db";
 export default class Ripple extends AkairoClient {
     public readonly Logger = new RippleLogger(this);
     public readonly Donations = new DonationAPI(this, env.DONATE_BOT_API);
+    public readonly IconFinder = new IconFinderAPI(env.ICONFINDER_API);
     public readonly Giveaways = new GiveawaysManager(this, Options.GiveawayManager);
     public readonly Reputation = new ReputationManager(this);
     public readonly Prefix = new PrefixManager(this);
@@ -51,7 +54,7 @@ export default class Ripple extends AkairoClient {
     public readonly InviteLink = "https://bit.ly/2SjjB3d";
     public readonly GitHubRepo = "https://github.com/AlphaRunic/Ripple";
     public readonly Website = "https://alpharunic.github.io/Ripple";
-    public readonly DonateLink = "https://donatebot.io/checkout/846604279288168468"
+    public readonly DonateLink = "https://donatebot.io/checkout/846604279288168468";
     public BotName: string;
 
     private readonly commandHandler = new CommandHandler<Ripple>(this, Options.CommandHandler);

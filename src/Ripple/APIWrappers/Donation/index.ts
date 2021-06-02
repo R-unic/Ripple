@@ -1,54 +1,15 @@
 import { log } from "console";
 import { User } from "discord.js";
 import { HeadersInit } from "node-fetch";
+import { EndpointType } from "./EndpointType";
+import { Endpoint } from "./Endpoint";
+import { Donation } from "./Donation";
+import { NewDonationRes } from "./NewDonationRes";
+import { ProcessTransactionErrorRes } from "./ProcessTransactionErrorRes";
 import { Request } from "../Request";
 import { StripISO } from "../../Util";
 import Ripple from "../../Client";
 import ms from "ms";
-
-export enum EndpointType {
-    NewDonation,
-    ProcessTransaction
-}
-
-class Endpoint {
-    public static readonly BaseURL = "https://donatebot.io/api/v1/donations/846604279288168468";
-
-    public constructor(
-        public Path: string,
-        public Type: EndpointType
-    ) {}
-
-    public URL(txnID?: string): string {
-        const path = this.Path;
-        if (path.includes("{txnID}"))
-            if (!txnID)
-                log("No transaction ID found when attempting to get ProcessTransaction endpoint URL");
-            else
-                path.replace(/{txnID}/, txnID);
-
-        return `${Endpoint.BaseURL}/${path}`;
-    }
-}
-
-interface Donation {
-    txn_id: string;
-    status: "Completed" | "Refunded" | "Reversed";
-    buyer_email: string;
-    buyer_id: string;
-    recurring: boolean;
-    price: string;
-    currency: string;
-    timestamp: string;
-}
-
-interface NewDonationRes {
-    donations: readonly Donation[];
-}
-
-interface ProcessTransactionErrorRes {
-    Error?: string;
-}
 
 export class DonationAPI {
     private newDonation = new Endpoint("new", EndpointType.NewDonation);
@@ -63,7 +24,7 @@ export class DonationAPI {
         setTimeout(async () => await this.StartTransactionsLoop(), ms("5m"));
 
         const headers: HeadersInit = {
-            "Authorization": this.apiKey
+            Authorization: this.apiKey
         };
 
         const { donations } = await Request<NewDonationRes>(this.newDonation.URL(), headers);
