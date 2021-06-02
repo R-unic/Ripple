@@ -19,7 +19,7 @@ export default class extends Command<Ripple> {
     public async exec(msg: Message, { member  }: { member: GuildMember }) {
         return msg.reply(
             this.client.Embed()
-                .setTitle(`${member.displayName}'s Avatar`)
+                .setTitle(`\`${member.user.tag}\`'s Avatar`)
                 .setImage(member.user.displayAvatarURL({ dynamic: true }))
         );
     }

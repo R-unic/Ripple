@@ -12,6 +12,9 @@ export default class extends Command<Ripple> {
     }
 
     public async exec(msg: Message) {
-        return msg.channel.send(`This server has ${msg.guild.memberCount} members.`);
+        return msg.reply(
+            this.client.Embed("Member Count")
+                .setDescription(`\`${msg.guild.name}\` has \`${msg.guild.memberCount}\` members.`)
+        );
     }
 }
