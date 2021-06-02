@@ -22,7 +22,8 @@ export default class extends APICommand {
         return this.RequestAPI<{ 
             name: string;
             gender: string | null;
-            probability: number
+            probability: number;
+            error?: string;
         }>(msg, "https://api.genderize.io?name=" + encodeURIComponent(name))
             .then(({ name, gender, probability }) => msg.reply(
                     this.client.Embed()
