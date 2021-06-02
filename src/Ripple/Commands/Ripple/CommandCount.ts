@@ -12,6 +12,8 @@ export default class extends Command<Ripple> {
     }
 
     public async exec(msg: Message) {
-        return msg.channel.send(`Ripple has ${this.client.CommandCount} commands implemented.`);
+        return msg.reply(
+            this.client.Embed(`Ripple has \`${this.client.CommandCount}\` commands implemented.`)
+        );
     }
 }
