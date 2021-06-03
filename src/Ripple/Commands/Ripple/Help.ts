@@ -31,7 +31,7 @@ export default class extends Command<Ripple> {
             .setDescription(typeof command.description === "string" ? command.description : command.description.content);
 
         if (clientPermissions)
-            embed.addField("Required Bot Permissions", clientPermissions, true);
+            embed.addField("Required Bot Permissions:", clientPermissions, true);
         if (userPermissions)
             embed.addField("Required User Permissions:", userPermissions, true);
         if (command.aliases.length > 1)

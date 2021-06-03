@@ -15,7 +15,8 @@ import {
     NotesManager,
     PrefixManager,
     PremiumManager,
-    ReputationManager
+    ReputationManager,
+    WelcomeChannelManager
 } from "./Components/DataManagement";
 import { AkairoClient, CommandHandler } from "discord-akairo";
 import { GiveawaysManager } from "discord-giveaways";
@@ -50,6 +51,7 @@ export default class Ripple extends AkairoClient {
     public readonly Infractions = new InfractionManager(this);
     public readonly Notes = new NotesManager(this);
     public readonly LevelUpChannel = new LevelUpChannelManager(this);
+    public readonly WelcomeChannel = new WelcomeChannelManager(this);
     public readonly Wizard101 = Wizard101;
     public readonly Package: Package = pkg;
     public readonly Version = `v${this.Package.version}`;

@@ -23,8 +23,10 @@ export const Events = new Map<keyof ClientEvents, Function>([
             return client.UpdatePresence();
         
         const welcomeMsg = await client.WelcomeMessage.Get(member, undefined);
+        const welcomeChannelID = await client.WelcomeChannel.Get(member);
+        const welcomeChannel = client.channels.resolve(welcomeChannelID) as TextChannel;
         if (welcomeMsg != undefined)
-            member.guild.systemChannel.send(
+            welcomeChannel.send(
                 client.Embed(member.guild.name)
                     .setThumbnail(member.guild.iconURL({ dynamic: true }))
                     .setDescription(
@@ -34,14 +36,14 @@ export const Events = new Map<keyof ClientEvents, Function>([
                             .replace(/{server.memberCount}/, member.guild.memberCount.toString())
                             .replace(/{server.rulesChannel}/, Channel(member.guild.rulesChannelID))
                     )
-            ).catch(ReportErrorNow);
+            );
 
         return client.AutoRole.Get(member)
             .then(roleID => member.guild.roles.resolve(roleID))
             .then(role => role ? member.roles.add(role) : undefined)
             .catch(async err => {
                 ReportErrorNow(err);
-                member.guild.systemChannel.send("Error!")
+                welcomeChannel.send("Error!")
                     .then(msg => msg.delete())
                     .then(msg => client.Logger.DiscordAPIError(msg, err))
                     .catch(ReportErrorNow);

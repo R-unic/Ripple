@@ -7,7 +7,7 @@ export default class extends Command<Ripple> {
     public constructor() {
         const name = "avatar";
         super(name, {
-            aliases: [name, "pfp", "profilepic", "useravatar"],
+            aliases: [name, "pfp", "profilepic", "useravatar", "av"],
             description: {
                 content: "Returns a user's avatar or your own.",
                 usage: "<@user?>"
