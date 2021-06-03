@@ -22,7 +22,7 @@ import { RippleLogger } from "./Components/Logger";
 import { DonationAPI } from "./APIWrappers/Donation";
 import { IconFinderAPI } from "./APIWrappers/IconFinder";
 import { Wizard101 } from "./APIWrappers/Wizard101";
-import { GuildObject } from "./Util";
+import { GuildObject, QuoteEmbed } from "./Util";
 import { Options } from "./Options";
 import { Package } from "./Package";
 import { Events } from "./Events";
@@ -170,6 +170,14 @@ export default class Ripple extends AkairoClient {
         return this.Embed("Success! ✅")
             .setColor("#10EB00")
             .setDescription(description?? "");
+    }
+
+    public QuoteEmbed(title?: string): QuoteEmbed {
+        return new QuoteEmbed()
+            .setTitle(title?? "")
+            .setColor("RANDOM")
+            .setFooter(`${this.BotName} ${this.Version}`, this.user.displayAvatarURL({ dynamic: true }))
+            .setTimestamp();
     }
 
     public Embed(title?: string): MessageEmbed {

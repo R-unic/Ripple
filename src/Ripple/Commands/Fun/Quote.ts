@@ -17,10 +17,8 @@ export default class extends APICommand {
             author: string 
         }>(msg, "http://api.quotable.io/random")
             .then(res =>  msg.reply(
-                    this.client.Embed()
-                        .setTitle('📢 Random Quote 📢')
-                        .setAuthor(res.author)
-                        .setDescription(`${res.content}\nTags: ${res.tags}`)
+                    this.client.QuoteEmbed("📢 Random Quote 📢")
+                        .setQuote(res.content, res.author)
                 )
             ).catch(err => this.client.Logger.APIError(msg, err));
     }

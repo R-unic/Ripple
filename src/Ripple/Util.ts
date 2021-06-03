@@ -6,7 +6,8 @@ import {
 } from "discord-akairo";
 import { 
     GuildMember, 
-    Message 
+    Message, 
+    MessageEmbed
 } from "discord.js";
 
 export const Hyperlink = (url: string, text?: string): string =>
@@ -96,6 +97,12 @@ export const CommaNumber = (x: number) =>
     Math.round(x).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 
 export const Last = <T = any>(arr: T[]) => arr[arr.length - 1];
+
+export class QuoteEmbed extends MessageEmbed {
+    public setQuote(content: string, author?: string) {
+        return this.setDescription(`*"${content}"* -${author}`);
+    }
+}
 
 export class Pair<T> {
     public constructor(
