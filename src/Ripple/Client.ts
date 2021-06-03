@@ -11,6 +11,7 @@ import {
     AutoWelcomeManager,
     InfractionManager,
     LevelManager,
+    LevelUpChannelManager,
     NotesManager,
     PrefixManager,
     PremiumManager,
@@ -48,6 +49,7 @@ export default class Ripple extends AkairoClient {
     public readonly Stats = new LevelManager(this);
     public readonly Infractions = new InfractionManager(this);
     public readonly Notes = new NotesManager(this);
+    public readonly LevelUpChannel = new LevelUpChannelManager(this);
     public readonly Wizard101 = Wizard101;
     public readonly Package: Package = pkg;
     public readonly Version = `v${this.Package.version}`;

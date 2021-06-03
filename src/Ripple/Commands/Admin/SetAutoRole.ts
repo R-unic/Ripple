@@ -21,20 +21,15 @@ export default class extends Command<Ripple> {
 
     public async exec(msg: Message, { role }: { role: Role }) {
         if (!role) {
-            await this.client.Set(msg, "autorole", null);
+            await this.client.AutoRole.Set(msg, undefined)
             return msg.reply(
-                this.client.Success()
-                    .setDescription(`Successfully disabled autorole.`)
+                this.client.Success("Successfully disabled autorole.")
             );
         }
 
-        return this.client.Set(msg, "autorole", role.id)
-            .then(success => {
-                if (success)
-                    return msg.reply(
-                        this.client.Success()
-                            .setDescription(`Successfully set autorole to ${role}.`)
-                    );
-            }).catch(err => this.client.Logger.DatabaseError(msg, err));
+        return this.client.AutoRole.Set(msg, role.id)
+            .then(() => msg.reply(
+                this.client.Success(`Successfully set autorole to ${role}.`)
+            )).catch(err => this.client.Logger.DatabaseError(msg, err));
     }
 }

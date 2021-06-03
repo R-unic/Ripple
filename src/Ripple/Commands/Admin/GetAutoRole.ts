@@ -15,6 +15,9 @@ export default class extends Command<Ripple> {
 
     public async exec(msg: Message) {
         const roleID = await this.client.AutoRole.Get(msg);
-        return msg.reply(`The current role set for autorole is: ${roleID ? Role(roleID) : "None"}`);
+        return msg.reply(
+            this.client.Embed("Autorole")
+                .setDescription(`The current role set for autorole is: ${roleID ? Role(roleID) : "None"}`)
+        );
     }
 }

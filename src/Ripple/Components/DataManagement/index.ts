@@ -6,12 +6,14 @@ import { PremiumManager } from "./Managers/User/PremiumManager";
 import { LevelManager } from "./Managers/GuildMember/LevelManager";
 import { NotesManager } from "./Managers/User/NotesManager";
 import { InfractionManager } from "./Managers/GuildMember/InfractionManager";
+import { LevelUpChannelManager } from "./Managers/Guild/LevelUpChannelManager";
 
 export {
     AutoRoleManager,
     AutoWelcomeManager,
     InfractionManager,
     LevelManager,
+    LevelUpChannelManager,
     NotesManager,
     PrefixManager,
     PremiumManager,
