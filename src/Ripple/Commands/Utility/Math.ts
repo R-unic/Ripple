@@ -25,9 +25,9 @@ export default class extends APICommand {
     public constructor() {
         const name = "math";
         super(name, {
-            aliases: [name, "arithmetic", "mathhelp", "solvemath"],
+            aliases: [name, "arithmetic", "mathhelp", "solvemath", "mathsolver"],
             description: {
-                content: "Returns the result of a math operation. Use 'pi' to refer to Pi. Run `::math operations` for a list of valid operations.",
+                content: "Returns the result of a math operation. Use `pi` to refer to Pi. Run `::math operations` for a list of valid operations.",
                 usage: '<operation> <"expression">'
             },
             args: [ 

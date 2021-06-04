@@ -5,12 +5,12 @@ import Ripple from "../../Client";
 
 export default class extends Command<Ripple> {
     public constructor() {
-        const name = "areas";
+        const name = "worldinfo";
         super(name, {
-            aliases: [name, "areasinworld", "areain"],
+            aliases: [name, "aboutworld", "world"],
             description: {
-                content: "Returns the areas in a specified world in Wizard101.",
-                usage: "<world>",
+                content: "Returns information about the specified world in Wizard101.",
+                usage: '<"world">',
                 examples: ["kt", "ms", "dragonspyre"]
             },
             args: [ Arg("worldName", "lowercase") ]
@@ -25,11 +25,12 @@ export default class extends Command<Ripple> {
         if (!res.Success)
             return this.client.Logger.APIError(msg, res.Results.Message);
         else {   
-            const world = res.Results;   
-            const embed = this.client.Embed(`Areas in \`${world.Name}\``)
-                .setDescription(`__**There are \`${world.Areas.length}\` areas in \`${world.Name}\`:**__
-
-                ${world.Areas.join("\n")}`);
+            const world = res.Results;
+            const levels = world.LevelRange;
+            const embed = this.client.Embed(world.Name + ` (${world.Abbreviation.toUpperCase()})`)
+                .addField("Areas", world.Areas.length, true)
+                .addField("Quests", world.Quests, true)
+                .addField("Levels", `${levels.First}-${levels.Second}`, true)
 
             return msg.reply(embed);
         }

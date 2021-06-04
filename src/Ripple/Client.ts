@@ -20,10 +20,10 @@ import {
 } from "./Components/DataManagement";
 import { AkairoClient, CommandHandler } from "discord-akairo";
 import { GiveawaysManager } from "discord-giveaways";
+import { Wizard101 } from "wizard101-api";
 import { RippleLogger } from "./Components/Logger";
 import { DonationAPI } from "./APIWrappers/Donation";
 import { IconFinderAPI } from "./APIWrappers/IconFinder";
-import { Wizard101 } from "./APIWrappers/Wizard101";
 import { GuildObject, QuoteEmbed } from "./Util";
 import { Options } from "./Options";
 import { Package } from "./Package";

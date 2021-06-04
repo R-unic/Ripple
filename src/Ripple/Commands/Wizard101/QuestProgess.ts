@@ -1,7 +1,6 @@
 import { Command } from "discord-akairo";
 import { Message } from "discord.js";
 import { Arg } from "../../Util";
-import { Wizard101 } from "../../APIWrappers/Wizard101";
 import Ripple from "../../Client";
 
 export default class extends Command<Ripple> {
@@ -28,17 +27,22 @@ export default class extends Command<Ripple> {
         if (!quest)
             return this.client.Logger.MissingArgError(msg, "quest");
 
-        const world = Wizard101.GetWorld(worldName);
-        if (quest > world.Quests)
-            quest = world.Quests;
-        else if (quest <= 0)
-            quest = Math.abs(quest);
-        else if (quest < 1)
-            quest = 1;
+        const res = await this.client.Wizard101.GetWorld(worldName);
+        if (!res.Success)
+            return this.client.Logger.APIError(msg, res.Results.Message);
+        else {
+            const world = res.Results;
+            if (quest > world.Quests)
+                quest = world.Quests;
+            else if (quest <= 0)
+                quest = Math.abs(quest);
+            else if (quest < 1)
+                quest = 1;
 
-        const progress = world.Progress(quest);
-        return msg.reply(
-            this.client.Embed(`You are \`${progress}%\` through \`${world.Name}\`.`)
-        );
+            const progress = ((quest / world.Quests) * 100).toFixed(2);
+            return msg.reply(
+                this.client.Embed(`You are \`${progress}%\` through \`${world.Name}\`. You have \`${world.Quests - quest}\` quests left.`)
+            );
+        }
     }
 }

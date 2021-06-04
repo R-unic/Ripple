@@ -1,7 +1,7 @@
 import { Command } from "discord-akairo";
 import { TextChannel } from "discord.js";
 import { Message } from "discord.js";
-import { Arg } from "../../Util";
+import { Arg, ToTitleCase } from "../../Util";
 import Ripple from "../../Client";
 
 export default class extends Command<Ripple> {
@@ -11,38 +11,30 @@ export default class extends Command<Ripple> {
             aliases: [name, "cmds", "helpmenu", "helpme"],
             description: {
                 content: "DMs you a help menu.",
-                usage: "<commandName?>"
+                usage: "<commandCategory?>"
             },
-            args: [ Arg("command", "commandAlias") ]
+            args: [ Arg("commandCategory", "lowercase") ]
         });
     }
 
-    public async exec(msg: Message, { command }: { command: Command }) {
+    public async exec(msg: Message, { commandCategory }: { commandCategory: string }) {
         const prefix = await this.client.Prefix.Get(msg);
+        if (!commandCategory)
+            return this.DefaultHelpMenu(prefix, msg);
 
-        if (!command)
-            return this.defaultHelpMenu(prefix, msg);
+        const categories = this.handler.categories;
+        const category = categories.get(ToTitleCase(commandCategory));
+        if (!category)
+            return this.client.Logger.InvalidArgError(msg, `Category \`${commandCategory}\` does not exist.`);
 
-        const clientPermissions = command.clientPermissions as string[];
-        const userPermissions = command.userPermissions as string[];
-        const examples: string[] = command.description.examples;
-        const embed = this.client.Embed()
-            .setTitle(`${prefix}${command} ${command.description.usage ? command.description.usage : ""}`)
-            .setDescription(typeof command.description === "string" ? command.description : command.description.content);
-
-        if (clientPermissions)
-            embed.addField("Required Bot Permissions:", clientPermissions, true);
-        if (userPermissions)
-            embed.addField("Required User Permissions:", userPermissions, true);
-        if (command.aliases.length > 1)
-            embed.addField("Aliases", command.aliases.slice(1).map(a => `\`${a}\``).join(", "), true);
-        if (examples)
-            embed.addField("Examples", examples.map(e => `${prefix}${command} ${e}`).join("\n"), true);
+        const commands = category.array();
+        const embed = this.client.Embed(`Commands in \`${ToTitleCase(commandCategory)}\``)
+            .setDescription(commands.map(cmd => `\`${cmd.aliases[0]}\``).join(", "))
 
         return msg.reply(embed);
     }
 
-    public async defaultHelpMenu(prefix: string, msg: Message) {
+    private async DefaultHelpMenu(prefix: string, msg: Message) {
         const embed = this.client.Embed()
             .setTitle("Help Menu")
             .setDescription([
