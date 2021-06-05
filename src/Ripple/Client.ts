@@ -40,6 +40,7 @@ import * as db from "quick.db";
  * @description Ripple Discord client
 */
 export default class Ripple extends AkairoClient {
+    public readonly CommandHandler = new CommandHandler<Ripple>(this, Options.CommandHandler);
     public readonly Logger = new RippleLogger(this);
     public readonly Donations = new DonationAPI(this, env.DONATE_BOT_API);
     public readonly IconFinder = new IconFinderAPI(env.ICONFINDER_API);
@@ -63,9 +64,8 @@ export default class Ripple extends AkairoClient {
     public readonly GitHubRepo = "https://github.com/AlphaRunic/Ripple";
     public readonly Website = "https://alpharunic.github.io/Ripple";
     public readonly DonateLink = "https://donatebot.io/checkout/846604279288168468";
+    public CancelCommandLoop = false;
     public BotName: string;
-
-    private readonly commandHandler = new CommandHandler<Ripple>(this, Options.CommandHandler);
 
     public constructor(
         public readonly DefaultPrefix: string = "::",
@@ -205,8 +205,8 @@ export default class Ripple extends AkairoClient {
     }
 
     private LoadCommands() {
-        this.commandHandler.prefix = async msg => await this.Prefix.Get(msg);
-        this.commandHandler.loadAll();
+        this.CommandHandler.prefix = async msg => await this.Prefix.Get(msg);
+        this.CommandHandler.loadAll();
     }
 
     private HandleEvents(eventMap: Map<keyof ClientEvents, Function>) {
