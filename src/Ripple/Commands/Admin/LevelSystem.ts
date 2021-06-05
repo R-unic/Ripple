@@ -16,5 +16,8 @@ export default class extends Command<Ripple> {
         const previous: boolean = await this.client.LevelSystem.Get(msg);
         const systemEnabled = !previous;
         return this.client.LevelSystem.Set(msg, systemEnabled)
+            .then(() => msg.reply(
+                this.client.Success(`Successfully ${systemEnabled ? "enabled" : "disabled"} the level system for this server.`)
+            ));
     }
 }

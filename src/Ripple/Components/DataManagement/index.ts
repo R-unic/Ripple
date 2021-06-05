@@ -9,10 +9,12 @@ import { InfractionManager } from "./Managers/GuildMember/InfractionManager";
 import { LevelUpChannelManager } from "./Managers/Guild/LevelUpChannelManager";
 import { WelcomeChannelManager } from "./Managers/Guild/WelcomeChannelManager";
 import { LevelSystemManager } from "./Managers/Guild/LevelSystemManager";
+import { ChatReviveRoleManager } from "./Managers/Guild/ChatReviveRoleManager";
 
 export {
     AutoRoleManager,
     AutoWelcomeManager,
+    ChatReviveRoleManager,
     InfractionManager,
     LevelManager,
     LevelUpChannelManager,

@@ -9,6 +9,7 @@ import {
 import { 
     AutoRoleManager,
     AutoWelcomeManager,
+    ChatReviveRoleManager,
     InfractionManager,
     LevelManager,
     LevelUpChannelManager,
@@ -54,6 +55,7 @@ export default class Ripple extends AkairoClient {
     public readonly LevelUpChannel = new LevelUpChannelManager(this);
     public readonly WelcomeChannel = new WelcomeChannelManager(this);
     public readonly LevelSystem = new LevelSystemManager(this);
+    public readonly ChatReviveRole = new ChatReviveRoleManager(this);
     public readonly Wizard101 = Wizard101;
     public readonly Package: Package = pkg;
     public readonly Version = `v${this.Package.version}`;
