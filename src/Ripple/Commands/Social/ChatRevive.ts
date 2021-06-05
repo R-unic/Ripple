@@ -26,7 +26,7 @@ export default class extends Command<Ripple> {
         return msg.channel.send(Role(roleID))
             .then(() => msg.reply(
                 this.client.Embed("Chat Revive")
-                    .setAuthor(`Initiated by \`${msg.author.tag}\``)
+                    .setAuthor(`Initiated by ${msg.author.tag}`)
                     .setDescription(message)
             ));
     }
