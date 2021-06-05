@@ -8,6 +8,7 @@ import { NotesManager } from "./Managers/User/NotesManager";
 import { InfractionManager } from "./Managers/GuildMember/InfractionManager";
 import { LevelUpChannelManager } from "./Managers/Guild/LevelUpChannelManager";
 import { WelcomeChannelManager } from "./Managers/Guild/WelcomeChannelManager";
+import { LevelSystemManager } from "./Managers/Guild/LevelSystemManager";
 
 export {
     AutoRoleManager,
@@ -15,6 +16,7 @@ export {
     InfractionManager,
     LevelManager,
     LevelUpChannelManager,
+    LevelSystemManager,
     NotesManager,
     PrefixManager,
     PremiumManager,
