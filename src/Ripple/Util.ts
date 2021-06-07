@@ -8,6 +8,9 @@ import {
     GuildMember, 
     Message, 
     MessageEmbed,
+    TextChannel,
+    DMChannel,
+    NewsChannel,
     Role as DiscordRole
 } from "discord.js";
 
@@ -22,10 +25,10 @@ export const Role = (id: string) => `<@&${id}>`;
 
 export const Channel = (id: string) => `<#${id}>`;
 
-export const StripISO = (iso: (string | Date)): string =>
-    typeof iso === "string"? 
-        iso.slice(0, 10) 
-        :iso.toISOString().slice(0, 10);
+export const StripISO = (iso: string | Date, date: boolean = true): string =>
+    date? 
+        (iso as Date).toISOString().slice(0, 10)
+        :(iso as string).slice(0, 10);
 
 export const SecondsToMS = (sec: number): number => sec * 1000;
 
@@ -125,3 +128,8 @@ export type GuildObject =
     | Message 
     | GuildMember
     | DiscordRole;
+
+export type DiscordChannel = 
+    | TextChannel 
+    | DMChannel 
+    | NewsChannel;

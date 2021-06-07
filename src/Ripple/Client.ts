@@ -90,11 +90,9 @@ export default class Ripple extends AkairoClient {
      */
     public async Login(token?: string): Promise<string> {
         const p = super.login(token?? env.LOGIN_TOKEN)
-            .then(res => {
-                this.UpdatePresence();
-                return res;
-            }).then(res => {
+            .then(async res => {
                 this.BotName = this.user.username;
+                await this.UpdatePresence();
                 return res;
             });
 

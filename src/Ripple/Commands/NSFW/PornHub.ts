@@ -29,12 +29,12 @@ export default class extends PremiumCommand {
     }
 
     public async exec(msg: Message, { query }: { query: string }) {
-        if (!query)
-            return this.client.Logger.MissingArgError(msg, "query");
-
         const error = await this.DoesNotOwnPremium(msg);
         if (error)
             return error;
+            
+        if (!query)
+            return this.client.Logger.MissingArgError(msg, "query");
 
         return ph.search("Video", query)
             .then(({ data }: PornHubRes) => {

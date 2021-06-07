@@ -1,5 +1,6 @@
-import { GuildMember } from "discord.js";
+import { GuildMember, Message, TextChannel } from "discord.js";
 import { GuildMemberDataManager } from "../../Base/GuildMemberDataManager";
+import { DiscordChannel, RomanNumeral } from "../../../../Util";
 import Ripple from "../../../../Client";
 
 export interface Stats {
@@ -9,6 +10,41 @@ export interface Stats {
 }
 
 export class LevelManager implements GuildMemberDataManager<Stats> {
+    public async AddMessage(msg: Message) {
+        const member:GuildMember = msg.member;
+        const xpGain: number = await this.Client.Stats.XPGain(member);
+        const level: number = await this.Client.Stats.GetLevel(member);
+        const prefix: string = await this.Client.Prefix.Get(msg);
+        
+        await this.Client.Stats.AddXP(member, xpGain);
+        const lvlAfterXPAdd: number = await this.Client.Stats.GetLevel(member);
+        const prestige: number = await this.Client.Stats.GetPrestige(member);
+        msg.guild.roles.cache.forEach(async role => {
+            const prestigeMatch = await this.Client.PrestigeRoles.Get(role);
+            if (prestige === prestigeMatch)
+                await member.roles.add(role);
+        });
+
+        const channelID: string = await this.Client.LevelUpChannel.Get(msg);
+        const channel: DiscordChannel = 
+            channelID? 
+                this.Client.channels.resolve(channelID) as TextChannel
+                :msg.channel;
+        
+        if (level !== lvlAfterXPAdd) {
+            const embed = this.Client.Embed(`Congratulations, ${member.user.tag}!`)
+                .setDescription(`You leveled up! You are now level \`${(prestige !== 0 ? RomanNumeral(prestige) + "-" : "") + lvlAfterXPAdd}\`.` + 
+                    (level === 100?
+                    ` You can now prestige with \`${prefix}prestige\`.`
+                    :"")
+                );
+
+            return level === 100?
+                channel.send(`${member}`)
+                    .then(() => channel.send(embed))
+                :channel.send(embed);
+        }
+    }
     public Tag = "stats";
     public MaxLevel = 100;
     public MaxPrestige = 25;
