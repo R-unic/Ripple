@@ -10,6 +10,7 @@ import { LevelUpChannelManager } from "./Managers/Guild/LevelUpChannelManager";
 import { WelcomeChannelManager } from "./Managers/Guild/WelcomeChannelManager";
 import { LevelSystemManager } from "./Managers/Guild/LevelSystemManager";
 import { ChatReviveRoleManager } from "./Managers/Guild/ChatReviveRoleManager";
+import { PrestigeRoleManager } from "./Managers/GuildRole/PrestigeRoleManager";
 
 export {
     AutoRoleManager,
@@ -22,6 +23,7 @@ export {
     NotesManager,
     PrefixManager,
     PremiumManager,
+    PrestigeRoleManager,
     ReputationManager,
     WelcomeChannelManager
 }

@@ -16,8 +16,7 @@ export default class extends Command<Ripple> {
         return this.RequestAPI<string>()
             .then(fact => {
                 return msg.reply(
-                    this.client.Embed()
-                        .setTitle('Random Number Fact')
+                    this.client.Embed("Random Number Fact")
                         .setDescription(fact)
                 );
             }).catch(() => 

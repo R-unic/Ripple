@@ -20,7 +20,7 @@ export default class extends Command<Ripple> {
         const affinity = Math.round(Math.random() * 100);
 
         return msg.reply(
-            this.client.Embed("💖 Love Affinity 💖")
+            this.client.Embed("Love Affinity", "💖")
                 .setDescription(`${msg.member} is a ${affinity}% match for ${member}`)
                 .setColor("#FF00E1")
         );

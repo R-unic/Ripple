@@ -61,6 +61,11 @@ export const Events = new Map<keyof ClientEvents, Function>([
             await client.Stats.AddXP(member, xpGain);
             const lvlAfterXPAdd: number = await client.Stats.GetLevel(member);
             const prestige: number = await client.Stats.GetPrestige(member);
+            msg.guild.roles.cache.forEach(async role => {
+                const prestigeMatch = await client.PrestigeRoles.Get(role);
+                if (prestige === prestigeMatch)
+                    await member.roles.add(role);
+            });
 
             const channelID = await client.LevelUpChannel.Get(msg);
             const channel = channelID ? client.channels.resolve(channelID) as TextChannel : msg.channel;

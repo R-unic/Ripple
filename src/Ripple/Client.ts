@@ -17,6 +17,7 @@ import {
     NotesManager,
     PrefixManager,
     PremiumManager,
+    PrestigeRoleManager,
     ReputationManager,
     WelcomeChannelManager
 } from "./Components/DataManagement";
@@ -57,6 +58,7 @@ export default class Ripple extends AkairoClient {
     public readonly WelcomeChannel = new WelcomeChannelManager(this);
     public readonly LevelSystem = new LevelSystemManager(this);
     public readonly ChatReviveRole = new ChatReviveRoleManager(this);
+    public readonly PrestigeRoles = new PrestigeRoleManager(this);
     public readonly Wizard101 = Wizard101;
     public readonly Package: Package = pkg;
     public readonly Version = `v${this.Package.version}`;
@@ -175,22 +177,22 @@ export default class Ripple extends AkairoClient {
     }
 
     public Success(description?: string): MessageEmbed {
-        return this.Embed("Success! ✅")
+        return this.Embed("Success!", "✅")
             .setColor("#10EB00")
             .setDescription(description?? "");
     }
 
-    public QuoteEmbed(title?: string): QuoteEmbed {
+    public QuoteEmbed(title?: string, emoji?: string): QuoteEmbed {
         return new QuoteEmbed()
-            .setTitle(title?? "")
+            .setTitle(title ? (emoji ? `${emoji}  ${title}  ${emoji}` : title) : "")
             .setColor("RANDOM")
             .setFooter(`${this.BotName} ${this.Version}`, this.user.displayAvatarURL({ dynamic: true }))
             .setTimestamp();
     }
 
-    public Embed(title?: string): MessageEmbed {
+    public Embed(title?: string, emoji?: string): MessageEmbed {
         return new MessageEmbed()
-            .setTitle(title?? "")
+            .setTitle(title ? (emoji ? `${emoji}  ${title}  ${emoji}` : title) : "")
             .setColor("RANDOM")
             .setFooter(`${this.BotName} ${this.Version}`, this.user.displayAvatarURL({ dynamic: true }))
             .setTimestamp();

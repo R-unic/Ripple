@@ -7,7 +7,8 @@ import {
 import { 
     GuildMember, 
     Message, 
-    MessageEmbed
+    MessageEmbed,
+    Role as DiscordRole
 } from "discord.js";
 
 export const Hyperlink = (url: string, text?: string): string =>
@@ -119,4 +120,5 @@ export class Pair<T> {
 
 export type GuildObject = 
     | Message 
-    | GuildMember;
+    | GuildMember
+    | DiscordRole;
