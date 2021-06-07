@@ -28,7 +28,9 @@ export class DonationAPI {
         };
 
         const { donations } = await Request<NewDonationRes>(this.newDonation.URL(), headers);
+        log(donations)
         donations.forEach(async dn => {
+            log(dn)
             switch(dn.status) {
                 case "Completed": {
                     this.client.Premium.Set(await this.GetBuyer(dn.buyer_id), true)
@@ -77,6 +79,7 @@ export class DonationAPI {
     }
 
     private async GetBuyer(buyerID: string): Promise<User> {
+        log(buyerID)
         return await this.client.users.fetch(buyerID, true, true);
     }
 }

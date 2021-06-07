@@ -1,4 +1,5 @@
 import { CommandHandlerOptions } from "discord-akairo";
+import { GiveawaysManagerOptions } from "discord-giveaways";
 import { Message, PermissionResolvable } from "discord.js";
 
 export const Options = {
@@ -13,7 +14,7 @@ export const Options = {
             embedColorEnd: "#FF8800",
             reaction: "🎉"
         }
-    },
+    } as GiveawaysManagerOptions,
     CommandHandler: {
         automateCategories: true,
         directory: __dirname + "/Commands/",
