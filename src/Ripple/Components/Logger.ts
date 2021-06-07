@@ -24,7 +24,11 @@ export class RippleLogger {
         this.ErrorLogger.ClearLog();
     }
 
-    public LevelSystemError(msg: Message, errorMsg: string) {
+    public CouldNotBeExecuted(msg: Message, errorMsg: string): Promise<Message> {
+        return this.Error(msg, `Command Could Not Be Executed: ${errorMsg}`);
+    }
+
+    public LevelSystemError(msg: Message, errorMsg: string): Promise<Message> {
         return this.Error(msg, `Level System Error: ${errorMsg}`);
     }
 

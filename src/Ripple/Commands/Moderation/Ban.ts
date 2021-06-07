@@ -29,8 +29,8 @@ export default class extends Command<Ripple> {
         return member.ban({
             reason: reason
         }).then(bannedMember => msg.reply(
-            this.client.Success(`${bannedMember.user.tag} was successfully banned.`)
-                .addField("Reason", reason ?? "n/a")
+            this.client.Success(`${bannedMember} was successfully banned.`)
+                .addField("Reason", reason?? "n/a")
         )).catch(err => this.client.Logger.DiscordAPIError(msg, err));
     }
 }

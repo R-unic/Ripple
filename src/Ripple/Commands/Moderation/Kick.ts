@@ -28,8 +28,8 @@ export default class extends Command<Ripple> {
 
         return member.kick(reason)
             .then(kickedMember => msg.reply(
-                this.client.Success(`${kickedMember.user.tag} was successfully kicked.`)
-                    .addField("Reason", reason ?? "n/a")
+                this.client.Success(`${kickedMember} was successfully kicked.`)
+                    .addField("Reason", reason?? "n/a")
             )).catch(err => this.client.Logger.DiscordAPIError(msg, err));
     }
 }
