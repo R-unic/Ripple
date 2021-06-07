@@ -1,4 +1,4 @@
-import { APICommand } from "../../Components/CommandClasses/APICommand";
+import { PremiumCommand } from "../../Components/CommandClasses/PremiumCommand";
 import { Message } from "discord.js";
 import { Arg, RandomElement } from "../../Util";
 import PornHub = require("pornhub.js");
@@ -15,13 +15,13 @@ interface PornHubRes {
     }[];
 }
 
-export default class extends APICommand {
+export default class extends PremiumCommand {
     public constructor() {
         const name = "pornhub";
         super(name, {
             aliases: [name, "pornhubsearch", "phsearch", "ph"],
             description: {
-                content: "Returns a PornHub video based on your search query.",
+                content: "Returns a PornHub video based on your search query. (PREMIUM ONLY)",
                 usage: '<"query">'
             },
             args: [ Arg("query", "string") ]
@@ -31,6 +31,10 @@ export default class extends APICommand {
     public async exec(msg: Message, { query }: { query: string }) {
         if (!query)
             return this.client.Logger.MissingArgError(msg, "query");
+
+        const error = await this.DoesNotOwnPremium(msg);
+        if (error)
+            return error;
 
         return ph.search("Video", query)
             .then(({ data }: PornHubRes) => {
