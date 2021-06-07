@@ -40,8 +40,11 @@ export function Clamp(n: number, min: number, max: number): number {
 export const RandomInt = (x: number): number =>
     Math.round(Math.random() * x);
 
+export const RandomIntFloor = (x: number): number =>
+    Math.floor(Math.random() * x);
+
 export const RandomElement = <T = unknown>(a: T[]): T =>
-    a[RandomInt(a.length)];
+    a[RandomIntFloor(a.length)];
 
 export const Arg = (
     id: string, 
