@@ -30,6 +30,6 @@ export const Options = {
                 time: 30000,
                 timeout: (msg: Message) => `${msg.member}, command expired.`
             }
-        },
+        }
     } as CommandHandlerOptions
 }

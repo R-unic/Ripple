@@ -5,11 +5,11 @@ import Ripple from "../../Client";
 
 export default class extends Command<Ripple> {
     public constructor() {
-        const name = "loveaffinity";
+        const name = "howgay";
         super(name, {
-            aliases: [name, "love", "affinity"],
+            aliases: [name, "gaymeter", "gayometer", "gaydar", "gay"],
             description: {
-                content: "Returns the love affinity between you and another user, or a random user.",
+                content: "Returns how gay another user or a random user is.",
                 usage: "<@user?>"
             },
             args: [ Arg("member", "member", RandomUser) ]
@@ -17,12 +17,11 @@ export default class extends Command<Ripple> {
     }
 
     public async exec(msg: Message, { member }: { member: GuildMember }) {
-        const affinity = Math.round(Math.random() * 100);
+        const gayness = Math.round(Math.random() * 100);
 
         return msg.reply(
-            this.client.Embed("💖 Love Affinity 💖")
-                .setDescription(`${msg.member} is a ${affinity}% match for ${member}`)
-                .setColor("#FF00E1")
+            this.client.Embed("🏳️‍🌈 Gaydar 🏳️‍🌈")
+                .setDescription(`${member} is ${gayness}% gay. 🏳️‍🌈`)
         );
     }
 }

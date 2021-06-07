@@ -24,6 +24,10 @@ export class RippleLogger {
         this.ErrorLogger.ClearLog();
     }
 
+    public LevelSystemError(msg: Message, errorMsg: string) {
+        return this.Error(msg, `Level System Error: ${errorMsg}`);
+    }
+
     public UtilError(msg: Message, errorMsg?: string): Promise<Message> {
         return this.Error(msg, `Util Error: ${errorMsg?? "There was a problem with an internal utility function."}`);
     }
@@ -48,8 +52,13 @@ export class RippleLogger {
         return this.Error(msg, `Database Error: ${errorMsg?? "There was an error with the database."}`);
     }
 
-    public MissingArgError(msg: Message, argName: string): Promise<Message> {
-        return this.Error(msg, `Missing required argument error: "${argName}"`);
+    public async MissingArgError(msg: Message, argName: string): Promise<Message> {
+        const prefix = await this.client.Prefix.Get(msg);
+        return this.Error(msg, `
+        Missing Required Argument Error: "${argName}"
+        Command requires argument named "${argName}" which was omitted.
+        Try using \`${prefix}help\` or \`${prefix}usage <commandName>\`.
+        `);
     }
 
     private async Error(msg: Message, errorMsg: string, log: boolean = true): Promise<Message> {

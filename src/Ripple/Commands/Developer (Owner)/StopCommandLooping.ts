@@ -6,7 +6,7 @@ export default class extends Command<Ripple> {
     public constructor() {
         const name = "stopcommandlooping";
         super(name, {
-            aliases: [name, "stopcommandloop", "disablecommandloop", "unloopcommands", "stopcommandloop", "unloopcommand"],
+            aliases: [name, "stopcommandloops", "disablecommandloop", "unloopcommands", "stopcommandloop", "unloopcommand"],
             description: "Loops a command for a given time period.",
             ownerOnly: true
         });

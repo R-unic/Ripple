@@ -96,7 +96,13 @@ export const RomanNumeral = (original: number): string => {
 export const CommaNumber = (x: number) =>
     Math.round(x).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 
-export const Last = <T = any>(arr: T[]) => arr[arr.length - 1];
+export const Last = <T = any>(arr: T[]) => 
+    arr[arr.length - 1];
+
+export const RandomUser = (msg: Message) =>
+    msg.guild.members.cache.random();
+
+export const Author = (msg: Message) => msg.member;
 
 export class QuoteEmbed extends MessageEmbed {
     public setQuote(content: string, author?: string) {
