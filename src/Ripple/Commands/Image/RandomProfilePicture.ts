@@ -40,7 +40,6 @@ export default class extends APICommand {
             "xxxtentacion",
             "ski mask the slump god",
             "money rapper",
-            "car",
             "trippy",
             "anime",
             "anime romance",
@@ -51,7 +50,7 @@ export default class extends APICommand {
         
         return this.RequestAPI<TenorResponse>(msg, `https://g.tenor.com/v1/search?q=${encodeURIComponent(search)}&key=${process.env.TENOR_API}&limit=25`)
             .then(({ results }) => {
-                const media = RandomElement(RandomElement(results).media)
+                const media = RandomElement(RandomElement(results).media)?? RandomElement(results).media[0];
                 const img = (media.mediumgif?? media.gif).url;
                 return msg.reply(
                     this.client.Embed("Random Profile Picture")
