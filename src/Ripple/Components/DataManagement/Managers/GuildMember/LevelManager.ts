@@ -34,12 +34,12 @@ export class LevelManager implements GuildMemberDataManager<Stats> {
         if (level !== lvlAfterXPAdd) {
             const embed = this.Client.Embed(`Congratulations, ${member.user.tag}!`)
                 .setDescription(`You leveled up! You are now level \`${(prestige !== 0 ? RomanNumeral(prestige) + "-" : "") + lvlAfterXPAdd}\`.` + 
-                    (level === 100?
+                    (lvlAfterXPAdd === 100?
                     ` You can now prestige with \`${prefix}prestige\`.`
                     :"")
                 );
 
-            return level === 100?
+            return lvlAfterXPAdd === 100?
                 channel.send(`${member}`)
                     .then(() => channel.send(embed))
                 :channel.send(embed);

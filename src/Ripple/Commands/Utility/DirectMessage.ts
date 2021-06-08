@@ -1,9 +1,8 @@
-import { Command } from "discord-akairo";
+import { PremiumCommand } from "../../Components/CommandClasses/PremiumCommand";
 import { GuildMember, Message } from "discord.js";
 import { Arg } from "../../Util";
-import Ripple from "../../Client";
 
-export default class extends Command<Ripple> {
+export default class extends PremiumCommand {
     public constructor() {
         const name = "directmessage";
         super(name, {
@@ -11,7 +10,7 @@ export default class extends Command<Ripple> {
             userPermissions: "MANAGE_GUILD",
             cooldown: 10e3,
             description: {
-                content: "Sends a DM to a member as Ripple.",
+                content: "Sends a DM to a member as Ripple. (PREMIUM ONLY)",
                 usage: '<@member> <"content">'
             },
             args: [
@@ -22,6 +21,10 @@ export default class extends Command<Ripple> {
     }
 
     public async exec(msg: Message, { member, content }: { member: GuildMember, content: string }) {
+        const error = await this.DoesNotOwnPremium(msg);
+        if (error)
+            return error;
+
         if (!member)
             return this.client.Logger.MissingArgError(msg, "member");
 
