@@ -10,6 +10,7 @@ import {
     AutoRoleManager,
     AutoWelcomeManager,
     ChatReviveRoleManager,
+    CommandChannelManager,
     InfractionManager,
     LevelManager,
     LevelUpChannelManager,
@@ -59,6 +60,7 @@ export default class Ripple extends AkairoClient {
     public readonly LevelSystem = new LevelSystemManager(this);
     public readonly ChatReviveRole = new ChatReviveRoleManager(this);
     public readonly PrestigeRoles = new PrestigeRoleManager(this);
+    public readonly CommandChannel = new CommandChannelManager(this);
     public readonly Wizard101 = Wizard101;
     public readonly Package: Package = pkg;
     public readonly Version = `v${this.Package.version}`;
@@ -74,7 +76,7 @@ export default class Ripple extends AkairoClient {
         immediateLogin: boolean = true
     ) {
         super({
-            ownerID: ["415233686758359051", "686418809720012843"]
+            ownerID: [ "415233686758359051", "686418809720012843" ]
         }, {
             disableMentions: "everyone"
         });
@@ -88,8 +90,8 @@ export default class Ripple extends AkairoClient {
      * @description Log in with a token or env.LOGIN_TOKEN
      * @param token
      */
-    public async Login(token?: string): Promise<string> {
-        const p = super.login(token?? env.LOGIN_TOKEN)
+    public async Login(token: string = env.LOGIN_TOKEN): Promise<string> {
+        const p = super.login(token)
             .then(async res => {
                 this.BotName = this.user.username;
                 await this.UpdatePresence();

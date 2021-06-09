@@ -1,4 +1,4 @@
-import { CommandHandlerOptions } from "discord-akairo";
+import { AkairoHandlerOptions, CommandHandlerOptions } from "discord-akairo";
 import { GiveawaysManagerOptions } from "discord-giveaways";
 import { Message, PermissionResolvable } from "discord.js";
 
@@ -33,5 +33,8 @@ export const Options = {
                 timeout: (msg: Message) => `${msg.member}, command expired.`
             }
         }
-    } as CommandHandlerOptions
+    } as CommandHandlerOptions,
+    InhibitorHandler: {
+        directory: __dirname + "/Inhibitors/"
+    } as AkairoHandlerOptions
 }

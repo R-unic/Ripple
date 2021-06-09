@@ -11,11 +11,13 @@ import { WelcomeChannelManager } from "./Managers/Guild/WelcomeChannelManager";
 import { LevelSystemManager } from "./Managers/Guild/LevelSystemManager";
 import { ChatReviveRoleManager } from "./Managers/Guild/ChatReviveRoleManager";
 import { PrestigeRoleManager } from "./Managers/GuildRole/PrestigeRoleManager";
+import { CommandChannelManager } from "./Managers/Guild/CommandChannelManager";
 
 export {
     AutoRoleManager,
     AutoWelcomeManager,
     ChatReviveRoleManager,
+    CommandChannelManager,
     InfractionManager,
     LevelManager,
     LevelUpChannelManager,

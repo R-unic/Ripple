@@ -1,5 +1,5 @@
 import { Command } from "discord-akairo";
-import { Message, TextChannel } from "discord.js";
+import { GuildMember, Message, TextChannel } from "discord.js";
 import { Arg } from "../../Util";
 import Ripple from "../../Client";
 import ms = require("ms");
@@ -20,21 +20,24 @@ export default class extends Command<Ripple> {
                 Arg("prize", "string"),
                 Arg("time", "string"),
                 Arg("winnerAmount", "number", 1),
-                Arg("channel", "textChannel")
+                Arg("host", "member", msg => msg.member),
+                Arg("channel", "textChannel", msg => msg.channel)
             ]
         });
     }
 
-    public async exec(msg: Message, { prize, time, winnerAmount, channel }: { prize: string, time: string, winnerAmount: number, channel?: TextChannel }) {
+    public async exec(msg: Message, { prize, time, winnerAmount, host, channel }: { prize: string, time: string, winnerAmount: number, host: GuildMember, channel: TextChannel }) {
         if (!time)
             return this.client.Logger.MissingArgError(msg, "time");
+
         if (!prize)
             return this.client.Logger.MissingArgError(msg, "prize");
 
-        return this.client.Giveaways.start(channel ?? msg.channel as TextChannel, {
+        return this.client.Giveaways.start(channel, {
             time: ms(time),
             winnerCount: winnerAmount,
-            prize: prize
+            prize: prize,
+            hostedBy: host.user
         });
     }
 }

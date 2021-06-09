@@ -70,7 +70,7 @@ export class RippleLogger {
             this.ErrorLogger.Report(errorMsg, msg.createdAt);
 
         return msg.reply(
-            this.client.Embed("Error! ❌")
+            this.client.Embed("Error!", "❌")
                 .setDescription(errorMsg)
                 .setColor("#D9210D")
         );

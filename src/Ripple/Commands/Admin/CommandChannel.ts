@@ -5,14 +5,15 @@ import Ripple from "../../Client";
 
 export default class extends Command<Ripple> {
     public constructor() {
-        const name = "levelupchannel";
+        const name = "commandchannel";
         super(name, {
-            aliases: [name, "setlevelupchannel", "setlevelchannel", "levelchannel", "setlvlchannel", "lvlchannel"],
+            aliases: [name, "cmdchannel", "cmdchnl", "commandschannel", "cmdschannel", "cmdschnl"],
             userPermissions: "MANAGE_CHANNELS",
             clientPermissions: "MANAGE_CHANNELS",
             cooldown: 5e3,
+            ratelimit: 2,
             description: {
-                content: "Sets a channel for level up messages to manifest in.",
+                content: "Sets a channel for commands to be enabled in, disabled everywhere else.",
                 usage: "<@channel?>"
             },
             args: [ Arg("channel", "textChannel") ]
@@ -20,16 +21,15 @@ export default class extends Command<Ripple> {
     }
 
     public async exec(msg: Message, { channel }: { channel: TextChannel }) {
-        if (!channel) {
-            await this.client.LevelUpChannel.Set(msg, null);
-            return msg.reply(
-                this.client.Success("Successfully disabled level up channel.")
-            );
-        }
+        if (!channel)
+            return this.client.CommandChannel.Set(msg, null)
+                .then(() => msg.reply(
+                    this.client.Success("Successfully unbinded command channel.")
+                )).catch(err => this.client.Logger.DatabaseError(msg, err));
 
-        return this.client.LevelUpChannel.Set(msg, channel.id)
+        return this.client.CommandChannel.Set(msg, channel.id)
             .then(() => msg.reply(
-                this.client.Success(`Successfully set level up channel to ${channel}.`)
+                this.client.Success(`Successfully binded command channel to ${channel}.`)
             )).catch(err => this.client.Logger.DatabaseError(msg, err));
     }
 }

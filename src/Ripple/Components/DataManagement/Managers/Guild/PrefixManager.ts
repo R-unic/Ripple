@@ -9,8 +9,8 @@ export class PrefixManager implements GuildDataManager<string> {
         public readonly Client: Ripple
     ) {}
 
-    public async Get(m: GuildObject, defaultValue: string = this.Client.DefaultPrefix): Promise<string> {
-        return this.Client.Get<string>(m, this.Tag, defaultValue);
+    public async Get(m: GuildObject): Promise<string> {
+        return this.Client.Get<string>(m, this.Tag, this.Client.DefaultPrefix);
     }
 
     public async Set(m: GuildObject, newPrefix: string): Promise<boolean> {
