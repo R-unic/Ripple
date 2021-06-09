@@ -44,12 +44,12 @@ export class LevelManager implements GuildMemberDataManager<Stats> {
         if (level !== lvlAfterXPAdd) {
             const embed = this.Client.Embed(`Congratulations, ${member.user.tag}!`)
                 .setDescription(`You leveled up! You are now level \`${(prestige !== 0 ? RomanNumeral(prestige) + "-" : "") + lvlAfterXPAdd}\`.` + 
-                    (lvlAfterXPAdd === 100?
+                    (lvlAfterXPAdd === this.MaxLevel?
                     ` You can now prestige with \`${prefix}prestige\`.`
                     :"")
                 );
 
-            return lvlAfterXPAdd === 100?
+            return lvlAfterXPAdd === this.MaxLevel?
                 channel.send(`${member}`)
                     .then(() => channel.send(embed))
                 :channel.send(embed);
@@ -59,13 +59,13 @@ export class LevelManager implements GuildMemberDataManager<Stats> {
     public async XPUntilNextLevel(user: GuildMember): Promise<number> {
         const level: number = await this.GetLevel(user);
         const prestige: number = await this.GetPrestige(user);
-        return 575 + (level ^ 2 - prestige ^ 1.75)
+        return (575 + (level ^ 2 - prestige ^ 1.3)) * ((level ^ -.9) / 1.8);
     }
 
     public async MaxXPGain(user: GuildMember): Promise<number> {
         const level: number = await this.GetLevel(user);
         const prestige: number = await this.GetPrestige(user);
-        return (50 + (level ^ 1.3) * 6 * ((prestige + 1) ^ .5));
+        return (50 + (level ^ 1.3) * 6 * ((prestige + 1) ^ 1.1));
     }
 
     public async XPGain(user: GuildMember): Promise<number> {

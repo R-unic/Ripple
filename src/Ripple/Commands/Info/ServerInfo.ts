@@ -13,19 +13,19 @@ export default class extends Command<Ripple> {
     }
 
     public async exec(msg: Message) {
+        const guild = msg.guild?? msg.member.guild;
         return msg.reply(
-            this.client.Embed()
-                .setTitle(msg.guild.name)
-                .setDescription(msg.guild.description ?? "")
-                .setThumbnail(msg.guild.iconURL({ dynamic: true }))
-                .addField("Members", msg.guild.memberCount, true)
-                .addField("Region", msg.guild.region, true)
-                .addField("Created On", StripISO(msg.guild.createdAt), true)
-                .addField("Owner", User(msg.guild.ownerID), true)
-                .addField("Nitro Boost Tier", msg.guild.premiumTier, true)
-                .addField("Partnered", msg.guild.partnered ? "Yes" : "No", true)
-                .addField("AFK Timeout", Math.round(msg.guild.afkTimeout / 60) + " Minutes", true)
-                .addField("AFK Channel", msg.guild.afkChannel.name, true)
+            this.client.Embed(guild.name)
+                .setDescription(guild.description?? "")
+                .setThumbnail(guild.iconURL({ dynamic: true }))
+                .addField("Members", guild.memberCount, true)
+                .addField("Region", guild.region, true)
+                .addField("Created On", StripISO(guild.createdAt), true)
+                .addField("Owner", User(guild.ownerID), true)
+                .addField("Nitro Boost Tier", guild.premiumTier, true)
+                .addField("Partnered", guild.partnered ? "Yes" : "No", true)
+                .addField("AFK Timeout", Math.round(guild.afkTimeout / 60) + " Minutes", true)
+                .addField("AFK Channel", guild.afkChannel.name, true)
         );
     }
 }
