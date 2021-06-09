@@ -10,15 +10,25 @@ export interface Stats {
 }
 
 export class LevelManager implements GuildMemberDataManager<Stats> {
+    public Tag = "stats";
+    public MaxLevel = 100;
+    public MaxPrestige = 25;
+
+    public constructor(
+        public readonly Client: Ripple
+    ) {}
+
     public async AddMessage(msg: Message) {
         const member:GuildMember = msg.member;
-        const xpGain: number = await this.Client.Stats.XPGain(member);
-        const level: number = await this.Client.Stats.GetLevel(member);
+        if (!member || member?.user.bot) return;
+
+        const xpGain: number = await this.XPGain(member);
+        const level: number = await this.GetLevel(member);
         const prefix: string = await this.Client.Prefix.Get(msg);
         
         await this.Client.Stats.AddXP(member, xpGain);
-        const lvlAfterXPAdd: number = await this.Client.Stats.GetLevel(member);
-        const prestige: number = await this.Client.Stats.GetPrestige(member);
+        const lvlAfterXPAdd: number = await this.GetLevel(member);
+        const prestige: number = await this.GetPrestige(member);
         msg.guild.roles.cache.forEach(async role => {
             const prestigeMatch = await this.Client.PrestigeRoles.Get(role);
             if (prestige === prestigeMatch)
@@ -45,24 +55,21 @@ export class LevelManager implements GuildMemberDataManager<Stats> {
                 :channel.send(embed);
         }
     }
-    public Tag = "stats";
-    public MaxLevel = 100;
-    public MaxPrestige = 25;
-
-    public constructor(
-        public readonly Client: Ripple
-    ) {}
 
     public async XPUntilNextLevel(user: GuildMember): Promise<number> {
         const level: number = await this.GetLevel(user);
         const prestige: number = await this.GetPrestige(user);
-        return 500 + ((((8 * level) ^ 1.5) / ((prestige + 1) ^ .5)) * 9);
+        return 575 + (level ^ 2 - prestige ^ 1.75)
+    }
+
+    public async MaxXPGain(user: GuildMember): Promise<number> {
+        const level: number = await this.GetLevel(user);
+        const prestige: number = await this.GetPrestige(user);
+        return (50 + (level ^ 1.3) * 6 * ((prestige + 1) ^ .5));
     }
 
     public async XPGain(user: GuildMember): Promise<number> {
-        const level: number = await this.GetLevel(user);
-        const prestige: number = await this.GetPrestige(user);
-        return Math.round(50 + Math.random() * (50 + (level ^ 1.25) * 7 * ((prestige + 1) ^ .45)));
+        return 50 + Math.round(Math.random() * await this.MaxXPGain(user));
     }
 
     public async AddPrestige(user: GuildMember, amount: number = 1): Promise<boolean> {

@@ -21,6 +21,7 @@ export const Options = {
         blockClient: true,
         commandUtil: true,
         allowMention: true,
+        defaultCooldown: 1e3,
         argumentDefaults: {
             prompt: {
                 cancel: (msg: Message) => `${msg.member}, command cancelled.`,

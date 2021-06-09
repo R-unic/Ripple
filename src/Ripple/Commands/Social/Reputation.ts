@@ -9,6 +9,7 @@ export default class extends Command<Ripple> {
         super(name, {
             aliases: [name, "rep", "addrep", "giverep"],
             cooldown: 3600e3,
+            ratelimit: 2,
             description: {
                 content: "Adds a reputation point to the given user.",
                 usage: "<@member>"

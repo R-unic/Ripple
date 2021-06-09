@@ -14,7 +14,11 @@ export default class extends Command<Ripple> {
     public async exec(msg: Message) {    
         return msg.reply(
             this.client.Embed("Ripple Servers")
-                .setDescription(this.client.guilds.cache.array().join("\n"))
+                .setDescription(
+                    this.client.guilds.cache
+                        .array()
+                        .join("\n")
+                )
         );
     }
 }

@@ -10,6 +10,7 @@ export default class extends Command<Ripple> {
             aliases: [name, "newpoll"],
             userPermissions: "MANAGE_GUILD",
             cooldown: 5e3,
+            ratelimit: 2,
             description: {
                 content: "Returns a poll with 2 reactions.",
                 usage: '<"pollQuestion">'

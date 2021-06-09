@@ -9,7 +9,7 @@ export default class extends Command<Ripple> {
         const name = "profile";
         super(name, {
             aliases: [name, "socialprofile", "stats"],
-            cooldown: 3e3,
+            ratelimit: 2,
             description: {
                 content: "Gets a user's or your own profile.",
                 usage: "<@member?>"
@@ -25,9 +25,11 @@ export default class extends Command<Ripple> {
         setTimeout(async () => {
             const prestige = await this.client.Stats.GetPrestige(member)
             const level = await this.client.Stats.GetLevel(member);
-            const xp = await this.client.Stats.GetXP(member);
+            const exp = await this.client.Stats.GetXP(member);
             const untilNext = await this.client.Stats.XPUntilNextLevel(member);
-            const rep = await this.client.Reputation.Get(member);
+            const reputation = await this.client.Reputation.Get(member);
+            const maxXPGain = await this.client.Stats.MaxXPGain(member);
+            const premium = await this.client.Premium.Get(member.user);
 
             try {
                 return msg.channel.send(
@@ -35,10 +37,11 @@ export default class extends Command<Ripple> {
                         .setThumbnail(member.user.avatarURL({ dynamic: true }))
                         .addField("Prestige", prestige === 0 ? prestige : RomanNumeral(prestige), true)
                         .addField("Level", (prestige !== 0 ? `${RomanNumeral(prestige)}-` : "") + (level === 100 ? `${level} (max)` : level), true)
-                        .addField("Experience", level === 100 ? "MAX" : CommaNumber(xp), true)
+                        .addField("Experience", level === 100 ? "MAX" : CommaNumber(exp), true)
                         .addField("XP Until Next Level", level === 100 ? "MAX" : CommaNumber(untilNext), true)
-                        .addField("Reputation", rep, true)
-                        .addField("Ripple Premium", (await this.client.Premium.Get(member.user)) ? "Yes" : "No")
+                        .addField("XP Gain", level === 100 ? "0" : "50 - " + CommaNumber(maxXPGain), true)
+                        .addField("Reputation", reputation, true)
+                        .addField("Ripple Premium", premium ? "Yes" : "No", true)
                 );
             } catch (err) {
                 return this.client.Logger.UtilError(msg);

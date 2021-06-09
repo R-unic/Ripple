@@ -10,6 +10,7 @@ export default class extends Command<Ripple> {
         super(name, {
             aliases: [name, "revivechat", "makeactive", "heyeveryone"],
             cooldown: 60e3,
+            ratelimit: 2,
             description: {
                 content: "Pings the role set for chat revive, or @everyone.",
                 usage: '<"message">'
