@@ -33,11 +33,11 @@ export default class extends Command<Ripple> {
         const infraction = await this.client.Infractions.Find(member, caseNumber);
         if (!infraction)
             return this.client.Logger.InvalidArgError(msg, `An infraction with the index \`${caseNumber}\` does not exist.`);
-        else
-            return msg.reply(
-                this.client.Embed(`Infraction \`#${caseNumber}\` for \`@${member.user.tag}\``)  
-                    .addField("Issuer", `@${infraction.Issuer.user.tag}`)
-                    .addField("Reason", infraction.Reason)
-            );
+        
+        return msg.reply(
+            this.client.Embed(`Infraction \`#${caseNumber}\` for \`@${member.user.tag}\``)  
+                .addField("Issuer", `@${infraction.Issuer.user.tag}`)
+                .addField("Reason", infraction.Reason)
+        );
     }
 }

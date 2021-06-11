@@ -27,6 +27,12 @@ export default class extends Command<Ripple> {
         if (!member)
             return this.client.Logger.MissingArgError(msg, "member");
 
+        if (member === msg.member)
+            return this.client.Logger.InvalidArgError(msg, "You cannot mute yourself.");
+
+        if (member === msg.guild.owner)
+            return this.client.Logger.InvalidArgError(msg, "You cannot mute the server owner.");
+
         const muted: Role = msg.guild.roles.cache.find(r => r.name.includes("Mute")) || await msg.guild.roles.create({
             data: {
                 name: "Muted",

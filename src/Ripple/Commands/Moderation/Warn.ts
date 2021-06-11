@@ -29,8 +29,11 @@ export default class extends Command<Ripple> {
         if (member.user.bot)
             return this.client.Logger.InvalidArgError(msg, "You cannot warn a bot.");
 
-        // if (member === msg.member)
-        //     return this.client.Logger.InvalidArgError(msg, "You cannot warn yourself.");
+        if (member === msg.member)
+            return this.client.Logger.InvalidArgError(msg, "You cannot warn yourself.");
+
+        if (member === msg.guild.owner)
+            return this.client.Logger.InvalidArgError(msg, "You cannot warn the server owner.");
 
         return this.client.Infractions.Add(member, new Infraction(
             msg.member,
@@ -39,20 +42,27 @@ export default class extends Command<Ripple> {
         )).then(async () => {
             const infractions = await this.client.Infractions.Get(member);
             const infractionAmount = infractions.length;
-            const lastWarning = infractionAmount === 4;
+            const kickWarning = infractionAmount === 4;
+            const banWarning = infractionAmount === 8;
 
-            if (lastWarning)
-                await member.kick(reason).catch(err => this.client.Logger.DiscordAPIError(msg, err));
+            if (kickWarning)
+                await member.kick(reason)
+                    .catch(err => this.client.Logger.DiscordAPIError(msg, err));
+
+            if (kickWarning)
+                await member.ban({ reason: reason })
+                    .catch(err => this.client.Logger.DiscordAPIError(msg, err));
 
             return msg.reply(
                 this.client.Success(
-                    lastWarning?
-                    `Successfully kicked \`${member.user.tag}\`. This was their last infraction.`
-                    :`Successfully warned \`${member.user.tag}\`. This is infraction number \`${infractionAmount}\`.`
+                    kickWarning?
+                    `Successfully kicked \`${member.user.tag}\`. This was their \`4th\` infraction.`
+                    :(
+                        banWarning?
+                        `Successfully banned \`${member.user.tag}\`. This was their \`8th\` infraction.`
+                        :`Successfully warned \`${member.user.tag}\`. This is infraction number \`${infractionAmount}\`.`
+                    )
                 )
-            ).then(async () => lastWarning? 
-                await this.client.Infractions.Set(member, undefined)
-                :void 0
             ).catch(err => this.client.Logger.UtilError(msg, err));
         });
     }

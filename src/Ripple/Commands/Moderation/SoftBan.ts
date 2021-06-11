@@ -30,12 +30,19 @@ export default class extends Command<Ripple> {
         if (!days)
             return this.client.Logger.MissingArgError(msg, "days");
 
+        if (member === msg.member)
+            return this.client.Logger.InvalidArgError(msg, "You cannot softban yourself.");
+
+        if (member === msg.guild.owner)
+            return this.client.Logger.InvalidArgError(msg, "You cannot softban the server owner.");
+
         return member.ban({
             reason: reason,
             days: days
         }).then(bannedMember => msg.reply(
-            this.client.Success(`${bannedMember.user.tag} was successfully temp-banned.`)
-                .addField("Reason", reason ?? "n/a")
+            this.client.Success(`${bannedMember.user.tag} was successfully softbannedbanned.`)
+                .addField("Reason", reason?? "n/a", true)
+                .addField("Days", days, true)
         )).catch(err => this.client.Logger.DiscordAPIError(msg, err));
     }
 }

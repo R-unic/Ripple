@@ -22,7 +22,7 @@ import {
     ReputationManager,
     WelcomeChannelManager
 } from "./Components/DataManagement";
-import { AkairoClient, CommandHandler } from "discord-akairo";
+import { AkairoClient, CommandHandler, InhibitorHandler } from "discord-akairo";
 import { GiveawaysManager } from "discord-giveaways";
 import { Wizard101 } from "wizard101-api";
 import { RippleLogger } from "./Components/Logger";
@@ -70,6 +70,10 @@ export default class Ripple extends AkairoClient {
     public readonly DonateLink = "https://donatebot.io/checkout/846604279288168468";
     public CancelCommandLoop = false;
     public BotName: string;
+
+    private readonly inhibitorHandler = new InhibitorHandler<Ripple>(this, {
+        directory: __dirname + "/Inhibitors/"
+    });
 
     public constructor(
         public readonly DefaultPrefix: string = "::",
@@ -208,7 +212,20 @@ export default class Ripple extends AkairoClient {
 
     private LoadCommands() {
         this.CommandHandler.prefix = async msg => await this.Prefix.Get(msg);
-        this.CommandHandler.loadAll();
+        this.inhibitorHandler.loadAll();
+        this.CommandHandler
+            .useInhibitorHandler(this.inhibitorHandler)
+            .loadAll();
+
+        this.CommandHandler.on("cooldown", (msg, cmd, remaining) => 
+            this.Logger.CooldownError(msg, cmd, remaining));
+
+        this.CommandHandler.on("commandBlocked", (msg, cmd, reason) => {            
+            switch(reason) {
+                case "commandChannel":
+                    return this.Logger.NotCommandChannelError(msg);
+            }
+        })
     }
 
     private HandleEvents(eventMap: Map<keyof ClientEvents, Function>) {

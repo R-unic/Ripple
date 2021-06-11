@@ -26,6 +26,12 @@ export default class extends Command<Ripple> {
         if (!member)
             return this.client.Logger.MissingArgError(msg, "member");
 
+        if (member === msg.member)
+            return this.client.Logger.InvalidArgError(msg, "You cannot ban yourself.");
+
+        if (member === msg.guild.owner)
+            return this.client.Logger.InvalidArgError(msg, "You cannot ban the server owner.");
+
         return member.ban({
             reason: reason
         }).then(bannedMember => msg.reply(

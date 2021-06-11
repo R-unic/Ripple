@@ -26,7 +26,7 @@ export default class extends Command<Ripple> {
 
         const muted: Role = msg.guild.roles.cache.find(r => r.name.includes("Mute"));
         if (!muted)
-            return this.client.Logger.CouldNotBeExecuted(msg, "'Muted' role does not exist, use `::mute <@user> <timePeriod?>` to create it automatically.")
+            return this.client.Logger.CouldNotBeExecutedError(msg, "'Muted' role does not exist, use `::mute <@user> <timePeriod?>` to create it automatically.")
 
         return member.roles.remove(muted, "Unmuted")
             .then(unmutedMember => msg.reply(

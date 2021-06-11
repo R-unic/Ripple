@@ -9,7 +9,7 @@ export class CommandChannelInhibitor extends Inhibitor<Ripple> {
         });
     }
 
-    public async exec(msg: Message) {
+    public async exec(msg: Message) {        
         const commandChannelID = await this.client.CommandChannel.Get(msg);
         const commandChannel = msg.guild.channels.resolve(commandChannelID);
                 

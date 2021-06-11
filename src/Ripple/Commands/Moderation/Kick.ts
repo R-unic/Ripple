@@ -26,6 +26,12 @@ export default class extends Command<Ripple> {
         if (!member)
             return this.client.Logger.MissingArgError(msg, "member");
 
+        if (member === msg.member)
+            return this.client.Logger.InvalidArgError(msg, "You cannot kick yourself.");
+
+        if (member === msg.guild.owner)
+            return this.client.Logger.InvalidArgError(msg, "You cannot kick the server owner.");
+
         return member.kick(reason)
             .then(kickedMember => msg.reply(
                 this.client.Success(`${kickedMember} was successfully kicked.`)

@@ -24,6 +24,7 @@ export default class extends Command<Ripple> {
             return this.client.Logger.MissingArgError(msg, "message");
 
         const roleID = await this.client.ChatReviveRole.Get(msg);
+        msg.delete();
         return msg.channel.send(Role(roleID))
             .then(() => msg.reply(
                 this.client.Embed("Chat Revive")

@@ -27,22 +27,23 @@ export default class extends Command<Ripple> {
         if (!quest)
             return this.client.Logger.MissingArgError(msg, "quest");
 
-        const res = await this.client.Wizard101.GetWorld(worldName);
-        if (!res.Success)
-            return this.client.Logger.APIError(msg, res.Results.Message);
-        else {
-            const world = res.Results;
-            if (quest > world.Quests)
-                quest = world.Quests;
-            else if (quest <= 0)
-                quest = Math.abs(quest);
-            else if (quest < 1)
-                quest = 1;
+        return this.client.Wizard101.GetWorld(worldName)
+            .then(({ Success, Results }) => {
+                if (!Success)
+                    return this.client.Logger.APIError(msg, Results.Message);
+                else {
+                    if (quest > Results.Quests)
+                        quest = Results.Quests;
+                    else if (quest <= 0)
+                        quest = Math.abs(quest);
+                    else if (quest < 1)
+                        quest = 1;
 
-            const progress = ((quest / world.Quests) * 100).toFixed(2);
-            return msg.reply(
-                this.client.Embed(`You are \`${progress}%\` through \`${world.Name}\`. You have \`${world.Quests - quest}\` quests left.`)
-            );
-        }
+                    const progress = ((quest / Results.Quests) * 100).toFixed(2);
+                    return msg.reply(
+                        this.client.Embed(`You are \`${progress}%\` through \`${Results.Name}\`. You have \`${Results.Quests - quest}\` quests left.`)
+                    );
+                }
+            });
     }
 }

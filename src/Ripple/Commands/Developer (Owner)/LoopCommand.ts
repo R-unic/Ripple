@@ -24,18 +24,29 @@ export default class extends Command<Ripple> {
     }
 
     public async exec(msg: Message, { command, period, argsJSON }: { command: Command<Ripple>, period: string, argsJSON?: string }) {        
-        const json = argsJSON ? JSON.parse(argsJSON.replace(/'/, '"').replace(/ /, "")) : true;
-        if (!json)
+        let json;
+        try {
+            json = argsJSON? 
+                JSON.parse(
+                    argsJSON
+                        .replace(/'/, '"')
+                        .replace(/ /, "")
+                ) : true;
+        } catch (err) {
             return this.client.Logger.InvalidArgError(msg, "'argsJSON' could not be resolved to a JSON object.");
-
+        }
+            
         if (!command)
             return this.client.Logger.MissingArgError(msg, "command");
 
         if (!period)
             return this.client.Logger.MissingArgError(msg, "period");
 
-        const periodMS = ms(period);
         this.client.CancelCommandLoop = false;
+        const periodMS = ms(period);
+        if (!periodMS)
+            return this.client.Logger.InvalidArgError(msg, "Argument 'period' provided is not an amount of time.");
+
         const Execute = async (): Promise<any> => {
             if (this.client.CancelCommandLoop) return;
             const p = await command.exec(msg, json === true ? undefined : json);

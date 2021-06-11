@@ -1,6 +1,8 @@
-import { Message } from "discord.js";
+import { Message, MessageEmbed } from "discord.js";
+import { Command } from "discord-akairo";
 import { ErrorLogger } from "./ErrorLogger";
 import Ripple from "../Client";
+import { Channel } from "../Util";
 
 export class RippleLogger {
     public readonly ErrorLogger = new ErrorLogger;
@@ -24,35 +26,48 @@ export class RippleLogger {
         this.ErrorLogger.ClearLog();
     }
 
-    public CouldNotBeExecuted(msg: Message, errorMsg: string): Promise<Message> {
+    public async JSError(msg: Message, err: string): Promise<Message> {
+        return this.Error(msg, err);
+    }
+
+    public async NotCommandChannelError(msg: Message): Promise<Message> {
+        const cmdChannelID = await this.client.CommandChannel.Get(msg);
+        return this.Error(msg, `Command may not be executed in this channel. Please use ${Channel(cmdChannelID)}.`);
+    }
+
+    public async CooldownError(msg: Message, cmd: Command<Ripple>, remaining: number): Promise<Message> {
+        return this.Error(msg, `\`${cmd.id}\` is on cooldown for another ${remaining} seconds! ⏲️`);
+    }
+
+    public async CouldNotBeExecutedError(msg: Message, errorMsg: string): Promise<Message> {
         return this.Error(msg, `Command Could Not Be Executed: ${errorMsg}`);
     }
 
-    public LevelSystemError(msg: Message, errorMsg: string): Promise<Message> {
+    public async LevelSystemError(msg: Message, errorMsg: string): Promise<Message> {
         return this.Error(msg, `Level System Error: ${errorMsg}`);
     }
 
-    public UtilError(msg: Message, errorMsg?: string): Promise<Message> {
+    public async UtilError(msg: Message, errorMsg?: string): Promise<Message> {
         return this.Error(msg, `Util Error: ${errorMsg?? "There was a problem with an internal utility function."}`);
     }
 
-    public NoPremiumError(msg: Message): Promise<Message> {
+    public async NoPremiumError(msg: Message): Promise<Message> {
         return this.Error(msg, `This command is Premium-only! If you would like to purchase Ripple Premium, visit [here](${this.client.DonateLink}). Only a one-time payment of USD$10!`);
     }
 
-    public DiscordAPIError(msg: Message, err: Error | string): Promise<Message> {
+    public async DiscordAPIError(msg: Message, err: Error | string): Promise<Message> {
         return this.Error(msg, `Discord API Error: ${typeof err === "string" ? err : err.message}`);
     }
 
-    public InvalidArgError(msg: Message, errorMsg: string): Promise<Message> {
+    public async InvalidArgError(msg: Message, errorMsg: string): Promise<Message> {
         return this.Error(msg, `Invalid Argument Error: ${errorMsg}`);
     }
 
-    public APIError(msg: Message, errorMsg?: string): Promise<Message> {
+    public async APIError(msg: Message, errorMsg?: string): Promise<Message> {
         return this.Error(msg, `API Error: ${errorMsg?? "Please try again momentarily. This could be an API error."}`);
     }
 
-    public DatabaseError(msg: Message, errorMsg?: string): Promise<Message> {
+    public async DatabaseError(msg: Message, errorMsg?: string): Promise<Message> {
         return this.Error(msg, `Database Error: ${errorMsg?? "There was an error with the database."}`);
     }
 
