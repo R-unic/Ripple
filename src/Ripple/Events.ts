@@ -1,5 +1,5 @@
 import { log } from "console";
-import { ClientEvents, GuildMember, Message } from "discord.js";
+import { ClientEvents, GuildMember, Message, TextChannel } from "discord.js";
 import { ErrorLogger } from "./Components/ErrorLogger";
 import Ripple from "./Client";
 
@@ -31,5 +31,17 @@ export const Events = new Map<keyof ClientEvents, Function>([
 
         if (await client.LevelSystem.Get(msg))
             await client.Stats.AddMessage(msg);
-    }]
+    }],
+    ["messageDelete", async (client: Ripple, msg: Message) => 
+        client.DeleteSniper.Set(msg.channel as TextChannel, { 
+            SenderID: msg.member.id, 
+            Message: msg.content 
+        })
+    ],
+    ["messageUpdate", async (client: Ripple, msg: Message) => 
+        client.EditSniper.Set(msg.channel as TextChannel, { 
+            SenderID: msg.member.id, 
+            Message: msg.content 
+        })
+    ]
 ]);

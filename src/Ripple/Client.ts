@@ -11,6 +11,8 @@ import {
     AutoWelcomeManager,
     ChatReviveRoleManager,
     CommandChannelManager,
+    DeleteSniperManager,
+    EditSniperManager,
     InfractionManager,
     LevelManager,
     LevelUpChannelManager,
@@ -37,6 +39,7 @@ import { readdirSync } from "fs";
 import { env } from "process";
 import * as db from "quick.db";
 
+
 /**
  * @extends AkairoClient
  * @description Ripple Discord client
@@ -61,6 +64,8 @@ export default class Ripple extends AkairoClient {
     public readonly ChatReviveRole = new ChatReviveRoleManager(this);
     public readonly PrestigeRoles = new PrestigeRoleManager(this);
     public readonly CommandChannel = new CommandChannelManager(this);
+    public readonly DeleteSniper = new DeleteSniperManager(this);
+    public readonly EditSniper = new EditSniperManager(this);
     public readonly Wizard101 = Wizard101;
     public readonly Package: Package = pkg;
     public readonly Version = `v${this.Package.version}`;

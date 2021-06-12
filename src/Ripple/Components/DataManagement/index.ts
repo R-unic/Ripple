@@ -12,12 +12,16 @@ import { LevelSystemManager } from "./Managers/Guild/LevelSystemManager";
 import { ChatReviveRoleManager } from "./Managers/Guild/ChatReviveRoleManager";
 import { PrestigeRoleManager } from "./Managers/GuildRole/PrestigeRoleManager";
 import { CommandChannelManager } from "./Managers/Guild/CommandChannelManager";
+import { DeleteSniperManager } from "./Managers/GuildChannel/DeleteSniperManager";
+import { EditSniperManager } from "./Managers/GuildChannel/EditSniperManager";
 
 export {
     AutoRoleManager,
     AutoWelcomeManager,
     ChatReviveRoleManager,
     CommandChannelManager,
+    DeleteSniperManager,
+    EditSniperManager,
     InfractionManager,
     LevelManager,
     LevelUpChannelManager,

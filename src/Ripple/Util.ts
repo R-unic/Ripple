@@ -127,6 +127,8 @@ export class Pair<T> {
 export type GuildObject = 
     | Message 
     | GuildMember
+    | TextChannel
+    | NewsChannel
     | DiscordRole;
 
 export type DiscordChannel = 
