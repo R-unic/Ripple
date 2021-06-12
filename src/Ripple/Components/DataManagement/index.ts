@@ -14,6 +14,7 @@ import { PrestigeRoleManager } from "./Managers/GuildRole/PrestigeRoleManager";
 import { CommandChannelManager } from "./Managers/Guild/CommandChannelManager";
 import { DeleteSniperManager } from "./Managers/GuildChannel/DeleteSniperManager";
 import { EditSniperManager } from "./Managers/GuildChannel/EditSniperManager";
+import { UserBlacklistManager } from "./Managers/GuildMember/UserBlacklistManager";
 
 export {
     AutoRoleManager,
@@ -31,5 +32,6 @@ export {
     PremiumManager,
     PrestigeRoleManager,
     ReputationManager,
+    UserBlacklistManager,
     WelcomeChannelManager
 }

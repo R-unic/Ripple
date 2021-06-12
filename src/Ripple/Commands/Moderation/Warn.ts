@@ -51,6 +51,7 @@ export default class extends Command<Ripple> {
 
             if (kickWarning)
                 await member.ban({ reason: reason })
+                    .then(() => this.client.Infractions.Clear(member))
                     .catch(err => this.client.Logger.DiscordAPIError(msg, err));
 
             return msg.reply(

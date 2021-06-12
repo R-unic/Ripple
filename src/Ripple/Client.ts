@@ -69,9 +69,9 @@ export default class Ripple extends AkairoClient {
     public readonly Wizard101 = Wizard101;
     public readonly Package: Package = pkg;
     public readonly Version = `v${this.Package.version}`;
-    public readonly InviteLink = "https://bit.ly/2SjjB3d";
     public readonly GitHubRepo = "https://github.com/AlphaRunic/Ripple";
     public readonly Website = "https://ripple-bot.netlify.app";
+    public readonly InviteLink = `discord.com/oauth2/authorize?client_id=840692008419197048&scope=bot&permissions=8&redirect_uri=${this.Website}`;
     public readonly DonateLink = "https://donatebot.io/checkout/846604279288168468";
     public CancelCommandLoop = false;
     public BotName: string;
@@ -225,10 +225,15 @@ export default class Ripple extends AkairoClient {
         this.CommandHandler.on("cooldown", (msg, cmd, remaining) => 
             this.Logger.CooldownError(msg, cmd, remaining));
 
-        this.CommandHandler.on("commandBlocked", (msg, cmd, reason) => {            
+        this.CommandHandler.on("commandBlocked", (msg, cmd, reason) => {           
+            console.log("command blocked");
+             
             switch(reason) {
                 case "commandChannel":
                     return this.Logger.NotCommandChannelError(msg);
+
+                case "blacklist":
+                    return this.Logger.CouldNotBeExecutedError(msg, "You are blacklisted from using commands.");
             }
         })
     }

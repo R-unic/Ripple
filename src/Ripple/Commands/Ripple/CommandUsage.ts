@@ -2,6 +2,7 @@ import { Command } from "discord-akairo";
 import { Message, PermissionResolvable } from "discord.js";
 import { Arg } from "../../Util";
 import Ripple from "../../Client";
+import { PremiumCommand } from "../../Components/CommandClasses/PremiumCommand";
 
 export default class extends Command<Ripple> {
     public constructor() {
@@ -16,7 +17,7 @@ export default class extends Command<Ripple> {
         });
     }
 
-    public async exec(msg: Message, { command }: { command: Command }) {
+    public async exec(msg: Message, { command }: { command: Command<Ripple> }) {
         if (!command)
             return this.client.Logger.MissingArgError(msg, "command");
 
@@ -32,6 +33,7 @@ export default class extends Command<Ripple> {
                 .addField("Cooldown", command.cooldown ? command.cooldown : "None", true)
                 .addField("Aliases", command.aliases.map(a => `\`${a}\``).join(", "), true)
                 .addField("Owner Only", command.ownerOnly ? "Yes" : "No")
+                .addField("Premium Only", command instanceof PremiumCommand ? "Yes" : "No", true)
                 .addField("Required User Permissions", 
                     userPerms?
                     `\`${userPerms.toString()}\``

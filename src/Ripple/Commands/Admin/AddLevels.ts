@@ -23,14 +23,14 @@ export default class extends Command<Ripple> {
     }
 
     public async exec(msg: Message, { levels, user }: { levels: number, user: GuildMember }) {
-        const min = 1, max = 99;
+        const min = -(this.client.Stats.MaxLevel - 1), max = this.client.Stats.MaxLevel - 1;
         if (levels > max)
             levels = max;
         else if (levels < min)
             levels = min;
 
         const curLvl = await this.client.Stats.GetLevel(user);
-        if (curLvl + levels > 100) {
+        if (curLvl + levels > this.client.Stats.MaxLevel || curLvl - levels < -this.client.Stats.MaxLevel) {
             const sub = (curLvl + levels) - 100;
             levels -= sub;
         }

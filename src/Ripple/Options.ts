@@ -26,10 +26,11 @@ export const Options = {
             prompt: {
                 cancel: (msg: Message) => `${msg.member}, command cancelled.`,
                 ended: (msg: Message) => `${msg.member}, command declined.`,
-                modifyRetry: (msg, text) => text && `${msg.member}, ${text}\n\nType \`cancel\` to cancel this command.`,
-                modifyStart: (msg, text) => text && `${msg.member}, ${text}\n\nType \`cancel\` to cancel this command.`,
+                modifyRetry: (msg, text) => text && `${msg.member}, ${text}\n\nType \`cancel\` to cancel the command.`,
+                modifyStart: (msg, text) => text && `${msg.member}, ${text}\n\nType \`cancel\` to cancel the command.`,
                 retries: 3,
-                time: 30000,
+                cancelWord: "cancel",
+                time: 30e3,
                 timeout: (msg: Message) => `${msg.member}, command expired.`
             }
         }

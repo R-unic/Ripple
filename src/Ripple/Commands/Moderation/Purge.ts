@@ -34,7 +34,7 @@ export default class extends Command<Ripple> {
             return channel
                 .bulkDelete(messages)
                 .then(() => channel.send(this.client.Success(`Bulk delete successful. Total messages removed: ${messages.size}`)))
-                .then(sent => sent.delete({ timeout: this.client.Seconds(10) }))
+                .then(sent => sent.delete({ timeout: this.client.Seconds(2.5) }))
                 .catch(err => this.client.Logger.DiscordAPIError(msg, err));
         });
     }

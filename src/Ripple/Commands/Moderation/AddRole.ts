@@ -13,7 +13,7 @@ export default class extends Command<Ripple> {
             cooldown: 5e3,
             description: {
                 content: "Adds a role to a member.",
-                usage: "<@member> <@role>"
+                usage: "<@role> <@member>"
             },
             args: [
                 Arg("role", "role"),

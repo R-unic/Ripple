@@ -25,7 +25,7 @@ export class DonationAPI {
             Authorization: this.apiKey
         };
 
-        const { donations } = await Request<NewDonationRes>(this.newDonation.URL(), headers);
+        const { donations } = await Request.GetJSON<NewDonationRes>(this.newDonation.URL(), headers);
         donations.forEach(async dn => {
             if (dn.status === "Completed") {
                 this.client.Premium.Set(await this.GetBuyer(dn.buyer_id), true)
@@ -38,7 +38,7 @@ Purchase failed, premium maybe granted
 Success: ${false}
 Error: ${err}`));
                     
-                const transactionStatus = await Request(this.processTransaction.URL(dn.txn_id), headers, "POST", true);
+                const transactionStatus = await Request.Post(this.processTransaction.URL(dn.txn_id), headers);
                 if (transactionStatus !== "OK")
                     log(`Error processing transaction, status: ${transactionStatus}`);
                 else
