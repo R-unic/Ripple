@@ -71,7 +71,7 @@ export default class Ripple extends AkairoClient {
     public readonly Version = `v${this.Package.version}`;
     public readonly InviteLink = "https://bit.ly/2SjjB3d";
     public readonly GitHubRepo = "https://github.com/AlphaRunic/Ripple";
-    public readonly Website = "https://alpharunic.github.io/Ripple";
+    public readonly Website = "https://ripple-bot.netlify.app";
     public readonly DonateLink = "https://donatebot.io/checkout/846604279288168468";
     public CancelCommandLoop = false;
     public BotName: string;

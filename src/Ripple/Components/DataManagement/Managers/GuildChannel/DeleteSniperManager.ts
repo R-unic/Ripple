@@ -1,11 +1,7 @@
-import { GuildChannelDataManager } from "../../Base/GuildChannelDataManager.ts";
 import { TextChannel } from "discord.js";
+import { GuildChannelDataManager } from "../../Base/GuildChannelDataManager.ts";
+import { Snipe } from "../../../DataInterfaces/Snipe";
 import Ripple from "../../../../Client";
-
-interface Snipe {
-    SenderID: string;
-    Message: string;
-}
 
 export class DeleteSniperManager implements GuildChannelDataManager<Snipe> {
     public readonly Tag = "deletesniper"
