@@ -19,7 +19,7 @@ export default class extends APICommand {
         ]>(msg, "https://breaking-bad-quotes.herokuapp.com/v1/quotes")
             .then(res =>  msg.reply(
                     this.client.QuoteEmbed("Breaking Bad Quote")
-                        .setQuote(res[0].quote, res[0].author)
+                        .SetQuote(res[0].quote, res[0].author)
                 )
             ).catch(err => this.client.Logger.APIError(msg, err));
     }

@@ -4,9 +4,9 @@ import Ripple from "../../Client";
 
 export default class extends Command<Ripple> {
     public constructor() {
-        const name = "levelsystem";
+        const name = "togglelevelsystem";
         super(name, {
-            aliases: [name, "togglelevelsystem", "togglelevels"],
+            aliases: [name, "levelsystem", "togglelevels"],
             cooldown: 5e3,
             description: "Toggles the level system on/off."
         });

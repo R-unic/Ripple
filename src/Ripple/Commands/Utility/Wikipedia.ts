@@ -43,14 +43,14 @@ export default class extends Command<Ripple> {
                 }
             },
             extract: string
-        }>(query).then(res => msg.reply(
+        }>(query).then(res => res ? msg.reply(
             this.client.Embed()
                 .setTitle(res.titles.display)
                 .setAuthor(StripISO(res.timestamp))
                 .setURL(res.content_urls.desktop.page)
                 .setThumbnail(res.thumbnail?.source ?? res.originalimage?.source ?? res.content_urls.desktop.page)
                 .setDescription(res.extract)
-        )).catch(err => this.APIError(msg, err));
+        ) : this.APIError(msg, "No results found.")).catch(err => this.APIError(msg, err));
     }
 
     private APIError(msg: Message, err?: any) {

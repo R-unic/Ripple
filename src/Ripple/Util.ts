@@ -13,6 +13,7 @@ import {
     NewsChannel,
     Role as DiscordRole
 } from "discord.js";
+import Ripple from "./Client";
 
 export const Hyperlink = (url: string, text?: string): string =>
     text? 
@@ -101,7 +102,9 @@ export const RomanNumeral = (original: number): string => {
 }
 
 export const CommaNumber = (x: number) =>
-    Math.round(x).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    Math.round(x)
+        .toString()
+        .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 
 export const Last = <T = any>(arr: T[]) => 
     arr[arr.length - 1];
@@ -111,9 +114,39 @@ export const RandomUser = (msg: Message) =>
 
 export const Author = (msg: Message) => msg.member;
 
-export class QuoteEmbed extends MessageEmbed {
-    public setQuote(content: string, author?: string) {
+export class RippleEmbed extends MessageEmbed {
+    public constructor(title?: string, emoji?: string) {
+        super();
+
+        this
+            .setTitle(title ? (emoji ? `${emoji}  ${title}  ${emoji}` : title) : "")
+            .setColor("RANDOM")
+            .setTimestamp();
+    }
+}
+
+export class QuoteEmbed extends RippleEmbed {
+    public SetQuote(content: string, author?: string) {
         return this.setDescription(`*"${content}"* -${author}`);
+    }
+}
+
+export class ModLogEmbed extends RippleEmbed {
+    public constructor(title?: string) {
+        super(title, "🛡️");
+        this.setColor("RED");
+    }
+
+    public SetEvent(content: any) {
+        return this.addField("Event 📝", content);
+    }
+
+    public SetDate(content: string) {
+        return this.addField("Date 📆", content);
+    }
+
+    public SetContent(content: string) {
+        return this.addField("Content 🗒️", content);
     }
 }
 

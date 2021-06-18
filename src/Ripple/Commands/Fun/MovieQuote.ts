@@ -18,7 +18,7 @@ export default class extends APICommand {
         }>(msg, "https://movie-quote-api.herokuapp.com/v1/quote/")
             .then(({ quote, role, show }) =>  msg.reply(
                     this.client.QuoteEmbed(`Quote From \`${show}\``)
-                        .setQuote(quote, role)
+                        .SetQuote(quote, role)
                 )
             ).catch(err => this.client.Logger.APIError(msg, err));
     }

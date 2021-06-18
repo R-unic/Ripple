@@ -4,7 +4,9 @@ import {
     MessageEmbed,
     PresenceStatusData,
     Presence,
-    User
+    User,
+    Message,
+    TextChannel
 } from "discord.js";
 import { 
     AutoRoleManager,
@@ -17,6 +19,9 @@ import {
     LevelManager,
     LevelUpChannelManager,
     LevelSystemManager,
+    ModLogsChannelManager,
+    ModLogIDManager,
+    ModLogsManager,
     NotesManager,
     PrefixManager,
     PremiumManager,
@@ -30,7 +35,7 @@ import { Wizard101 } from "wizard101-api";
 import { RippleLogger } from "./Components/Logger";
 import { DonationAPI } from "./APIWrappers/Donation";
 import { IconFinderAPI } from "./APIWrappers/IconFinder";
-import { GuildObject, QuoteEmbed } from "./Util";
+import { GuildObject, ModLogEmbed, QuoteEmbed, RippleEmbed, StripISO } from "./Util";
 import { Options } from "./Options";
 import { Package } from "./Package";
 import { Events } from "./Events";
@@ -38,7 +43,6 @@ import { pkg } from "../CommandLine/RippleCLI";
 import { readdirSync } from "fs";
 import { env } from "process";
 import * as db from "quick.db";
-
 
 /**
  * @extends AkairoClient
@@ -66,16 +70,21 @@ export default class Ripple extends AkairoClient {
     public readonly CommandChannel = new CommandChannelManager(this);
     public readonly DeleteSniper = new DeleteSniperManager(this);
     public readonly EditSniper = new EditSniperManager(this);
+    public readonly ModLogs = new ModLogsManager(this);
+    public readonly ModLogsChannel = new ModLogsChannelManager(this);
+    public readonly ModLogID = new ModLogIDManager(this);
     public readonly Wizard101 = Wizard101;
     public readonly Package: Package = pkg;
     public readonly Version = `v${this.Package.version}`;
     public readonly GitHubRepo = "https://github.com/AlphaRunic/Ripple";
-    public readonly Website = "https://ripple-bot.netlify.app";
-    public readonly InviteLink = `discord.com/oauth2/authorize?client_id=840692008419197048&scope=bot&permissions=8&redirect_uri=${this.Website}`;
     public readonly DonateLink = "https://donatebot.io/checkout/846604279288168468";
+    public readonly Website = "https://ripple-bot.netlify.app";
+    public readonly InviteLink = `https://discord.com/oauth2/authorize?client_id=840692008419197048&scope=bot&permissions=8`;
+    public readonly LoginToken = env.LOGIN_TOKEN;
     public CancelCommandLoop = false;
     public BotName: string;
 
+    
     private readonly inhibitorHandler = new InhibitorHandler<Ripple>(this, {
         directory: __dirname + "/Inhibitors/"
     });
@@ -99,22 +108,48 @@ export default class Ripple extends AkairoClient {
      * @description Log in with a token or env.LOGIN_TOKEN
      * @param token
      */
-    public async Login(token: string = env.LOGIN_TOKEN): Promise<string> {
-        const p = super.login(token)
+    public async Login(token: string = this.LoginToken): Promise<string> {
+        try {
+            const p = super.login(token)
             .then(async res => {
                 this.BotName = this.user.username;
                 await this.UpdatePresence();
                 return res;
             });
 
-        await this.Initialize();
-        return p;
+            await this.Initialize();
+            return p;
+        } catch (err) {
+            this.Logger.ErrorLogger.Report(err as string, new Date(Date.now()));
+        }
     }
 
     private async Initialize() {
         this.HandleEvents(Events);
         this.LoadCommands();
         await this.Donations.StartTransactionsLoop();
+    }
+
+    public async AddModLog(m: GuildObject, event: any, content: string): Promise<Message> {
+        const modLogChannelID: string = await this.ModLogsChannel.Get(m);
+        const modLogChannel = this.channels.resolve(modLogChannelID) as TextChannel;
+        const id = await this.ModLogID.Get(m);
+        await this.ModLogID.Increment(m);
+
+        return modLogChannel.send(
+            this.ModLogEmbed(`Moderator Log #${id}`)
+                .SetEvent(event)
+                .SetContent(content)
+                .SetDate(StripISO(new Date(Date.now())))
+        );
+    }
+
+    public get Avatar() {
+        return this.user.displayAvatarURL({ dynamic: true });
+    }
+
+    public get FullName() {
+        return `${this.BotName} ${this.Version}`;
     }
 
     public get CommandCount() {
@@ -191,20 +226,19 @@ export default class Ripple extends AkairoClient {
             .setDescription(description?? "");
     }
 
-    public QuoteEmbed(title?: string, emoji?: string): QuoteEmbed {
-        return new QuoteEmbed()
-            .setTitle(title ? (emoji ? `${emoji}  ${title}  ${emoji}` : title) : "")
-            .setColor("RANDOM")
-            .setFooter(`${this.BotName} ${this.Version}`, this.user.displayAvatarURL({ dynamic: true }))
-            .setTimestamp();
+    public ModLogEmbed(title?: string): ModLogEmbed {
+        return new ModLogEmbed(title)
+            .setFooter(this.FullName, this.Avatar)
     }
 
-    public Embed(title?: string, emoji?: string): MessageEmbed {
-        return new MessageEmbed()
-            .setTitle(title ? (emoji ? `${emoji}  ${title}  ${emoji}` : title) : "")
-            .setColor("RANDOM")
-            .setFooter(`${this.BotName} ${this.Version}`, this.user.displayAvatarURL({ dynamic: true }))
-            .setTimestamp();
+    public QuoteEmbed(title?: string, emoji?: string): QuoteEmbed {
+        return new QuoteEmbed(title, emoji)
+            .setFooter(this.FullName, this.Avatar)
+    }
+
+    public Embed(title?: string, emoji?: string): RippleEmbed {
+        return new RippleEmbed(title, emoji)
+            .setFooter(this.FullName, this.Avatar)
     }
 
     public Seconds(secs: number): number {

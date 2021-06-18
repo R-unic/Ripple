@@ -15,6 +15,9 @@ import { CommandChannelManager } from "./Managers/Guild/CommandChannelManager";
 import { DeleteSniperManager } from "./Managers/GuildChannel/DeleteSniperManager";
 import { EditSniperManager } from "./Managers/GuildChannel/EditSniperManager";
 import { UserBlacklistManager } from "./Managers/GuildMember/UserBlacklistManager";
+import { ModLogsManager } from "./Managers/Guild/ModLogsManager";
+import { ModLogsChannelManager } from "./Managers/Guild/ModLogsChannelManager";
+import { ModLogIDManager } from "./Managers/Guild/ModLogIDManager";
 
 export {
     AutoRoleManager,
@@ -27,6 +30,9 @@ export {
     LevelManager,
     LevelUpChannelManager,
     LevelSystemManager,
+    ModLogsChannelManager,
+    ModLogIDManager,
+    ModLogsManager,
     NotesManager,
     PrefixManager,
     PremiumManager,

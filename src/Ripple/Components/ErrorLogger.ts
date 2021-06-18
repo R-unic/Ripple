@@ -43,6 +43,7 @@ export class ErrorLogger {
     */
     public Report(errorMsg: string, createdAt: Date): ErrorLogger {
         this.Log.set(createdAt, errorMsg);
+        console.warn(errorMsg);
         return this;
     }
 

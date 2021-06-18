@@ -1,8 +1,9 @@
 {
   "compilerOptions": {
     "module": "commonjs",
-    "target": "es2020",
+    "target": "es6",
     "noImplicitAny": false,
+    // "noImplicitOverride": true,
     "sourceMap": true,
     "outDir": "dist",
     "rootDir": "src",

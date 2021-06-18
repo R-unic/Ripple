@@ -10,10 +10,11 @@ export default class extends Command<Ripple> {
         super(name, {
             aliases: [name, "urlshorten", "shortenlink"],
             cooldown: 5e3,
+            ratelimit: 2,
             description: {
-                content: "Shortens the provided URL via shrtco.de",
-                usage: '<"url">',
-                examples: ['"https://alpharunic.github.io/Ripple/"']
+                content: "Shortens a URL via shrtco.de",
+                usage: '<url>',
+                examples: ['https://alpharunic.github.io/Ripple/']
             },
             args: [ Arg("url", "string") ]
         });
@@ -24,18 +25,14 @@ export default class extends Command<Ripple> {
             return this.client.Logger.MissingArgError(msg, "url");
 
         const sent = await msg.reply("Shortening URL... this may take a while.");
-
-        return ShortcodeAPI.ShortenURL(url)
-            .then(({ error, ok, result }) => {
-                if (!ok)
-                    return this.client.Logger.APIError(msg, error);
-
-                return sent.delete()
-                    .then(() => msg.reply(
-                        this.client.Embed()
-                            .setTitle('Shortened URL')
-                            .setDescription(`[${result?.short_link}](${result?.full_short_link})`)
-                    ));
-            }).catch(err => this.client.Logger.APIError(msg, err));
+        const link = await ShortcodeAPI.ShortenURL(url);
+        if (!link)
+            return this.client.Logger.APIError(msg, "Could not shorten URL.");
+        
+        return sent.delete()
+            .then(() => msg.reply(
+                this.client.Embed("Shortened URL", "🔗")
+                    .setDescription(link)
+            ));
     }
 }

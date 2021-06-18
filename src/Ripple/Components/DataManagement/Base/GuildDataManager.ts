@@ -1,13 +1,7 @@
 import { GuildObject } from "../../../Util";
-import Ripple from "../../../Client";
+import { DataManager } from "./DataManager";
 
-export abstract class GuildDataManager<T> {
-    public readonly Tag: string;
-
-    public constructor(
-        public readonly Client: Ripple
-    ) {}
-
+export abstract class GuildDataManager<T> extends DataManager {
     public abstract Get(m: GuildObject, defaultValue?: T): Promise<T>;
     public abstract Set(m: GuildObject, value: T): Promise<boolean>;
     public abstract Increment?(m: GuildObject, amount?: number): Promise<boolean>;

@@ -35,8 +35,8 @@ export default class extends Command<Ripple> {
                     start: "Would you like an image for your embed? If so, provide a URL."
                 }),
                 Arg("channel", "textChannel", undefined, {
-                    start: "Would you like a channel for your embed to be sent in? If so, where would you like it to be? (If you say no it will send in this channel)",
-                    retry: "That's an invalid text channel. Please try again."
+                    start: "Where would you like your embed to be sent in? (Provide a text channel)",
+                    retry: msg => this.client.Logger.InvalidArgError(msg, "That's an invalid text channel. Please try again.")
                 })
             ]
         });

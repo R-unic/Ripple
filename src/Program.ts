@@ -8,16 +8,19 @@ import Ripple from "./Ripple/Client";
 const ProgramLogger = new ErrorLogger;
 
 const ThrowError = (err: string) => 
-    ProgramLogger.Report(err, new Date(Date.now()))
+    ProgramLogger.Report(err, new Date(Date.now()));
 
 InitiateEnv();
 RunCommand("npm test", (err, res) => 
-    err? ThrowError(err.message) 
-    : (() => {
-        Print(res);
-        new Ripple;
-    })()
+    err? 
+        ThrowError(err.message) 
+        :(() => {
+            Print(res);
+            new Ripple;
+        })()
 );
 
 On("unhandledRejection", ThrowError);
 On("uncaughtException", ThrowError);
+
+export { Ripple as Client };
