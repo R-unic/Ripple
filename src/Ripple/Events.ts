@@ -24,6 +24,9 @@ export const Events = new Map<keyof ClientEvents, Function>([
     ["ready", (client: Ripple) => log(`${client.BotName} ${client.Version} is now online.`)],
     ["error", (_, err) => ReportErrorNow(err)],
     ["guildMemberAdd", async (client: Ripple, member: GuildMember) => {
+        if (await client.ModLogs.Get(member))
+            client.AddModLog(member, "User Joined", `${member}`);
+
         if (member.user === client.user)
             return client.UpdatePresence();
         
