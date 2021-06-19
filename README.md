@@ -7,7 +7,7 @@
 </h1>
 <h3 align="center">All-purpose TypeScript Discord bot</p>
 <br>
-<a href="https://alpharunic.github.io/Ripple/" align="center">Learn more</a>
+<a href="https://ripple-bot.netlify.app/" align="center">Learn more</a>
 <br>
 <a href="https://www.npmjs.com/package/ripple-discord-ts" align="center">NPM package</a>
 <br>

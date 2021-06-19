@@ -27,7 +27,7 @@
   "bugs": {
     "url": "https://github.com/AlphaRunic/Ripple/issues"
   },
-  "homepage": "https://alpharunic.github.io/Ripple",
+  "homepage": "https://ripple-bot.netlify.app",
   "dependencies": {
     "@types/ms": "^0.7.31",
     "@types/node-fetch": "^2.5.10",

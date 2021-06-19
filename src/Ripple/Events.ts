@@ -69,7 +69,7 @@ export const Events = new Map<keyof ClientEvents, Function>([
     }],
     ["messageUpdate", async (client: Ripple, msg: Message) => {
         if (await client.ModLogs.Get(msg))
-            client.AddModLog(msg, "Message Edited", `"${msg.content}" by ${msg.member}`);
+            client.AddModLog(msg, "Message Updated", `"${msg.content}" by ${msg.member}`);
 
         client.EditSniper.Set(msg.channel as TextChannel, { 
             SenderID: msg.member.id, 
