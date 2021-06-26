@@ -2,7 +2,6 @@ import { Command } from "discord-akairo";
 import { GuildMember, Message, Role } from "discord.js";
 import { Arg } from "../../Util";
 import Ripple from "../../Client";
-import ms from "ms";
 
 export default class extends Command<Ripple> {
     public constructor() {

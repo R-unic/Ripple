@@ -1,4 +1,4 @@
-import { Argument, Command } from "discord-akairo";
+import { Command } from "discord-akairo";
 import { GuildMember, Message } from "discord.js";
 import { Arg } from "../../Util";
 import Ripple from "../../Client";

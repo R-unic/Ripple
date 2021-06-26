@@ -7,7 +7,7 @@ export default class extends Command<Ripple> {
     public constructor() {
         const name = "discriminator";
         super(name, {
-            aliases: [name, "discrim", "tag"],
+            aliases: [name, "discrim"],
             description: {
                 content: "Returns a list of users with the discriminator provided.",
                 usage: "<discrim>"

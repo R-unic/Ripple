@@ -43,6 +43,7 @@ import { pkg } from "../CommandLine/RippleCLI";
 import { readdirSync } from "fs";
 import { env } from "process";
 import * as db from "quick.db";
+import { TagManager } from "./Components/DataManagement/Managers/Guild/TagManager";
 
 /**
  * @extends AkairoClient
@@ -73,6 +74,7 @@ export default class Ripple extends AkairoClient {
     public readonly ModLogs = new ModLogsManager(this);
     public readonly ModLogsChannel = new ModLogsChannelManager(this);
     public readonly ModLogID = new ModLogIDManager(this);
+    public readonly Tags = new TagManager(this);
     public readonly Wizard101 = Wizard101;
     public readonly Package: Package = pkg;
     public readonly Version = `v${this.Package.version}`;
@@ -84,7 +86,6 @@ export default class Ripple extends AkairoClient {
     public CancelCommandLoop = false;
     public BotName: string;
 
-    
     private readonly inhibitorHandler = new InhibitorHandler<Ripple>(this, {
         directory: __dirname + "/Inhibitors/"
     });
@@ -95,8 +96,6 @@ export default class Ripple extends AkairoClient {
     ) {
         super({
             ownerID: [ "415233686758359051", "686418809720012843" ]
-        }, {
-            disableMentions: "everyone"
         });
 
         immediateLogin? 
