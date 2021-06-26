@@ -7,7 +7,8 @@ export default class extends Command<Ripple> {
         const name = "servers";
         super(name, {
             aliases: [name, "serverlist", "inservers"],
-            description: "Returns every server Ripple is a member of."
+            description: "Returns every server Ripple is a member of.",
+            ownerOnly: true
         });
     }
 

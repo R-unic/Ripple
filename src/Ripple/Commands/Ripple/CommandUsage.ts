@@ -29,10 +29,11 @@ export default class extends Command<Ripple> {
         return msg.reply(
             this.client.Embed(`How To Use \`${prefix}${command.aliases[0]}\``)
                 .setDescription(descIsString ? command.description : command.description.content)
-                .addField("Args", descIsString ? "None" : command.description.usage, true)
+                .addField("Arguments", descIsString ? "None" : command.description.usage, true)
                 .addField("Cooldown", command.cooldown ? command.cooldown : "None", true)
                 .addField("Aliases", command.aliases.map(a => `\`${a}\``).join(", "), true)
-                .addField("Owner Only", command.ownerOnly ? "Yes" : "No")
+                .addField("Examples", command.description?.examples?.map(a => `\`${a}\``)?.join(", ")?? "None", true)
+                .addField("Owner Only", command.ownerOnly ? "Yes" : "No", true)
                 .addField("Premium Only", command instanceof PremiumCommand ? "Yes" : "No", true)
                 .addField("Required User Permissions", 
                     userPerms?

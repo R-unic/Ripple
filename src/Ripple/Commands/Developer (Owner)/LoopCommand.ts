@@ -29,8 +29,7 @@ export default class extends Command<Ripple> {
             json = argsJSON? 
                 JSON.parse(
                     argsJSON
-                        .replace(/'/, '"')
-                        .replace(/ /, "")
+                        .split("'").join('"')
                 ) : true;
         } catch (err) {
             return this.client.Logger.InvalidArgError(msg, "'argsJSON' could not be resolved to a JSON object.");

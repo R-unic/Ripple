@@ -25,7 +25,7 @@ export default class extends Command<Ripple> {
 
         const roleID = await this.client.ChatReviveRole.Get(msg);
         msg.delete();
-        return msg.channel.send(Role(roleID))
+        return msg.channel.send(roleID ? Role(roleID) : "@everyone")
             .then(() => msg.reply(
                 this.client.Embed("Chat Revive")
                     .setAuthor(`Initiated by ${msg.author.tag}`)
