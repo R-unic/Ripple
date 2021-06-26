@@ -1,6 +1,6 @@
 {
   "name": "ripple-discord-ts",
-  "version": "3.1.0",
+  "version": "3.1.1",
   "description": "All-purpose TypeScript Discord bot",
   "main": "dist/Program.js",
   "scripts": {
