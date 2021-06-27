@@ -1,0 +1,26 @@
+{
+  "name": "ripple-server",
+  "version": "1.0.0",
+  "description": "Hosting for Ripple",
+  "main": "app/dist/Program.js",
+  "scripts": {
+    "test": "node app/dist/UnitTesting/Run.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AlphaRunic/Ripple.git"
+  },
+  "keywords": [
+    "server",
+    "ripple",
+    "bot",
+    "discord",
+    "ts"
+  ],
+  "author": "AlphaRunic",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/AlphaRunic/Ripple/issues"
+  },
+  "homepage": "https://github.com/AlphaRunic/Ripple#readme"
+}
