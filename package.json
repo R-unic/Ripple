@@ -4,7 +4,7 @@
   "description": "All-purpose TypeScript Discord bot",
   "main": "dist/Program.js",
   "scripts": {
-    "start": "tsc && pm2 start dist/Program.js && echo Successfully started Ripple client.",
+    "start": "npm test && node dist/Program.js",
     "restart": "tsc && pm2 restart Program && echo Successfully restarted Ripple client.",
     "devstart": "tsc -w & nodemon --trace-warnings dist/Program.js -e .ts,.js,.json",
     "test": "tsc && node dist/UnitTesting/Run.js"
