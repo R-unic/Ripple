@@ -5,8 +5,7 @@
   "main": "app/dist/Program.js",
   "scripts": {
     "start": "node app/dist/Program.js",
-    "test": "node app/dist/UnitTesting/Run.js",
-    "build": "tsc"
+    "test": "node app/dist/UnitTesting/Run.js"
   },
   "repository": {
     "type": "git",
