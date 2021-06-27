@@ -2,10 +2,10 @@
   "name": "ripple-server",
   "version": "1.0.0",
   "description": "Hosting for Ripple",
-  "main": "./app/dist/Program.js",
+  "main": "dist/Program.js",
   "scripts": {
-    "start": "node ./app/dist/Program.js",
-    "test": "node ./app/dist/UnitTesting/Run.js"
+    "start": "node ./dist/Program.js",
+    "test": "node ./dist/UnitTesting/Run.js"
   },
   "repository": {
     "type": "git",
