@@ -4,8 +4,18 @@
   "description": "Hosting for Ripple",
   "main": "dist/Program.js",
   "scripts": {
+<<<<<<< HEAD
     "start": "node ./app/dist/Program.js",
     "test": "node ./app/dist/UnitTesting/Run.js"
+=======
+    "start": "tsc && pm2 start dist/Program.js && echo Successfully started Ripple client.",
+    "restart": "tsc && pm2 restart Program && echo Successfully restarted Ripple client.",
+    "devstart": "tsc -w & nodemon --trace-warnings dist/Program.js -e .ts,.js,.json",
+    "test": "tsc && node dist/UnitTesting/Run.js"
+  },
+  "bin": {
+    "ripple": "bin/ripple"
+>>>>>>> parent of aac12a5 (Set up Heroku hosting)
   },
   "repository": {
     "type": "git",
