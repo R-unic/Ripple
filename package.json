@@ -7,7 +7,7 @@
     "start": "npm test && node dist/Program.js",
     "restart": "tsc && pm2 restart Program && echo Successfully restarted Ripple client.",
     "devstart": "tsc -w & nodemon --trace-warnings dist/Program.js -e .ts,.js,.json",
-    "test": "tsc && node dist/UnitTesting/Run.js"
+    "test": "node dist/UnitTesting/Run.js"
   },
   "bin": {
     "ripple": "bin/ripple"
