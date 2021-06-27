@@ -4,8 +4,8 @@
   "description": "Hosting for Ripple",
   "main": "dist/Program.js",
   "scripts": {
-    "start": "node ./dist/Program.js",
-    "test": "node ./dist/UnitTesting/Run.js"
+    "start": "node ./app/dist/Program.js",
+    "test": "node ./app/dist/UnitTesting/Run.js"
   },
   "repository": {
     "type": "git",
