@@ -145,7 +145,7 @@ export class ModLogEmbed extends RippleEmbed {
         return this.addField("Date 📆", content);
     }
 
-    public SetContent(content: string) {
+    public SetContent(content: any) {
         return this.addField("Content 🗒️", content);
     }
 }

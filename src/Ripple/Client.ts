@@ -35,7 +35,7 @@ import { Wizard101 } from "wizard101-api";
 import { RippleLogger } from "./Components/Logger";
 import { DonationAPI } from "./APIWrappers/Donation";
 import { IconFinderAPI } from "./APIWrappers/IconFinder";
-import { GuildObject, ModLogEmbed, QuoteEmbed, RippleEmbed, StripISO } from "./Util";
+import { CommaNumber, GuildObject, ModLogEmbed, QuoteEmbed, RippleEmbed, StripISO, ToTitleCase } from "./Util";
 import { Options } from "./Options";
 import { Package } from "./Package";
 import { Events } from "./Events";
@@ -129,14 +129,17 @@ export default class Ripple extends AkairoClient {
         await this.Donations.StartTransactionsLoop();
     }
 
-    public async AddModLog(m: GuildObject, event: any, content: string): Promise<Message> {
+    public async AddModLog(m: GuildObject, event: any, content: any): Promise<Message> {
         const modLogChannelID: string = await this.ModLogsChannel.Get(m);
         const modLogChannel = this.channels.resolve(modLogChannelID) as TextChannel;
+        if (!modLogChannel)
+            return;
+
         const id = await this.ModLogID.Get(m);
         await this.ModLogID.Increment(m);
 
         return modLogChannel.send(
-            this.ModLogEmbed(`Moderator Log #${id}`)
+            this.ModLogEmbed(`Moderator Log #${CommaNumber(id)}`)
                 .SetEvent(event)
                 .SetContent(content)
                 .SetDate(StripISO(new Date(Date.now())))
@@ -207,8 +210,8 @@ export default class Ripple extends AkairoClient {
         });
     }
 
-    public Set(m: GuildObject, key: string, value: any, userID?: string): Promise<boolean> {
-        return new Promise((resolve, reject) => {
+    public async Set(m: GuildObject, key: string, value: any, userID?: string): Promise<boolean> {
+        return new Promise(async (resolve, reject) => {
             try {
                 const tag = this.Tag(key, m.guild.id, userID);
                 db.set(tag, value);
@@ -216,7 +219,7 @@ export default class Ripple extends AkairoClient {
             } catch (err) {
                 reject(err);
             }
-        });
+        })
     }
 
     public Success(description?: string): MessageEmbed {
