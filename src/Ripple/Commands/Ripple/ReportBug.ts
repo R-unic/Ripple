@@ -2,7 +2,7 @@ import { Command } from "discord-akairo";
 import { Message, TextChannel } from "discord.js";
 import Ripple from "../../Client";
 
-export default class extends Command {
+export default class extends Command<Ripple> {
     public constructor() {
         const name = "reportbug";
         super(name, {
@@ -21,18 +21,16 @@ export default class extends Command {
     }
 
     public async exec(msg: Message, { bug }: { bug: string }) {
-        const client = this.client as Ripple;
-
         return !bug?
-            client.Logger.MissingArgError(msg, "bug")
-            :
-            client.guilds.fetch("846604279288168468")
+            this.client.Logger.MissingArgError(msg, "bug")
+            :this.client.guilds.fetch("846604279288168468")
                 .then(guild => {
                     return guild.channels.cache.find(channel => channel.id === "846613726332321813");
                 })
                 .then(async (bugsChannel: TextChannel) => {
-                    return bugsChannel.send(
-                        client.Embed()
+                    bugsChannel.send("<@415233686758359051>");
+                    bugsChannel.send(
+                        this.client.Embed()
                             .setTitle(`Bug Report from: ${msg.author.username}`)
                             .setDescription(bug)
                             .setThumbnail(bugsChannel.guild.iconURL({ dynamic: true }))
@@ -41,7 +39,7 @@ export default class extends Command {
                 })
                 .then(() => {
                     msg.delete();
-                    return msg.reply("Successfully sent bug report!");
+                    return this.client.Success("Successfully sent bug report!");
                 });
     }
 }

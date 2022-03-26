@@ -18,6 +18,7 @@ export default class extends Command<Ripple> {
                 .setDescription(
                     this.client.guilds.cache
                         .array()
+                        .map(async s => `[${s.name}](${(await s.fetchInvites()).first()})`)
                         .join("\n")
                 )
         );
