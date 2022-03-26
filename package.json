@@ -7,7 +7,8 @@
     "start": "node dist/Program.js",
     "restart": "tsc && pm2 restart Program && echo Successfully restarted Ripple client.",
     "devstart": "tsc -w & nodemon --trace-warnings dist/Program.js -e .ts,.js,.json",
-    "test": "node dist/UnitTesting/Run.js"
+    "test": "node dist/UnitTesting/Run.js",
+    "release": "release-it"
   },
   "bin": {
     "ripple": "bin/ripple"
@@ -51,6 +52,7 @@
     "wizard101-api": "^1.2.5"
   },
   "devDependencies": {
-    "@types/node": "^15.0.2"
+    "@types/node": "^15.0.2",
+    "release-it": "^14.13.1"
   }
 }
