@@ -35,9 +35,10 @@ export default class extends PremiumCommand {
             return this.client.Logger.MissingArgError(msg, "content");
 
         return member.send(content)
-            .then(() => msg.reply(
-                this.client.Success()
-                    .setDescription(`Successfully sent your DM to ${member}.`)
-            ));
+            .then(() => {
+                msg.reply(this.client.Success()
+                    .setDescription(`Successfully sent your DM to ${member}.`));
+                msg.delete();
+            });
     }
 }
