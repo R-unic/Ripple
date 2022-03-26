@@ -39,7 +39,7 @@ export default class extends Command<Ripple> {
                 })
                 .then(() => {
                     msg.delete();
-                    return this.client.Success("Successfully sent bug report!");
+                    return msg.reply(this.client.Success("Successfully sent bug report!"));
                 });
     }
 }
