@@ -10,11 +10,13 @@ import {
 } from "discord.js";
 import { 
     AutoRoleManager,
+    AutoGoodbyeManager,
     AutoWelcomeManager,
     ChatReviveRoleManager,
     CommandChannelManager,
     DeleteSniperManager,
     EditSniperManager,
+    GoodbyeChannelManager,
     InfractionManager,
     LevelManager,
     LevelUpChannelManager,
@@ -54,6 +56,7 @@ export default class Ripple extends AkairoClient {
     public readonly Logger = new RippleLogger(this);
     public readonly Donations = new DonationAPI(this, env.DONATE_BOT_API);
     public readonly IconFinder = new IconFinderAPI(env.ICONFINDER_API);
+
     public readonly Giveaways = new GiveawaysManager(this, Options.GiveawayManager);
     public readonly Reputation = new ReputationManager(this);
     public readonly Prefix = new PrefixManager(this);
@@ -75,6 +78,9 @@ export default class Ripple extends AkairoClient {
     public readonly ModLogsChannel = new ModLogsChannelManager(this);
     public readonly ModLogID = new ModLogIDManager(this);
     public readonly Tags = new TagManager(this);
+    public readonly GoodbyeChannel = new GoodbyeChannelManager(this);
+    public readonly GoodbyeMessage = new AutoGoodbyeManager(this);
+
     public readonly Wizard101 = Wizard101;
     public readonly Package: Package = pkg;
     public readonly Version = `v${this.Package.version}`;
@@ -179,7 +185,7 @@ export default class Ripple extends AkairoClient {
     public async GetForUser<ResType = any>(user: User, key: string, defaultValue?: ResType): Promise<ResType> {
         return new Promise((resolve, reject) => {
             try {
-                const tag = this.Tag(key, user.id);
+                const tag = this.Tag(key, user?.id);
                 resolve((db.get(tag)?? defaultValue) as ResType);
             } catch (err) {
                 reject(err);
@@ -190,7 +196,7 @@ export default class Ripple extends AkairoClient {
     public SetForUser(user: User, key: string, value: any): Promise<boolean> {
         return new Promise((resolve, reject) => {
             try {
-                const tag = this.Tag(key, user.id);
+                const tag = this.Tag(key, user?.id);
                 db.set(tag, value);
                 resolve(true);
             } catch (err) {
@@ -202,7 +208,7 @@ export default class Ripple extends AkairoClient {
     public async Get<ResType = any>(m: GuildObject, key: string, defaultValue?: ResType, userID?: string): Promise<ResType> {
         return new Promise((resolve, reject) => {
             try {
-                const tag = this.Tag(key, m.guild.id, userID);
+                const tag = this.Tag(key, m.guild?.id, userID);
                 resolve((db.get(tag)?? defaultValue) as ResType);
             } catch (err) {
                 reject(err);
@@ -213,7 +219,7 @@ export default class Ripple extends AkairoClient {
     public async Set(m: GuildObject, key: string, value: any, userID?: string): Promise<boolean> {
         return new Promise(async (resolve, reject) => {
             try {
-                const tag = this.Tag(key, m.guild.id, userID);
+                const tag = this.Tag(key, m.guild?.id, userID);
                 db.set(tag, value);
                 resolve(true);
             } catch (err) {

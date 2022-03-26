@@ -26,7 +26,7 @@ export default class extends Command<Ripple> {
                     lyricsMsg: await msg.reply(
                         this.client.Embed()
                             .setTitle(await requestTitleFor(song))
-                            .setDescription((await requestLyricsFor(song)).slice(0, 2042))
+                            .setDescription((await requestLyricsFor(song))?.slice(0, 2042) ?? "Could not find lyrics")
                             .setAuthor(await requestAuthorFor(song))
                             .setThumbnail(await requestIconFor(song))
                     )

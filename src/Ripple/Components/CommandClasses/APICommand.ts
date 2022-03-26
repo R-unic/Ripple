@@ -4,7 +4,7 @@ import Ripple from "../../Client";
 import fetch from "node-fetch";
 
 export class APICommand extends Command<Ripple> {
-    public ratelimit: 2;
+    declare public ratelimit: 2;
     
     public async RequestAPI<ResType = any>(msg: Message, url: string, text: boolean = false): Promise<ResType> {
         try {

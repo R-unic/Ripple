@@ -1,10 +1,10 @@
 {
   "compilerOptions": {
     "module": "commonjs",
-    "target": "es6",
+    "target": "ES6",
     "noImplicitAny": false,
     // "noImplicitOverride": true,
-    "sourceMap": true,
+    "sourceMap": false,
     "outDir": "dist",
     "rootDir": "src",
     "emitDecoratorMetadata": true,
@@ -15,7 +15,7 @@
       "es2017",
       "esnext.asynciterable"
     ],
-    "moduleResolution": "node",
+    "moduleResolution": "Node",
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true
   },

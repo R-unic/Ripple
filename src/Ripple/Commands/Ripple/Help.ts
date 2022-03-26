@@ -39,7 +39,7 @@ export default class extends Command<Ripple> {
             .setTitle("Help Menu")
             .setDescription([
                 msg.guild ? `This server's prefix is \`${prefix}\`` : "",
-                `For more info about a command, see: \`${prefix}help <commandName?>\`\n`,
+                `For more info about a command, see: \`${prefix}usage <commandName?>\`\n`,
                 !msg.guild
                     ? "\nThere are commands that are only usable in servers." +
                     " If you would like to see them, please trigger this command in a server."

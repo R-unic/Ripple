@@ -24,9 +24,9 @@ export default class extends Command<Ripple> {
                 .addField("Joined Discord On", StripISO(member.user.createdAt), true)
                 .addField("Joined Server On", StripISO(member.joinedAt), true)
                 .addField("Nitro Since", member.premiumSince ? StripISO(member.premiumSince) : "Never", true)
-                .addField("Last Message", member.lastMessage.content, true)
                 .addField("Roles", member.roles.cache.array(), true)
                 .addField("Manageable", member.manageable ? "Yes" : "No", true)
+                .addField("Ripple Premium", this.client.Premium.Get(member.user) ? "Yes" : "No", true)
                 .setColor(msg.member.displayHexColor)
         );
     }

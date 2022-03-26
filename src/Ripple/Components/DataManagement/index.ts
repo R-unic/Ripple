@@ -18,14 +18,18 @@ import { UserBlacklistManager } from "./Managers/GuildMember/UserBlacklistManage
 import { ModLogsManager } from "./Managers/Guild/ModLogsManager";
 import { ModLogsChannelManager } from "./Managers/Guild/ModLogsChannelManager";
 import { ModLogIDManager } from "./Managers/Guild/ModLogIDManager";
+import { GoodbyeChannelManager } from "./Managers/Guild/GoodbyeChannelManager";
+import { AutoGoodbyeManager } from "./Managers/Guild/AutoGoodbyeManager";
 
 export {
     AutoRoleManager,
+    AutoGoodbyeManager,
     AutoWelcomeManager,
     ChatReviveRoleManager,
     CommandChannelManager,
     DeleteSniperManager,
     EditSniperManager,
+    GoodbyeChannelManager,
     InfractionManager,
     LevelManager,
     LevelUpChannelManager,
