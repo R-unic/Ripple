@@ -8,7 +8,8 @@
     "restart": "tsc && pm2 restart Program && echo Successfully restarted Ripple client.",
     "devstart": "tsc -w & nodemon --trace-warnings dist/Program.js -e .ts,.js,.json",
     "test": "node dist/UnitTesting/Run.js",
-    "release": "release-it"
+    "release": "release-it",
+    "changelog": "changelog > CHANGELOG.md"
   },
   "bin": {
     "ripple": "bin/ripple"
@@ -53,6 +54,7 @@
   },
   "devDependencies": {
     "@types/node": "^15.0.2",
-    "release-it": "^14.13.1"
+    "release-it": "^14.13.1",
+    "simple-git-changelog": "^2.1.0"
   }
 }

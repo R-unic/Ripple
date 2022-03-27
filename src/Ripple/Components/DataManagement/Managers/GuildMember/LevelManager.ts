@@ -81,13 +81,15 @@ export class LevelManager implements GuildMemberDataManager<Stats> {
         if (prestige > this.MaxPrestige) return;
 
         await this.SetLevel(user, 1);
-        await this.SetXP(user, 0)
+        await this.SetXP(user, 0);
+        await this.Client.Cash.Increment(user, 50 * (prestige ^ 1.15) / 1.5);
         return this.SetPrestige(user, prestige + amount);
     }
 
     public async AddLevel(user: GuildMember, amount: number = 1): Promise<boolean> {
         const level: number = await this.GetLevel(user);
         await this.SetLevel(user, level + amount);
+        await this.Client.Cash.Increment(user, 25 * (level ^ 1.1) / 1.75);
         return this.SetXP(user, 0);
     }
 
