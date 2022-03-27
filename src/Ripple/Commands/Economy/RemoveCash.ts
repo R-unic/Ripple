@@ -32,7 +32,7 @@ export default class extends Command<Ripple> {
             .then(async success => {
                 if (success)
                     msg.reply(
-                        this.client.Success(`Successfully removed $${CommaNumber(amount)} from ${member}'s balance. ${member} now has ${CommaNumber(await this.client.Cash.Get(msg.member))}`)
+                        this.client.Success(`Successfully removed $${CommaNumber(amount)} from ${member}'s balance. ${member} now has ${CommaNumber(await this.client.Cash.Get(member))}`)
                     );
             })
     }

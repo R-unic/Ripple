@@ -11,6 +11,7 @@ export default class extends Command<Ripple> {
             aliases: [name, "revivechat", "makeactive", "heyeveryone"],
             cooldown: 60e3,
             ratelimit: 2,
+            userPermissions: "ADMINISTRATOR",
             description: {
                 content: "Pings the role set for chat revive, or @everyone.",
                 usage: '<"message">'
