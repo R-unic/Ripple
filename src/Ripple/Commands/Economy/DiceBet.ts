@@ -36,7 +36,7 @@ export default class extends Command<Ripple> {
         const newBal: number = await this.client.Cash.Get(msg.member);
         return msg.reply(
             this.client.Embed(`You ${roll === betNumber ? "won" : "lost"} the bet!`)
-                .setDescription(`🎲: ${roll}\nAmount Bet: $${CommaNumber(betAmount)}\nNew Balance: $${CommaNumber(newBal)}`)
+                .setDescription(`🎲: ${roll}\n\nAmount Bet: $${CommaNumber(betAmount)}\nNew Balance: $${CommaNumber(newBal)}`)
         )
     }
 }

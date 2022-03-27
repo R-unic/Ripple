@@ -22,30 +22,28 @@ export default class extends Command<Ripple> {
         if (member.user.bot)
             return this.client.Logger.InvalidArgError(msg, "Bots do not have profiles.");
 
-        setTimeout(async () => {
-            const prestige = await this.client.Stats.GetPrestige(member)
-            const level = await this.client.Stats.GetLevel(member);
-            const exp = await this.client.Stats.GetXP(member);
-            const untilNext = await this.client.Stats.XPUntilNextLevel(member);
-            const reputation = await this.client.Reputation.Get(member);
-            const maxXPGain = await this.client.Stats.MaxXPGain(member);
-            const premium = await this.client.Premium.Get(member.user);
+        const prestige = await this.client.Stats.GetPrestige(member)
+        const level = await this.client.Stats.GetLevel(member);
+        const exp = await this.client.Stats.GetXP(member);
+        const untilNext = await this.client.Stats.XPUntilNextLevel(member);
+        const reputation = await this.client.Reputation.Get(member);
+        const maxXPGain = await this.client.Stats.MaxXPGain(member);
+        const premium = await this.client.Premium.Get(member.user);
 
-            try {
-                return msg.channel.send(
-                    this.client.Embed(`${member.user.tag}'s Profile`)
-                        .setThumbnail(member.user.avatarURL({ dynamic: true }))
-                        .addField("Prestige", prestige === 0 ? prestige : RomanNumeral(prestige), true)
-                        .addField("Level", (prestige !== 0 ? `${RomanNumeral(prestige)}-` : "") + (level === 100 ? `${level} (max)` : level), true)
-                        .addField("Experience", level === 100 ? "MAX" : CommaNumber(exp), true)
-                        .addField("XP Until Next Level", level === 100 ? "MAX" : CommaNumber(untilNext), true)
-                        .addField("XP Gain", level === 100 ? "0" : "50 - " + CommaNumber(maxXPGain), true)
-                        .addField("Reputation", reputation, true)
-                        .addField("Ripple Premium", premium ? "Yes" : "No", true)
-                );
-            } catch (err) {
-                return this.client.Logger.UtilError(msg);
-            }
-        }, ms(".5s"));
+        try {
+            return msg.channel.send(
+                this.client.Embed(`${member.user.tag}'s Profile`)
+                    .setThumbnail(member.user.avatarURL({ dynamic: true }))
+                    .addField("Prestige", prestige === 0 ? prestige : RomanNumeral(prestige), true)
+                    .addField("Level", (prestige !== 0 ? `${RomanNumeral(prestige)}-` : "") + (level === 100 ? `${level} (max)` : level), true)
+                    .addField("Experience", level === 100 ? "MAX" : CommaNumber(exp), true)
+                    .addField("XP Until Next Level", level === 100 ? "MAX" : CommaNumber(untilNext), true)
+                    .addField("XP Gain", level === 100 ? "0" : "50 - " + CommaNumber(maxXPGain), true)
+                    .addField("Reputation", reputation, true)
+                    .addField("Ripple Premium", premium ? "Yes" : "No", true)
+            );
+        } catch (err) {
+            return this.client.Logger.UtilError(msg);
+        }
     }
 }

@@ -19,6 +19,8 @@ export default class extends Command<Ripple> {
     }
 
     public async exec(msg: Message, { member }: { member: GuildMember }) {
+        if (member.user.bot)
+            return this.client.Logger.InvalidArgError(msg, "Bots do not have cash balances.");
         if (!member) 
             return this.client.Logger.MissingArgError(msg, "member");
             
