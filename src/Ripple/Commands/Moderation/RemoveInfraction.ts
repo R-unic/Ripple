@@ -39,8 +39,11 @@ export default class extends Command<Ripple> {
             return this.client.Logger.InvalidArgError(msg, `Could not find infraction with index \`${warningNumber}\`.`);
 
         return this.client.Infractions.Remove(member, infraction)
-            .then(() => msg.reply(
-                this.client.Success(`Successfully removed infraction issued by \`@${infraction.Issuer.displayName}.\``)
-            ));
+            .then(() => {
+                this.client.AddModLog(member, "Warning Revoked", member);
+                msg.reply(
+                    this.client.Success(`Successfully removed infraction issued by \`@${infraction.Issuer.displayName}.\``)
+                );
+            });
     }
 }

@@ -21,7 +21,7 @@ export default class extends PremiumCommand {
         super(name, {
             aliases: [name, "pornhubsearch", "phsearch", "ph"],
             description: {
-                content: "Returns a PornHub video based on your search query. (PREMIUM ONLY)",
+                content: "Returns a PornHub video based on your search query. **(Ripple Premium only)**",
                 usage: '<"query">'
             },
             args: [ Arg("query", "string") ]
@@ -30,9 +30,7 @@ export default class extends PremiumCommand {
 
     public async exec(msg: Message, { query }: { query: string }) {
         const error = await this.DoesNotOwnPremium(msg);
-        if (error)
-            return error;
-            
+        if (error) return error;
         if (!query)
             return this.client.Logger.MissingArgError(msg, "query");
 

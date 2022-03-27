@@ -6,7 +6,7 @@ export default class extends Command<Ripple> {
     public constructor() {
         const name = "invite";
         super(name, {
-            aliases: [name, "invitelink", "inviteme", "invitebot"],
+            aliases: [name, "invitelink", "inviteme", "invitebot", "inv", "invme"],
             description: "Returns an invite link for Ripple."
         });
     }

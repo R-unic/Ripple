@@ -58,8 +58,11 @@ export default class extends Command<Ripple> {
             timeMS);
 
         return member.roles.add(muted, "Muted")
-            .then(mutedMember => msg.reply(
-                this.client.Success(`${mutedMember} was successfully muted ${timeMS ? `for \`${timePeriod}\`` : "until they are unmuted"}.`)
-            )).catch(err => this.client.Logger.DiscordAPIError(msg, err));
+            .then(mutedMember => {
+                this.client.AddModLog(member, "Mute Issued", member);
+                msg.reply(
+                    this.client.Success(`${mutedMember} was successfully muted ${timeMS ? `for \`${timePeriod}\`` : "until they are unmuted"}.`)
+                );
+            }).catch(err => this.client.Logger.DiscordAPIError(msg, err));
     }
 }

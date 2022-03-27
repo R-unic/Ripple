@@ -20,6 +20,8 @@ import { ModLogsChannelManager } from "./Managers/Guild/ModLogsChannelManager";
 import { ModLogIDManager } from "./Managers/Guild/ModLogIDManager";
 import { GoodbyeChannelManager } from "./Managers/Guild/GoodbyeChannelManager";
 import { AutoGoodbyeManager } from "./Managers/Guild/AutoGoodbyeManager";
+import { TagManager } from "./Managers/Guild/TagManager";
+import { CashManager } from "./Managers/GuildMember/CashManager";
 
 export {
     AutoRoleManager,
@@ -43,5 +45,7 @@ export {
     PrestigeRoleManager,
     ReputationManager,
     UserBlacklistManager,
-    WelcomeChannelManager
+    WelcomeChannelManager,
+    TagManager,
+    CashManager
 }

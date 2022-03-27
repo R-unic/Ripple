@@ -18,7 +18,7 @@ export default class extends Command<Ripple> {
                 .setDescription(
                     this.client.guilds.cache
                         .array()
-                        .map(s => s.name + " | " + s.id)
+                        .map(s => `**${s.name}** | ${s.id}`)
                         .join("\n")
                 )
         );

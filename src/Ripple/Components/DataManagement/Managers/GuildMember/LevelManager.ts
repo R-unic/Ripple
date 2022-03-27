@@ -10,7 +10,7 @@ export interface Stats {
 }
 
 export class LevelManager implements GuildMemberDataManager<Stats> {
-    public Tag = "stats";
+    public readonly Tag = "stats";
     public MaxLevel = 100;
     public MaxPrestige = 25;
 
@@ -49,10 +49,14 @@ export class LevelManager implements GuildMemberDataManager<Stats> {
                     :"")
                 );
 
-            return lvlAfterXPAdd === this.MaxLevel?
+            if(lvlAfterXPAdd === this.MaxLevel)
                 channel.send(`${member}`)
-                    .then(() => channel.send(embed))
-                :channel.send(embed);
+                    .then(oldM => {
+                        channel.send(embed).then(m => m.delete({ timeout: 3500 }));
+                        oldM.delete({ timeout: 3500 });
+                    });
+            else
+                channel.send(embed).then(m => m.delete({ timeout: 3500 }));
         }
     }
 
@@ -65,7 +69,7 @@ export class LevelManager implements GuildMemberDataManager<Stats> {
     public async MaxXPGain(user: GuildMember): Promise<number> {
         const level: number = await this.GetLevel(user);
         const prestige: number = await this.GetPrestige(user);
-        return (50 + (level ^ 1.3) * 6 * ((prestige + 1) ^ 1.1));
+        return Math.round(50 + (level ^ 1.3) * 6 * ((prestige + 1) ^ 1.1));
     }
 
     public async XPGain(user: GuildMember): Promise<number> {

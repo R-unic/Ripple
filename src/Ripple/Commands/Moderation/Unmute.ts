@@ -28,8 +28,11 @@ export default class extends Command<Ripple> {
             return this.client.Logger.CouldNotBeExecutedError(msg, "'Muted' role does not exist, use `::mute <@user> <timePeriod?>` to create it automatically.")
 
         return member.roles.remove(muted, "Unmuted")
-            .then(unmutedMember => msg.reply(
-                this.client.Success(`${unmutedMember} was successfully unmuted.`)
-            )).catch(err => this.client.Logger.DiscordAPIError(msg, err));
+            .then(unmutedMember => {
+                this.client.AddModLog(member, "Mute Revoked", member);
+                msg.reply(
+                    this.client.Success(`${unmutedMember} was successfully unmuted.`)
+                );
+            }).catch(err => this.client.Logger.DiscordAPIError(msg, err));
     }
 }

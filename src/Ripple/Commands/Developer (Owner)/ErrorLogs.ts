@@ -8,7 +8,7 @@ export default class extends Command<Ripple> {
     public constructor() {
         const name = "errorlogs";
         super(name, {
-            aliases: [name, "geterrorlogs", "errorlog", "errlogs", "errlog"],
+            aliases: [name, "geterrorlogs", "errorlog", "errlogs", "errlog", "elogs", "elog"],
             description: "Returns a list of every error logged during current runtime.",
             ownerOnly: true
         });

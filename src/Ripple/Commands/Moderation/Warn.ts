@@ -40,6 +40,8 @@ export default class extends Command<Ripple> {
             member,
             reason?? "No reason provided."
         )).then(async () => {
+            this.client.AddModLog(member, "Warning Issued", member);
+
             const infractions = await this.client.Infractions.Get(member);
             const infractionAmount = infractions.length;
             const kickWarning = infractionAmount === 4;

@@ -29,7 +29,9 @@ import {
     PremiumManager,
     PrestigeRoleManager,
     ReputationManager,
-    WelcomeChannelManager
+    WelcomeChannelManager,
+    TagManager,
+    CashManager
 } from "./Components/DataManagement";
 import { AkairoClient, CommandHandler, InhibitorHandler } from "discord-akairo";
 import { GiveawaysManager } from "discord-giveaways";
@@ -45,7 +47,6 @@ import { pkg } from "../CommandLine/RippleCLI";
 import { readdirSync } from "fs";
 import { env } from "process";
 import * as db from "quick.db";
-import { TagManager } from "./Components/DataManagement/Managers/Guild/TagManager";
 
 /**
  * @extends AkairoClient
@@ -63,6 +64,7 @@ export default class Ripple extends AkairoClient {
     public readonly WelcomeMessage = new AutoWelcomeManager(this);
     public readonly AutoRole = new AutoRoleManager(this);
     public readonly Premium = new PremiumManager(this);
+    public readonly Cash = new CashManager(this);
     public readonly Stats = new LevelManager(this);
     public readonly Infractions = new InfractionManager(this);
     public readonly Notes = new NotesManager(this);

@@ -38,7 +38,7 @@ export default class extends Command<Ripple> {
                     start: "Where would you like your embed to be sent in? (Provide a text channel)",
                     retry: msg => this.client.Logger.InvalidArgError(msg, "That's an invalid text channel. Please try again.")
                 }),
-                Arg("pingEveryone", "boolean", undefined, {
+                Arg("pingEveryone", "boolean", false, {
                     start: "Would you like to ping everyone in your embed's message? If so, say 'yes'. If not, say 'no'.",
                     retry: msg => this.client.Logger.InvalidArgError(msg, "Invalid input, answer was not: 'yes', 'no', 'true', or 'false'. Please try again.")
                 }),
@@ -85,9 +85,7 @@ export default class extends Command<Ripple> {
         if (image.toLowerCase() !== "no")
             embed.setURL(image);
 
-        if (pingEveryone)
-            channel.send("@everyone");
-
+        if (pingEveryone) channel.send("@everyone");
         return channel.send(embed)
             .then(() => msg.reply(
                 this.client.Success(`Successfully sent embed ${pingEveryone ? "and pinged everyone ": ""}in ${channel}!`)
