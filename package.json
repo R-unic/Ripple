@@ -54,7 +54,6 @@
   },
   "devDependencies": {
     "@types/node": "^15.0.2",
-    "release-it": "^14.13.1",
-    "simple-git-changelog": "^2.1.0"
+    "release-it": "^14.13.1"
   }
 }
