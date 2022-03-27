@@ -24,7 +24,7 @@ export default class extends Command<Ripple> {
         if (await this.client.Cash.Get(msg.member) < Math.abs(bet))
             return this.client.Logger.InvalidArgError(msg, "You do not have enough cash to place this bet.")
 
-        const icons: string[] = ["💎", "🍋", "🍉", "❤", "7️⃣", "🔔", "🧲", "🍒", "💵"];
+        const icons: string[] = ["💎", "🍋", "🍉", "❤", "7️⃣", "🔔", "🧲", "🍒", "💵", "💎", "🍋", "🍉", "❤", "7️⃣", "🔔", "🧲", "🍒", "💵"];
         const one = RandomElement(icons), 
             two = RandomElement(icons), 
             three = RandomElement(icons); 
