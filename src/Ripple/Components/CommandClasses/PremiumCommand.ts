@@ -6,7 +6,7 @@ export class PremiumCommand extends Command<Ripple> {
     declare public ratelimit: 2;
      
     public async DoesNotOwnPremium(msg: Message): Promise<Message | boolean> {
-        if (!(await this.client.Premium.Get(msg.member.user)))
+        if (!(await this.client.Premium.Has(msg.member.user)))
             return this.client.Logger.NoPremiumError(msg);
     }
 }

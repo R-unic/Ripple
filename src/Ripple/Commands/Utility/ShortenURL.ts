@@ -12,7 +12,7 @@ export default class extends Command<Ripple> {
             cooldown: 5e3,
             ratelimit: 2,
             description: {
-                content: "Shortens a URL via shrtco.de",
+                content: "Shortens a URL via shrtco.de.",
                 usage: '<url>',
                 examples: ['https://alpharunic.github.io/Ripple/']
             },

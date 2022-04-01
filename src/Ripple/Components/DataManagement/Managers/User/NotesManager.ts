@@ -19,7 +19,7 @@ export class NotesManager implements UserDataManager<Note[]> {
     ) {}
 
     public async Find(user: User, title: string): Promise<Note[]> {
-        const notes = await this.Get(user);
+        const notes = await this.Has(user);
         return notes.filter(note => note.Title === title);
     }
 
@@ -30,12 +30,12 @@ export class NotesManager implements UserDataManager<Note[]> {
     }
 
     public async Add(user: User, note: Note): Promise<boolean> {
-        const notes = await this.Get(user);
+        const notes = await this.Has(user);
         notes.push(note);
         return this.Set(user, notes)
     }
 
-    public async Get(user: User): Promise<Note[]> {
+    public async Has(user: User): Promise<Note[]> {
         return this.Client.GetForUser(user, this.Tag, []);
     }
 

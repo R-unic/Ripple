@@ -10,7 +10,7 @@ export default class extends Command<Ripple> {
         super(name, {
             aliases: [name, "urbandict", "urban"],
             description: {
-                content: "Looks up a phrase on Urban Dictionary",
+                content: "Looks up a phrase on Urban Dictionary.",
                 usage: '<"phrase"> <resultNumber?>'
             },
             args: [

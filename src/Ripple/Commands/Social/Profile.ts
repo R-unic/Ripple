@@ -28,7 +28,7 @@ export default class extends Command<Ripple> {
         const untilNext = await this.client.Stats.XPUntilNextLevel(member);
         const reputation = await this.client.Reputation.Get(member);
         const maxXPGain = await this.client.Stats.MaxXPGain(member);
-        const premium = await this.client.Premium.Get(member.user);
+        const premium = await this.client.Premium.Has(member.user);
 
         try {
             return msg.channel.send(

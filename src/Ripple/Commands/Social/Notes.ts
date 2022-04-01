@@ -14,7 +14,7 @@ export default class extends Command<Ripple> {
     }
 
     public async exec(msg: Message) {
-        return this.client.Notes.Get(msg.author)
+        return this.client.Notes.Has(msg.author)
             .then(async notes => {
                 const embed = this.client.Embed("Notepad");
                 if (notes.length === 0)

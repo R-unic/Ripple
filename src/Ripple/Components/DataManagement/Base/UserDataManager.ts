@@ -8,7 +8,7 @@ export abstract class UserDataManager<T> {
         public readonly Client: Ripple,
     ) {};
 
-    public abstract Get(user: User, defaultValue?: T): Promise<T>;
+    public abstract Has(user: User, defaultValue?: T): Promise<T>;
     public abstract Set(user: User, value: T): Promise<boolean>;
     public abstract Increment?(user: User, amount?: number): Promise<boolean>;
 }

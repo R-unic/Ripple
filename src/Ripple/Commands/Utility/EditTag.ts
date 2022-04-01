@@ -9,7 +9,7 @@ export default class extends Command<Ripple> {
         super(name, {
             aliases: [name, "tagedit", "modifytag", "tagmodify", "changetag"],
             description: {
-                content: "Edits a tag.",
+                content: "Edits a guild tag.",
                 usage: '<"id"> <"newBody">'
             },
             args: [

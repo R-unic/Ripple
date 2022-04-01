@@ -7,7 +7,7 @@ export default class extends Command<Ripple> {
         const name = "tagcount";
         super(name, {
             aliases: [name, "counttags", "tagamount"],
-            description: "Returns how many tags exist in this guild"
+            description: "Returns how many tags exist in this guild."
         });
     }
 

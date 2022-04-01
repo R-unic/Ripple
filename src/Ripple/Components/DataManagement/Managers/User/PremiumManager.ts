@@ -9,7 +9,7 @@ export class PremiumManager implements UserDataManager<boolean> {
         public readonly Client: Ripple
     ) {}
 
-    public async Get(user: User): Promise<boolean> {
+    public async Has(user: User): Promise<boolean> {
         return await this.Client.GetForUser(user, this.Tag, false);
     }
 

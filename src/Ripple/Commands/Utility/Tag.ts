@@ -10,7 +10,8 @@ export default class extends Command<Ripple> {
             aliases: [name, "gettag", "retrievetag", "findtag"],
             description: {
                 content: "Retrieves a body of text associated with the given tag.",
-                usage: '<"id">'
+                usage: '<"id">',
+                examples: ['"help" "If you need assistance, please contact @mod."']
             },
             args: [ Arg("id", "lowercase") ]
         });

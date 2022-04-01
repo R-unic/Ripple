@@ -12,7 +12,7 @@ export default class extends Command<Ripple> {
     }
 
     public async exec(msg: Message) {
-        return msg.reply(
+        return msg.author.send(
             this.client.Embed("Donate! 💰")
                 .setDescription("Ripple Premium gives you access to special, Premium-only commands. When you buy Premium, it's only a one time payment! Meaning no monthly fees, or worrying about a subscription. Just pay and you're on your way! If you have successfully purchased Ripple Premium, please allow the system at least 5 minutes (or longer) to process your transaction.")
                 .setURL(this.client.DonateLink)

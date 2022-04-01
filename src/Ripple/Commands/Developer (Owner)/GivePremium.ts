@@ -22,7 +22,7 @@ export default class extends Command<Ripple> {
             return this.client.Logger.MissingArgError(msg, "user");
 
         const user = member.user;
-        const hasPremium = await this.client.Premium.Get(user);
+        const hasPremium = await this.client.Premium.Has(user);
         if (hasPremium)
             return this.client.Logger.InvalidArgError(msg, "User already has Premium.");
 
