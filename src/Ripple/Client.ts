@@ -47,6 +47,7 @@ import { pkg } from "../CommandLine/RippleCLI";
 import { readdirSync } from "fs";
 import { env } from "process";
 import * as db from "quick.db";
+import SpotifyWebApi from "spotify-web-api-js";
 
 /**
  * @extends AkairoClient
@@ -84,6 +85,7 @@ export default class Ripple extends AkairoClient {
     public readonly GoodbyeMessage = new AutoGoodbyeManager(this);
 
     public readonly Wizard101 = Wizard101;
+    public readonly Spotify = new SpotifyWebApi;
     public readonly Package: Package = pkg;
     public readonly Version = `v${this.Package.version}`;
     public readonly GitHubRepo = "https://github.com/AlphaRunic/Ripple";
@@ -134,6 +136,7 @@ export default class Ripple extends AkairoClient {
     private async Initialize() {
         this.HandleEvents(Events);
         this.LoadCommands();
+        this.Spotify.setAccessToken(env.SPOTIFY_API);
         await this.Donations.StartTransactionsLoop();
     }
 

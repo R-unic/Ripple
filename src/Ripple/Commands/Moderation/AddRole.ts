@@ -7,7 +7,7 @@ export default class extends Command<Ripple> {
     public constructor() {
         const name = "addrole";
         super(name, {
-            aliases: [name, "giverole", "role", "promote", "rank"],
+            aliases: [name, "giverole", "role", "promote"],
             userPermissions: "MANAGE_ROLES",
             clientPermissions: "MANAGE_ROLES",
             cooldown: 5e3,

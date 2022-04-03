@@ -8,7 +8,7 @@ export default class extends Command<Ripple> {
     public constructor() {
         const name = "profile";
         super(name, {
-            aliases: [name, "socialprofile", "stats"],
+            aliases: [name, "socialprofile", "stats", "rank", "level"],
             ratelimit: 2,
             description: {
                 content: "Gets a user's or your own profile.",
@@ -26,8 +26,9 @@ export default class extends Command<Ripple> {
         const level = await this.client.Stats.GetLevel(member);
         const exp = await this.client.Stats.GetXP(member);
         const untilNext = await this.client.Stats.XPUntilNextLevel(member);
-        const reputation = await this.client.Reputation.Get(member);
         const maxXPGain = await this.client.Stats.MaxXPGain(member);
+        const rank = await this.client.Stats.GetLeaderboardRank(member);
+        const reputation = await this.client.Reputation.Get(member);
         const premium = await this.client.Premium.Has(member.user);
 
         try {
@@ -39,6 +40,7 @@ export default class extends Command<Ripple> {
                     .addField("Experience", level === 100 ? "MAX" : CommaNumber(exp), true)
                     .addField("XP Until Next Level", level === 100 ? "MAX" : CommaNumber(untilNext), true)
                     .addField("XP Gain", level === 100 ? "0" : "50 - " + CommaNumber(maxXPGain), true)
+                    .addField("Server Rank", `#${CommaNumber(rank)}`, true)
                     .addField("Reputation", reputation, true)
                     .addField("Ripple Premium", premium ? "Yes" : "No", true)
             );

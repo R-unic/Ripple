@@ -1,6 +1,6 @@
 import { Command } from "discord-akairo";
 import { Message } from "discord.js";
-import { Arg } from "../../Util";
+import { Arg, CommaNumber } from "../../Util";
 import { search} from "yt-search";
 import Ripple from "../../Client";
 import ms from "ms";
@@ -38,19 +38,20 @@ export default class extends Command<Ripple> {
 
                 msg.channel.send(
                     this.client.Embed("YouTube Search")
-                        .setDescription("__Select which video you'd like by saying the number of the video in the list.__\n\n" + titles.join("\n"))
+                        .setDescription("__Select the video you'd like by saying the number of the video below.__\n\n" + titles.join("\n").trim())
+                        .setThumbnail("https://cdn-icons-png.flaticon.com/512/1384/1384060.png")
+                        .setColor("#C4302B")
                 );
 
                 const f = m => msg.author.id === m.author.id && m.content <= videos.length;
                 const collected = await msg.channel.awaitMessages(f, { max: 1, time: ms("30s") });
                 const numberContent = <number><unknown>collected.first().content;
                 const selected = videos[numberContent - 1];
-                console.log(selected);
                 msg.channel.send(
                     this.client.Embed(selected.title)
                         .setURL(selected.url)
                         .setThumbnail(selected.thumbnail)
-                        .setAuthor(selected.author.name + " | " + selected.views + " views | " + selected.timestamp, undefined, selected.author.url)
+                        .setAuthor(selected.author.name + " | " + CommaNumber(selected.views) + " views | " + selected.timestamp, undefined, selected.author.url)
                         .setDescription(selected.description)
                 );
             }).catch(e => this.client.Logger.APIError(msg, e?.message ?? e));

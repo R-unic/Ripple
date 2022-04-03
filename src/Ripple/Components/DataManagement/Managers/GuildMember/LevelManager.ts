@@ -63,13 +63,13 @@ export class LevelManager implements GuildMemberDataManager<Stats> {
     public async XPUntilNextLevel(user: GuildMember): Promise<number> {
         const level: number = await this.GetLevel(user);
         const prestige: number = await this.GetPrestige(user);
-        return (575 + (level ^ 2 - prestige ^ 1.3)) * ((level ^ -.9) / 1.8);
+        return (575 + (level ^ 2 - prestige ^ 1.5)) * ((level ^ -.9) / 1.8);
     }
 
     public async MaxXPGain(user: GuildMember): Promise<number> {
         const level: number = await this.GetLevel(user);
         const prestige: number = await this.GetPrestige(user);
-        return Math.ceil(50 + (level ^ 1.3) * 6 * (prestige + 1) ^ 1.1);
+        return Math.ceil(50 + (level ^ 1.6) * 6 * (prestige + 1) ^ 1.1);
     }
 
     public async XPGain(user: GuildMember): Promise<number> {
@@ -128,6 +128,30 @@ export class LevelManager implements GuildMemberDataManager<Stats> {
         const stats: Stats = await this.Get(user);
         stats.XP = xp;
         return this.Set(user, stats);
+    }
+
+    public async GetLeaderboard(user: GuildMember): Promise<GuildMember[]> {
+        const serverMembers = user.guild.members.cache.array()
+        const stats = await Promise.all(serverMembers.map(async m => [m, await this.Client.Stats.GetPrestige(m), await this.Client.Stats.GetLevel(m), await this.Client.Stats.GetXP(m), await this.Client.Stats.XPUntilNextLevel(m)]));
+        const leaderboard = stats.sort((a, b) => {
+            const xuA = <number>a[4];
+            const xuB = <number>b[4];
+            const xA = <number>a[3];
+            const xB = <number>b[3];
+            const lA = <number>a[2];
+            const lB = <number>b[2];
+            const pA = <number>a[1];
+            const pB = <number>b[1];
+            return (pA + lA + (xA / xuA)) - (pB + lB + (xB / xuB));
+        });
+
+        return leaderboard
+            .map(s => <GuildMember>s[0])
+            .reverse();
+    }
+
+    public async GetLeaderboardRank(user: GuildMember): Promise<number> {
+        return (await this.GetLeaderboard(user)).indexOf(user) + 1;
     }
 
     public async GetPrestige(user: GuildMember): Promise<number> {
