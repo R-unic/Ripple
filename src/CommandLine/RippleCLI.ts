@@ -5,7 +5,7 @@ import * as cp from "child_process";
 const exec = promisify(cp.exec);
 
 export const pkg: Package = require(__dirname + "/../../package.json");
-const programFile = "out/Program.js";
+const programFile = "dist/Program.js";
 const watchingExts = [".ts", ".js", ".json"];
 const nodemonOpts = [programFile, "--trace-warnings", "-e", `${watchingExts.join(",")}`];
 

@@ -8,7 +8,7 @@ export default class extends Command<Ripple> {
         const name = "reload";
         super(name, {
             aliases: [name, "reloadbot", "restart", "restartbot", "rl", "rs"],
-            description: "Reloads Ripple and it's commands",
+            description: "Reloads Ripple and it's commands.",
             ownerOnly: true
         });
     }

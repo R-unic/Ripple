@@ -1,7 +1,6 @@
 import { 
     ActivityType,
     ClientEvents,
-    MessageEmbed,
     PresenceStatusData,
     Presence,
     User,
@@ -49,9 +48,8 @@ import { Events } from "./Events";
 import { pkg } from "../CommandLine/RippleCLI";
 import { readdirSync } from "fs";
 import { env } from "process";
-import * as db from "quick.db";
 import SpotifyWebApi from "spotify-web-api-js";
-import ms from "ms";
+import * as db from "quick.db";
 
 /**
  * @extends AkairoClient
@@ -118,23 +116,23 @@ export default class Ripple extends AkairoClient {
             messageEditHistoryMaxSize: 43200
         });
 
-        immediateLogin? 
-            this.Login()
-            :undefined;        
+        if (immediateLogin)
+            this.Login();       
     }
 
     /**
      * @description Log in with a token or env.LOGIN_TOKEN
      * @param token
      */
-    public async Login(token: string = env.LoginToken): Promise<string> {
+    public async Login(): Promise<string> {
         try {
-            const p = super.login(token)
-            .then(async res => {
-                this.BotName = this.user.username;
-                await this.UpdatePresence();
-                return res;
-            });
+            const p = super.login(env.LOGIN_TOKEN)
+                .then(async res => {
+                    this.BotName = this.user.username;
+                    await this.UpdatePresence();
+                    return res;
+                });
+
             await this.Initialize();
             return p;
         } catch (err) {
