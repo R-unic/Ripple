@@ -33,7 +33,8 @@ import {
     WelcomeChannelManager,
     TagManager,
     CashManager,
-    BankManager
+    BankManager,
+    TimeQueueManager
 } from "./Components/DataManagement";
 import { AkairoClient, CommandHandler, InhibitorHandler } from "discord-akairo";
 import { GiveawaysManager } from "discord-giveaways";
@@ -87,6 +88,7 @@ export default class Ripple extends AkairoClient {
     public readonly Tags = new TagManager(this);
     public readonly GoodbyeChannel = new GoodbyeChannelManager(this);
     public readonly GoodbyeMessage = new AutoGoodbyeManager(this);
+    public readonly TimeQueue = new TimeQueueManager(this);
 
     public readonly Wizard101 = Wizard101;
     public readonly Spotify = new SpotifyWebApi;

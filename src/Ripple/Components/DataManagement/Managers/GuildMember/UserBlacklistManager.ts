@@ -9,11 +9,11 @@ export class UserBlacklistManager implements GuildMemberDataManager<boolean> {
         public Client: Ripple
     ) {}
 
-    public Get(user: GuildMember): Promise<boolean> {
+    public async Get(user: GuildMember): Promise<boolean> {
         return this.Client.Get(user, this.Tag, false, user.id);
     }
 
-    public Set(user: GuildMember, value: boolean): Promise<boolean> {
-        return this.Client.Get(user, this.Tag, value, user.id);
+    public async Set(user: GuildMember, value: boolean): Promise<boolean> {
+        return this.Client.Set(user, this.Tag, value, user.id);
     }
 }
