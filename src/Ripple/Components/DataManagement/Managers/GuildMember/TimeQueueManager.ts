@@ -10,8 +10,12 @@ export class TimeQueueManager implements GuildMemberDataManager<TimeQueue[]> {
         public Client: Ripple
     ) {}
 
-    public Elapsed(queue: TimeQueue): number {
-        return (Date.now() / 1000) - queue!.Added;
+    public Elapsed(user: GuildMember, queue: TimeQueue): number {
+        const elapsed = (Date.now() / 1000) - queue!.Added;
+        if (elapsed >= queue.Length)
+            this.Remove(user, queue);
+
+        return elapsed;
     }
 
     public async Find(user: GuildMember, tag: string): Promise<TimeQueue | undefined> {

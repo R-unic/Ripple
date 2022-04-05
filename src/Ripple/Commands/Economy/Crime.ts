@@ -17,7 +17,7 @@ export default class extends Command<Ripple> {
 
     public async exec(msg: Message) {
         const queue = await this.client.TimeQueue.Find(msg.member, "crime");
-        if (queue && this.client.TimeQueue.Elapsed(queue) < queue.Length)
+        if (queue && this.client.TimeQueue.Elapsed(msg.member, queue) < queue.Length)
             return this.client.Logger.CouldNotBeExecutedError(msg, "This command can only be used once every hour.");
 
         const amount = RandomInt(550);
