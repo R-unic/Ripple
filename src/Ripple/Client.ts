@@ -51,6 +51,7 @@ import { readdirSync } from "fs";
 import { env } from "process";
 import * as db from "quick.db";
 import SpotifyWebApi from "spotify-web-api-js";
+import ms from "ms";
 
 /**
  * @extends AkairoClient
@@ -97,7 +98,6 @@ export default class Ripple extends AkairoClient {
     public readonly DonateLink = "https://donatebot.io/checkout/846604279288168468";
     public readonly Website = "https://ripple-bot.netlify.app";
     public readonly InviteLink = `https://discord.com/oauth2/authorize?client_id=840692008419197048&scope=bot&permissions=8`;
-    public readonly LoginToken = env.LOGIN_TOKEN;
     public CancelCommandLoop = false;
     public BotName: string;
 
@@ -111,7 +111,11 @@ export default class Ripple extends AkairoClient {
     ) {
         super({
             ownerID: [ "415233686758359051", "686418809720012843" ],
-            intents: [Intents.FLAGS.DIRECT_MESSAGES, Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MEMBERS, Intents.FLAGS.GUILD_MESSAGES]
+            intents: [Intents.FLAGS.DIRECT_MESSAGES, Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MEMBERS, Intents.FLAGS.GUILD_MESSAGES],
+            messageCacheLifetime: 10,
+            messageCacheMaxSize: 35,
+            messageSweepInterval: 3600,
+            messageEditHistoryMaxSize: 43200
         });
 
         immediateLogin? 
@@ -123,7 +127,7 @@ export default class Ripple extends AkairoClient {
      * @description Log in with a token or env.LOGIN_TOKEN
      * @param token
      */
-    public async Login(token: string = this.LoginToken): Promise<string> {
+    public async Login(token: string = env.LoginToken): Promise<string> {
         try {
             const p = super.login(token)
             .then(async res => {
