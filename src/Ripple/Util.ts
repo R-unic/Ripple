@@ -2,7 +2,8 @@ import {
     ArgumentOptions, 
     ArgumentPromptOptions, 
     ArgumentType, 
-    ArgumentTypeCaster 
+    ArgumentTypeCaster, 
+    DefaultValueSupplier
 } from "discord-akairo";
 import { 
     GuildMember, 
@@ -33,7 +34,7 @@ export const StripISO = (iso: string | Date): string =>
 
 export const SecondsToMS = (sec: number): number => sec * 1000;
 
-export function Clamp(n: number, min: number, max: number): number {
+export function Clamp(n: number, min: number = 0, max: number = Infinity): number {
     if (n < min)
         return min;
     if (n > max)
@@ -53,7 +54,7 @@ export const RandomElement = <T = unknown>(a: T[]): T =>
 export const Arg = (
     id: string, 
     type: ArgumentType | ArgumentTypeCaster,  
-    defaultValue?: unknown,
+    defaultValue?: DefaultValueSupplier | any,
     prompt?: boolean | ArgumentPromptOptions
 ): ArgumentOptions => {
     return {
@@ -65,8 +66,7 @@ export const Arg = (
 }
 
 export const ToTitleCase = (item: string): string =>
-    item
-        .toLowerCase()
+    item.toLowerCase()
         .replace(/guild/g, 'Server')
         .replace(/_/g, ' ')
         .replace(/\b[a-z]/g, t => t.toUpperCase());
@@ -117,7 +117,6 @@ export const Author = (msg: Message) => msg.member;
 export class RippleEmbed extends MessageEmbed {
     public constructor(title?: string, emoji?: string) {
         super();
-
         this
             .setTitle(title ? (emoji ? `${emoji}  ${title}  ${emoji}` : title) : "")
             .setColor("RANDOM")

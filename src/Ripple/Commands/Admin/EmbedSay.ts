@@ -5,12 +5,12 @@ import Ripple from "../../Client";
 
 export default class extends Command<Ripple> {
     public constructor() {
-        const name = "sudo";
+        const name = "embedsay";
         super(name, {
-            aliases: [name, "say", "repeat", "echo"],
+            aliases: [name, "esay", "embedwrap", "ewrap"],
             description: {
                 content: "Repeats the message provided in the channel provided or the channel the command was execuetd in.",
-                usage: '<"message"> <channel?>'
+                usage: '<"title"> <"message"> <channel?>'
             },
             args: [ 
                 Arg("message", "string"),
@@ -19,11 +19,11 @@ export default class extends Command<Ripple> {
         });
     }
 
-    public async exec(msg: Message, { message, channel }: { message: string, channel: TextChannel }) {
-        message ? 
-            channel.send(message) 
-            :this.client.Logger.MissingArgError(msg, "message");
-            
-        return msg.delete();
+    public async exec(msg: Message, { title, message, channel }: { title: string, message: string, channel: TextChannel }) {
+        if (!title)
+            this.client.Logger.MissingArgError(msg, "message");
+        return message ? 
+            channel.send(this.client.Embed(title, undefined, message)).then(() => msg.delete())
+            :this.client.Logger.MissingArgError(msg, "message"); 
     }
 }

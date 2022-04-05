@@ -29,9 +29,11 @@ import {
     PremiumManager,
     PrestigeRoleManager,
     ReputationManager,
+    UserBlacklistManager,
     WelcomeChannelManager,
     TagManager,
-    CashManager
+    CashManager,
+    BankManager
 } from "./Components/DataManagement";
 import { AkairoClient, CommandHandler, InhibitorHandler } from "discord-akairo";
 import { GiveawaysManager } from "discord-giveaways";
@@ -66,10 +68,12 @@ export default class Ripple extends AkairoClient {
     public readonly AutoRole = new AutoRoleManager(this);
     public readonly Premium = new PremiumManager(this);
     public readonly Cash = new CashManager(this);
+    public readonly Bank = new BankManager(this);
     public readonly Stats = new LevelManager(this);
     public readonly Infractions = new InfractionManager(this);
     public readonly Notes = new NotesManager(this);
     public readonly LevelUpChannel = new LevelUpChannelManager(this);
+    public readonly UserBlacklist = new UserBlacklistManager(this);
     public readonly WelcomeChannel = new WelcomeChannelManager(this);
     public readonly LevelSystem = new LevelSystemManager(this);
     public readonly ChatReviveRole = new ChatReviveRoleManager(this);
@@ -125,7 +129,6 @@ export default class Ripple extends AkairoClient {
                 await this.UpdatePresence();
                 return res;
             });
-
             await this.Initialize();
             return p;
         } catch (err) {
@@ -233,7 +236,18 @@ export default class Ripple extends AkairoClient {
         })
     }
 
-    public Success(description?: string): MessageEmbed {
+    public VerifySource(source: string): boolean {
+        source = source.toLowerCase();
+        return  source !== "bank" && source !== "wallet";
+    }
+
+    public Pending(description?: string): RippleEmbed {
+        return this.Embed("Pending", "⌛")
+            .setColor("#F9A602")
+            .setDescription(description?? "");
+    }
+
+    public Success(description?: string): RippleEmbed {
         return this.Embed("Success!", "✅")
             .setColor("#10EB00")
             .setDescription(description?? "");
@@ -249,8 +263,9 @@ export default class Ripple extends AkairoClient {
             .setFooter(this.FullName, this.Avatar)
     }
 
-    public Embed(title?: string, emoji?: string): RippleEmbed {
+    public Embed(title?: string, emoji?: string, description?: string): RippleEmbed {
         return new RippleEmbed(title, emoji)
+            .setDescription(description?? "")
             .setFooter(this.FullName, this.Avatar)
     }
 

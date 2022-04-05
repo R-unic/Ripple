@@ -19,8 +19,9 @@ export default class extends Command<Ripple> {
     }
 
     public async exec(msg: Message, { song }: { song: string }) {
-        return msg.reply("Fetching lyrics, this may take a while...")
-            .then(async sent => {
+        return msg.reply(this.client.Pending("Fetching lyrics, this may take a while..."))
+            .then(async old => {
+                const sent = await old.delete().then(() => msg.channel.send("Loading..."));
                 return {
                     sentMsg: sent,
                     lyricsMsg: await msg.reply(

@@ -9,7 +9,7 @@ export default class extends Command<Ripple> {
         super(name, {
             aliases: [name, "leader", "top", "lb", "leadertop"],
             ratelimit: 2,
-            description: "Returns a list of the top levels in the guild."
+            description: "Returns a list of the top stats in the guild."
         });
     }
 

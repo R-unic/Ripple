@@ -19,12 +19,9 @@ export class DonationAPI {
     ) {}
 
     public async StartTransactionsLoop() {
-        setTimeout(async () => await this.StartTransactionsLoop(), ms("5m"));
+        setTimeout(async () => await this.StartTransactionsLoop(), ms("7m"));
 
-        const headers: HeadersInit = {
-            Authorization: this.apiKey
-        };
-
+        const headers: HeadersInit = { Authorization: this.apiKey };
         const { donations } = await Request.GetJSON<NewDonationRes>(this.newDonation.URL(), headers);
         donations.forEach(async dn => {
             if (dn.status === "Completed") {

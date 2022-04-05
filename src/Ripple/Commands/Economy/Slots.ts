@@ -13,7 +13,7 @@ export default class extends Command<Ripple> {
                 usage: "<bet>"
             },
             args: [
-                Arg("bet", "number")
+                Arg("bet", "integer")
             ]
         });
     }
@@ -21,8 +21,8 @@ export default class extends Command<Ripple> {
     public async exec(msg: Message, { bet }: { bet: number }) {
         if (!bet) 
             return this.client.Logger.MissingArgError(msg, "bet");
-        if (await this.client.Cash.Get(msg.member) < Math.abs(bet))
-            return this.client.Logger.InvalidArgError(msg, "You do not have enough cash to place this bet.")
+        if (await this.client.Cash.TotalMoney(msg.member) < Math.abs(bet))
+            return this.client.Logger.InvalidArgError(msg, "You do not have enough cash to place this bet.");
 
         const icons: string[] = ["💎", "🍋", "🍉", "❤", "7️⃣", "🔔", "🧲", "🍒", "💵", "💎", "🍋", "🍉", "❤", "7️⃣", "🔔", "🧲", "🍒", "💵"];
         const one = RandomElement(icons), 
@@ -31,14 +31,13 @@ export default class extends Command<Ripple> {
 
         const won = one == two && two == three;
         if (won)
-            await this.client.Cash.Increment(msg.member,  Math.abs(bet))
+            await this.client.Bank.Increment(msg.member,  Math.abs(bet));
         else
-            await this.client.Cash.Increment(msg.member, -Math.abs(bet));
+            await this.client.Cash.Decrement(msg.member, Math.abs(bet));
 
-        const newBal: number = await this.client.Cash.Get(msg.member);
         return msg.reply(
             this.client.Embed(`You ${won ? "won" : "lost"} the bet!`)
-                .setDescription(`${one} | ${two} | ${three}\n\nAmount Bet: $${CommaNumber(bet)}\nNew Balance: $${CommaNumber(newBal)}`)
-        )
+                .setDescription(`${one} | ${two} | ${three}\n\nAmount Bet: $${CommaNumber(bet)}`)
+        );
     }
 }

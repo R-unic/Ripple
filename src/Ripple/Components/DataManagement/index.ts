@@ -22,6 +22,7 @@ import { GoodbyeChannelManager } from "./Managers/Guild/GoodbyeChannelManager";
 import { AutoGoodbyeManager } from "./Managers/Guild/AutoGoodbyeManager";
 import { TagManager } from "./Managers/Guild/TagManager";
 import { CashManager } from "./Managers/GuildMember/CashManager";
+import { BankManager } from "./Managers/GuildMember/BankManager";
 
 export {
     AutoRoleManager,
@@ -47,5 +48,6 @@ export {
     UserBlacklistManager,
     WelcomeChannelManager,
     TagManager,
-    CashManager
+    CashManager,
+    BankManager
 }

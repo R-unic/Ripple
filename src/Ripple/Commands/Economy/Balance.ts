@@ -19,14 +19,15 @@ export default class extends Command<Ripple> {
     }
 
     public async exec(msg: Message, { member }: { member: GuildMember }) {
-        if (member.user.bot)
-            return this.client.Logger.InvalidArgError(msg, "Bots do not have cash balances.");
         if (!member) 
             return this.client.Logger.MissingArgError(msg, "member");
+        if (member.user.bot)
+            return this.client.Logger.InvalidArgError(msg, "Bots do not have cash balances.");
             
         return msg.reply(
             this.client.Embed(`${member.user.username}'s Balance`)
-                .setDescription("$" + CommaNumber(await this.client.Cash.Get(member)))
+                .addField("Wallet", "$" + CommaNumber(await this.client.Cash.Get(member)), true)
+                .addField("Bank", "$" + CommaNumber(await this.client.Bank.Get(member)), true)
         );
     }
 }
