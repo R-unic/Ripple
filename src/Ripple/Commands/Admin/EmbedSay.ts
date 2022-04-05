@@ -12,7 +12,8 @@ export default class extends Command<Ripple> {
                 content: "Repeats the message provided in the channel provided or the channel the command was execuetd in.",
                 usage: '<"title"> <"message"> <channel?>'
             },
-            args: [ 
+            args: [
+                Arg("title", "string"),
                 Arg("message", "string"),
                 Arg("channel", "textChannel", msg => msg.channel)
             ]
@@ -21,7 +22,10 @@ export default class extends Command<Ripple> {
 
     public async exec(msg: Message, { title, message, channel }: { title: string, message: string, channel: TextChannel }) {
         if (!title)
+            this.client.Logger.MissingArgError(msg, "title");
+        if (!message)
             this.client.Logger.MissingArgError(msg, "message");
+            
         return message ? 
             channel.send(this.client.Embed(title, undefined, message)).then(() => msg.delete())
             :this.client.Logger.MissingArgError(msg, "message"); 

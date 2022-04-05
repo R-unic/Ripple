@@ -6,7 +6,8 @@ import {
     Presence,
     User,
     Message,
-    TextChannel
+    TextChannel,
+    Intents
 } from "discord.js";
 import { 
     AutoRoleManager,
@@ -109,7 +110,8 @@ export default class Ripple extends AkairoClient {
         immediateLogin: boolean = true
     ) {
         super({
-            ownerID: [ "415233686758359051", "686418809720012843" ]
+            ownerID: [ "415233686758359051", "686418809720012843" ],
+            intents: [Intents.FLAGS.DIRECT_MESSAGES, Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MEMBERS, Intents.FLAGS.GUILD_MESSAGES]
         });
 
         immediateLogin? 

@@ -10,34 +10,34 @@ export default class extends PremiumCommand {
             userPermissions: "MANAGE_GUILD",
             cooldown: 10e3,
             description: {
-                content: "Sends a DM to a member as Ripple. (PREMIUM ONLY)",
-                usage: '<@member> <"content">'
+                content: "Sends a DM to a user as Ripple. (PREMIUM ONLY)",
+                usage: '<@user> <"content">'
             },
             args: [
-                Arg("member", "member"),
+                Arg("user", "user"),
                 Arg("content", "string")
             ],
         });
     }
 
-    public async exec(msg: Message, { member, content }: { member: GuildMember, content: string }) {
+    public async exec(msg: Message, { user, content }: { user: GuildMember, content: string }) {
         const error = await this.DoesNotOwnPremium(msg);
         if (error)
             return error;
 
-        if (!member)
-            return this.client.Logger.MissingArgError(msg, "member");
+        if (!user)
+            return this.client.Logger.MissingArgError(msg, "user");
 
-        if (member.user.bot)
+        if (user.user.bot)
             return this.client.Logger.InvalidArgError(msg, "User cannot be a bot!");
 
         if (!content)
             return this.client.Logger.MissingArgError(msg, "content");
 
-        return member.send(content)
+        return user.send(content)
             .then(() => {
                 msg.reply(this.client.Success()
-                    .setDescription(`Successfully sent your DM to ${member}.`));
+                    .setDescription(`Successfully sent your DM to ${user}.`));
                 msg.delete();
             });
     }
