@@ -8,6 +8,7 @@ export default class extends Command<Ripple> {
         const name = "balance";
         super(name, {
             aliases: [name, "bal", "bank", "mybalance", "cash", "mybal"],
+            ratelimit: 2,
             description: {
                 content: "Returns your cash balance for specific server.",
                 usage: "<@member?>"
