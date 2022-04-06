@@ -9,10 +9,10 @@ export default class extends Command<Ripple> {
     public constructor() {
         const name = "commandusage";
         super(name, {
-            aliases: [name, "cmdusage", "commandinfo", "cmdinfo", "usage", "cmd"],
+            aliases: [name, "cmdusage", "commandinfo", "cmdinfo", "usage"],
             description: {
-                content: "DMs you a help menu.",
-                usage: "<commandName?>"
+                content: "Returns an embed containing all necessary information to use a command.",
+                usage: "<commandName>"
             },
             args: [ Arg("command", "commandAlias") ]
         });

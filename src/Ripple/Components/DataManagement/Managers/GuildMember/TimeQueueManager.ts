@@ -12,7 +12,7 @@ export class TimeQueueManager implements GuildMemberDataManager<TimeQueue[]> {
 
     public Elapsed(user: GuildMember, queue: TimeQueue): number {
         const elapsed = (Date.now() / 1000) - queue!.Added;
-        if (elapsed >= queue.Length)
+        if (elapsed >= queue?.Length)
             this.Remove(user, queue);
 
         return elapsed;

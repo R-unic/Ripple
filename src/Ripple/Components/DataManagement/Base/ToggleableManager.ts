@@ -2,12 +2,11 @@ import { GuildObject } from "../../../Util";
 import { GuildDataManager } from "./GuildDataManager";
 import Ripple from "../../../Client";
 
-export class ToggleableManager<DV extends boolean> implements GuildDataManager<boolean> {
-    public readonly DefaultValue: DV;
-
+export class ToggleableManager implements GuildDataManager<boolean> {
     public constructor(
         public readonly Client: Ripple,
         public readonly Tag: string,
+        public readonly DefaultValue: boolean
     ) {}
 
     public async Toggle(m: GuildObject): Promise<boolean> {

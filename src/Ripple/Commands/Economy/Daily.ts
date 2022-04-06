@@ -20,7 +20,7 @@ export default class extends Command<Ripple> {
             
         const qTag = "daily";
         const queue = await this.client.TimeQueue.Find(msg.member, qTag);
-        if (queue && this.client.TimeQueue.Elapsed(msg.member, queue) < queue.Length)
+        if (typeof queue !== "undefined" && this.client.TimeQueue.Elapsed(msg.member, queue) < queue.Length)
             return this.client.Logger.CouldNotBeExecutedError(msg, "Daily rewards can only be claimed once every 24 hours.");
 
         const amount = 750;
