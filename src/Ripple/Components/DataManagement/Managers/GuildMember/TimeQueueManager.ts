@@ -4,7 +4,7 @@ import { TimeQueue } from "../../../DataInterfaces/TimeQueue";
 import Ripple from "../../../../Client";
 
 export class TimeQueueManager implements GuildMemberDataManager<TimeQueue[]> {
-    public Tag = "timequeue";
+    public readonly Tag = "timequeue";
 
     public constructor(
         public Client: Ripple
@@ -21,7 +21,7 @@ export class TimeQueueManager implements GuildMemberDataManager<TimeQueue[]> {
     public async Find(user: GuildMember, tag: string): Promise<TimeQueue | undefined> {
         const queue = await this.Get(user);
         for (const q of queue)
-            if (q.Tag === tag)
+            if (q?.Tag === tag)
                 return q;
     }
 
