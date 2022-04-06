@@ -3,6 +3,7 @@ import { Message, PermissionResolvable } from "discord.js";
 import { Arg } from "../../Util";
 import Ripple from "../../Client";
 import { PremiumCommand } from "../../Components/CommandClasses/PremiumCommand";
+import formatDuration from "format-duration";
 
 export default class extends Command<Ripple> {
     public constructor() {
@@ -23,15 +24,15 @@ export default class extends Command<Ripple> {
 
         const prefix = await this.client.Prefix.Get(msg);
         const descIsString = typeof command.description === "string";
-        const userPerms = command.userPermissions as PermissionResolvable;
-        const clientPerms = command.clientPermissions as PermissionResolvable;
+        const userPerms = <PermissionResolvable>command.userPermissions;
+        const clientPerms = <PermissionResolvable>command.clientPermissions;
 
         return msg.reply(
             this.client.Embed(`How To Use \`${prefix}${command.aliases[0]}\``)
                 .setDescription(descIsString ? command.description : command.description.content)
                 .addField("Arguments", descIsString ? "None" : command.description.usage, true)
-                .addField("Cooldown", command.cooldown ? command.cooldown : "None", true)
-                .addField("Aliases", command.aliases.map(a => `\`${a}\``).join(", "), true)
+                .addField("Cooldown", command.cooldown ? formatDuration(command.cooldown) : "None", true)
+                .addField("Aliases", command.aliases.slice(1, -1).map(a => `\`${a}\``).join(", "), true)
                 .addField("Examples", command.description?.examples?.map(a => `\`${a}\``)?.join(", ")?? "None", true)
                 .addField("Owner Only", command.ownerOnly ? "Yes" : "No", true)
                 .addField("Premium Only", command instanceof PremiumCommand ? "Yes" : "No", true)
