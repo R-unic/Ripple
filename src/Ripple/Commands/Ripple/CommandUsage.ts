@@ -1,6 +1,6 @@
 import { Command } from "discord-akairo";
 import { Message, PermissionResolvable } from "discord.js";
-import { Arg } from "../../Util";
+import { Arg, ToTitleCase } from "../../Util";
 import Ripple from "../../Client";
 import { PremiumCommand } from "../../Components/CommandClasses/PremiumCommand";
 import formatDuration from "format-duration";
@@ -24,8 +24,8 @@ export default class extends Command<Ripple> {
 
         const prefix = await this.client.Prefix.Get(msg);
         const descIsString = typeof command.description === "string";
-        const userPerms = <PermissionResolvable>command.userPermissions;
-        const clientPerms = <PermissionResolvable>command.clientPermissions;
+        const userPerms = (<PermissionResolvable[]>command.userPermissions).map(p => ToTitleCase(p.toString()));
+        const clientPerms = (<PermissionResolvable[]>command.clientPermissions).map(p => ToTitleCase(p.toString()));
 
         return msg.reply(
             this.client.Embed(`How To Use \`${prefix}${command.aliases[0]}\``)
@@ -38,12 +38,12 @@ export default class extends Command<Ripple> {
                 .addField("Premium Only", command instanceof PremiumCommand ? "Yes" : "No", true)
                 .addField("Required User Permissions", 
                     userPerms?
-                    `\`${userPerms.toString()}\``
+                    `\`${userPerms.join(", ")}\``
                     :"None",
                 true)
                 .addField("Required Bot Permissions", 
                 clientPerms?
-                    `\`${clientPerms.toString()}\``
+                    `\`${clientPerms.join(", ")}\``
                     :"None",
                 true)
         );
