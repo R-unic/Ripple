@@ -1,8 +1,10 @@
-import { Message, MessageEmbed } from "discord.js";
+import { Message } from "discord.js";
 import { Command } from "discord-akairo";
 import { ErrorLogger } from "./ErrorLogger";
+import { Channel, CommaNumber } from "../Util";
 import Ripple from "../Client";
-import { Channel } from "../Util";
+import ms from "ms";
+import formatDuration from "format-duration";
 
 export class RippleLogger {
     public readonly ErrorLogger = new ErrorLogger;
@@ -36,7 +38,7 @@ export class RippleLogger {
     }
 
     public async CooldownError(msg: Message, cmd: Command<Ripple>, remaining: number): Promise<Message> {
-        return this.Error(msg, `\`${cmd.id}\` is on cooldown for another ${remaining} seconds! ⏲️`);
+        return this.Error(msg, `\`${cmd.id}\` is on cooldown for another ${formatDuration(remaining)} seconds! ⏲️`);
     }
 
     public async CouldNotBeExecutedError(msg: Message, errorMsg: string): Promise<Message> {
@@ -88,6 +90,6 @@ export class RippleLogger {
             this.client.Embed("Error!", "❌")
                 .setDescription(errorMsg)
                 .setColor("#D9210D")
-        );
+        ).then(m => m.delete({ timeout: ms("11s") }));
     }
 }

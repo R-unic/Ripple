@@ -299,7 +299,6 @@ export default class Ripple extends AkairoClient {
             switch(reason) {
                 case "commandChannel":
                     return this.Logger.NotCommandChannelError(msg);
-
                 case "blacklist":
                     return this.Logger.CouldNotBeExecutedError(msg, "You are blacklisted from using commands.");
             }
