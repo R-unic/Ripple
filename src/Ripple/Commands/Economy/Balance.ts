@@ -13,13 +13,14 @@ export default class extends Command<Ripple> {
                 content: "Returns your cash balance for specific server.",
                 usage: "<@member?>"
             },
-            args: [
-                Arg("member", "member", msg => msg.member),
-            ]
+            args: [ Arg("member", "member", msg => msg.member) ]
         });
     }
 
     public async exec(msg: Message, { member }: { member: GuildMember }) {
+        if (!await this.client.Economy.Get(msg.member))
+            return this.client.Logger.CouldNotBeExecutedError(msg, "This guild has economy disabled.");
+            
         if (!member) 
             return this.client.Logger.MissingArgError(msg, "member");
         if (member.user.bot)

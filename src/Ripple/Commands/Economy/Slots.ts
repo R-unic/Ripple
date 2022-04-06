@@ -12,13 +12,14 @@ export default class extends Command<Ripple> {
                 content: "Rolls some slots and if they align correctly you get a reward.",
                 usage: "<bet>"
             },
-            args: [
-                Arg("bet", "integer")
-            ]
+            args: [ Arg("bet", "integer") ]
         });
     }
 
     public async exec(msg: Message, { bet }: { bet: number }) {
+        if (!await this.client.Economy.Get(msg.member))
+            return this.client.Logger.CouldNotBeExecutedError(msg, "This guild has economy disabled.");
+            
         if (!bet) 
             return this.client.Logger.MissingArgError(msg, "bet");
         if (await this.client.Cash.TotalMoney(msg.member) < Math.abs(bet))

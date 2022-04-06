@@ -4,18 +4,18 @@ import Ripple from "../../Client";
 
 export default class extends Command<Ripple> {
     public constructor() {
-        const name = "togglelevelsystem";
+        const name = "toggleeconomy";
         super(name, {
-            aliases: [name, "levelsystem", "togglelevels"],
+            aliases: [name, "toggleeco", "toggleecosystem", "toggleeconomysystem"],
             cooldown: 5e3,
-            description: "Toggles the level system on/off."
+            description: "Toggles the economy system on/off."
         });
     }
 
     public async exec(msg: Message) {
-        return this.client.LevelSystem.Toggle(msg)
+        return this.client.Economy.Toggle(msg)
             .then(toggled => msg.reply(
-                this.client.Success(`Successfully ${toggled ? "enabled" : "disabled"} the level system for this server.`)
+                this.client.Success(`Successfully ${toggled ? "enabled" : "disabled"} the economy system for this server.`)
             ));
     }
 }

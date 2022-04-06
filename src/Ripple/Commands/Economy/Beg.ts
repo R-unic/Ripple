@@ -16,6 +16,9 @@ export default class extends Command<Ripple> {
     }
 
     public async exec(msg: Message) {
+        if (!await this.client.Economy.Get(msg.member))
+            return this.client.Logger.CouldNotBeExecutedError(msg, "This guild has economy disabled.");
+            
         const queue = await this.client.TimeQueue.Find(msg.member, "beg");
         if (queue && this.client.TimeQueue.Elapsed(msg.member, queue) < queue.Length)
             return this.client.Logger.CouldNotBeExecutedError(msg, "This command can only be used once every hour.");

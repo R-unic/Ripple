@@ -20,6 +20,9 @@ export default class extends Command<Ripple> {
     }
 
     public async exec(msg: Message, { betNumber, betAmount }: { betNumber: number, betAmount: number }) {
+        if (!await this.client.Economy.Get(msg.member))
+            return this.client.Logger.CouldNotBeExecutedError(msg, "This guild has economy disabled.");
+            
         if (!betNumber) 
             return this.client.Logger.MissingArgError(msg, "betNumber");
         if (betNumber < 1 || betNumber > 6)

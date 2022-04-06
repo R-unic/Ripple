@@ -13,11 +13,9 @@ export default class extends Command<Ripple> {
     }
 
     public async exec(msg: Message) {
-        const previous: boolean = await this.client.ModLogs.Get(msg);
-        const systemEnabled = !previous;
-        return this.client.ModLogs.Set(msg, systemEnabled)
-            .then(() => msg.reply(
-                this.client.Success(`Successfully ${systemEnabled ? "enabled" : "disabled"} moderator logging for this server. Use \`::modlogschannel #channel\` to assign a channel.`)
+        return this.client.ModLogs.Toggle(msg)
+            .then(toggled => msg.reply(
+                this.client.Success(`Successfully ${toggled ? "enabled" : "disabled"} moderator logging for this server. Use \`${this.prefix}modlogschannel #channel\` to assign a channel.`)
             ));
     }
 }

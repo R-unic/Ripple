@@ -19,7 +19,10 @@ export default class extends Command<Ripple> {
         });
     }
 
-    public async exec(msg: Message, { messagesToRemove }: { messagesToRemove: number }) {        
+    public async exec(msg: Message, { messagesToRemove }: { messagesToRemove: number }) {
+        if (!await this.client.Purge.Get(msg.member))
+            return this.client.Logger.CouldNotBeExecutedError(msg, "This guild has purging disabled.");
+
         if (!messagesToRemove)
             return this.client.Logger.MissingArgError(msg, "messagesToRemove");
 

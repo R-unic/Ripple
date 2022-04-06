@@ -12,7 +12,7 @@ export default class extends Command<Ripple> {
             clientPermissions: "MANAGE_ROLES",
             cooldown: 5e3,
             description: {
-                content: "Sets a role to be assigned upon a user reaching provided prestige, or resets assignment.",
+                content: "Sets a role to be assigned upon a user reaching provided prestige, or resets a previous assignment.",
                 usage: "<@role> <prestige?>"
             },
             args: [ 

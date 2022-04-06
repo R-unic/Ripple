@@ -24,6 +24,9 @@ export default class extends Command<Ripple> {
     }
 
     public async exec(msg: Message, { source, member, amount }: { source: string, member: GuildMember, amount: number }) {
+        if (!await this.client.Economy.Get(msg.member))
+            return this.client.Logger.CouldNotBeExecutedError(msg, "This guild has economy disabled.");
+            
         if (!member) 
             return this.client.Logger.MissingArgError(msg, "member");
         if (member.user.bot)

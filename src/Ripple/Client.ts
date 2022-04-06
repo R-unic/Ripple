@@ -34,7 +34,9 @@ import {
     TagManager,
     CashManager,
     BankManager,
-    TimeQueueManager
+    TimeQueueManager,
+    EconomyManager,
+    PurgeManager
 } from "./Components/DataManagement";
 import { AkairoClient, CommandHandler, InhibitorHandler } from "discord-akairo";
 import { GiveawaysManager } from "discord-giveaways";
@@ -42,7 +44,7 @@ import { Wizard101 } from "wizard101-api";
 import { RippleLogger } from "./Components/Logger";
 import { DonationAPI } from "./APIWrappers/Donation";
 import { IconFinderAPI } from "./APIWrappers/IconFinder";
-import { CommaNumber, GuildObject, ModLogEmbed, QuoteEmbed, RippleEmbed, StripISO, ToTitleCase } from "./Util";
+import { GuildObject, ModLogEmbed, QuoteEmbed, RippleEmbed, StripISO } from "./Util";
 import { Options } from "./Options";
 import { Package } from "./Package";
 import { Events } from "./Events";
@@ -89,6 +91,8 @@ export default class Ripple extends AkairoClient {
     public readonly GoodbyeChannel = new GoodbyeChannelManager(this);
     public readonly GoodbyeMessage = new AutoGoodbyeManager(this);
     public readonly TimeQueue = new TimeQueueManager(this);
+    public readonly Economy = new EconomyManager(this);
+    public readonly Purge = new PurgeManager(this);
 
     public readonly Wizard101 = Wizard101;
     public readonly Spotify = new SpotifyWebApi;
@@ -159,7 +163,7 @@ export default class Ripple extends AkairoClient {
         await this.ModLogID.Increment(m);
 
         return modLogChannel.send(
-            this.ModLogEmbed(`Moderator Log #${CommaNumber(id)}`)
+            this.ModLogEmbed(id)
                 .SetEvent(event)
                 .SetContent(content)
                 .SetDate(StripISO(new Date(Date.now())))
@@ -222,7 +226,7 @@ export default class Ripple extends AkairoClient {
     public async Get<ResType = any>(m: GuildObject, key: string, defaultValue?: ResType, userID?: string): Promise<ResType> {
         return new Promise((resolve, reject) => {
             try {
-                const tag = this.Tag(key, m.guild?.id, userID);
+                const tag = this.Tag(key, m.guild!.id, userID);
                 resolve((db.get(tag)?? defaultValue) as ResType);
             } catch (err) {
                 reject(err);
@@ -233,7 +237,7 @@ export default class Ripple extends AkairoClient {
     public async Set(m: GuildObject, key: string, value: any, userID?: string): Promise<boolean> {
         return new Promise(async (resolve, reject) => {
             try {
-                const tag = this.Tag(key, m.guild?.id, userID);
+                const tag = this.Tag(key, m.guild!.id, userID);
                 db.set(tag, value);
                 resolve(true);
             } catch (err) {
@@ -259,8 +263,8 @@ export default class Ripple extends AkairoClient {
             .setDescription(description?? "");
     }
 
-    public ModLogEmbed(title?: string): ModLogEmbed {
-        return new ModLogEmbed(title)
+    public ModLogEmbed(logID: number): ModLogEmbed {
+        return new ModLogEmbed(logID)
             .setFooter(this.FullName, this.Avatar)
     }
 

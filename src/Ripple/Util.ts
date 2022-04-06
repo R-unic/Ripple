@@ -14,17 +14,14 @@ import {
     NewsChannel,
     Role as DiscordRole
 } from "discord.js";
-import Ripple from "./Client";
-
+    
 export const Hyperlink = (url: string, text?: string): string =>
     text? 
         `[${text}](${url})` 
         :url;
 
 export const User = (id: string) => `<@!${id}>`;
-
 export const Role = (id: string) => `<@&${id}>`;
-
 export const Channel = (id: string) => `<#${id}>`;
 
 export const StripISO = (iso: string | Date): string =>
@@ -131,8 +128,8 @@ export class QuoteEmbed extends RippleEmbed {
 }
 
 export class ModLogEmbed extends RippleEmbed {
-    public constructor(title?: string) {
-        super(title, "🛡️");
+    public constructor(logID: number) {
+        super(`Mod Log #${CommaNumber(logID)}`, "🛡️");
         this.setColor("RED");
     }
 

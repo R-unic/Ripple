@@ -24,6 +24,8 @@ import { TagManager } from "./Managers/Guild/TagManager";
 import { CashManager } from "./Managers/GuildMember/CashManager";
 import { BankManager } from "./Managers/GuildMember/BankManager";
 import { TimeQueueManager } from "./Managers/GuildMember/TimeQueueManager";
+import { EconomyManager } from "./Managers/Guild/EconomyManager";
+import { PurgeManager } from "./Managers/Guild/PurgeManager";
 
 export {
     AutoRoleManager,
@@ -51,5 +53,7 @@ export {
     TagManager,
     CashManager,
     BankManager,
-    TimeQueueManager
+    TimeQueueManager,
+    EconomyManager,
+    PurgeManager
 }
