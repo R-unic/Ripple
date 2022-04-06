@@ -8,6 +8,7 @@ export default class extends Command<Ripple> {
         super(name, {
             aliases: [name, "ascend", "evolve"],
             cooldown: 3e3,
+            ratelimit: 2,
             description: "Resets level to 1 and adds one prestige rank for a permanent XP boost based on your prestige."
         });
     }

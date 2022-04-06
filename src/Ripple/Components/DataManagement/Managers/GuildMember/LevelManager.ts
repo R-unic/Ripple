@@ -131,18 +131,18 @@ export class LevelManager implements GuildMemberDataManager<Stats> {
     }
 
     public async GetLeaderboard(user: GuildMember): Promise<GuildMember[]> {
-        const serverMembers = user.guild.members.cache.array()
+        const serverMembers = user.guild.members.cache.array().filter(m => !m.user.bot);
         const stats = await Promise.all(serverMembers.map(async m => [m, await this.Client.Stats.GetPrestige(m), await this.Client.Stats.GetLevel(m), await this.Client.Stats.GetXP(m), await this.Client.Stats.XPUntilNextLevel(m)]));
         const leaderboard = stats.sort((a, b) => {
-            const xuA = <number>a[4];
-            const xuB = <number>b[4];
-            const xA = <number>a[3];
-            const xB = <number>b[3];
-            const lA = <number>a[2];
-            const lB = <number>b[2];
-            const pA = <number>a[1];
-            const pB = <number>b[1];
-            return (pA + lA + (xA / xuA)) - (pB + lB + (xB / xuB));
+            const xpuntilA = <number>a[4];
+            const xpuntilB = <number>b[4];
+            const xpA = <number>a[3];
+            const xpB = <number>b[3];
+            const lvlA = <number>a[2];
+            const lvlB = <number>b[2];
+            const prestigeA = <number>a[1];
+            const prestigeB = <number>b[1];
+            return (prestigeA + 1) + lvlA + (xpA / xpuntilA) - (prestigeB + 1) + lvlB + (xpB / xpuntilB);
         });
 
         return leaderboard
