@@ -1,4 +1,3 @@
-import { Message } from "discord.js";
 import { DataManager } from "./DataManager";
 
 export abstract class MessageIDDataManager<T> extends DataManager {
