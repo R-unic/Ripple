@@ -26,6 +26,9 @@ import { BankManager } from "./Managers/GuildMember/BankManager";
 import { TimeQueueManager } from "./Managers/GuildMember/TimeQueueManager";
 import { EconomyManager } from "./Managers/Guild/EconomyManager";
 import { PurgeManager } from "./Managers/Guild/PurgeManager";
+import { AFKManager } from "./Managers/GuildMember/AFKManager";
+import { ChatFilterManager } from "./Managers/Guild/ChatFilterManager";
+import { FilterSystemManager } from "./Managers/Guild/FilterSystemManager";
 
 export {
     AutoRoleManager,
@@ -55,5 +58,8 @@ export {
     BankManager,
     TimeQueueManager,
     EconomyManager,
-    PurgeManager
+    PurgeManager,
+    AFKManager,
+    ChatFilterManager,
+    FilterSystemManager
 }

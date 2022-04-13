@@ -6,7 +6,7 @@ import Ripple from "../Client";
 import ms from "ms";
 import formatDuration from "format-duration";
 
-export class RippleLogger {
+export class Logger {
     public readonly ErrorLogger = new ErrorLogger;
 
     public constructor(
@@ -14,7 +14,7 @@ export class RippleLogger {
     ) {}
 
     public get Collection() {
-        return this.ErrorLogger.Log;
+        return this.ErrorLogger.Logged;
     }
 
     public get ErrorCount() {
@@ -28,8 +28,12 @@ export class RippleLogger {
         this.ErrorLogger.ClearLog();
     }
 
+    public async ProfanityError(msg: Message): Promise<Message> {
+        return this.Error(msg, `Profanity Error: Your message contained profanity and therefore could not be sent.`)
+    }
+
     public async JSError(msg: Message, err: string): Promise<Message> {
-        return this.Error(msg, err);
+        return this.Error(msg, `JS Error: ${err}`);
     }
 
     public async NotCommandChannelError(msg: Message): Promise<Message> {

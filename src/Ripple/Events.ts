@@ -45,36 +45,53 @@ export const Events = new Map<keyof ClientEvents, Function>([
                     client.Success(`Successfully fixed server prefix, which is now \`${client.DefaultPrefix}\`.`)
                 )).catch(ReportErrorNow);
 
+                
+        if (await client.Filter.IsProfane(msg) && await client.Filtering.Get(msg))
+            return msg.delete()
+                .then(m => client.Logger.ProfanityError(m));
+
         if (await client.LevelSystem.Get(msg))
-            await client.Stats.AddMessage(msg);
+            await client.Stats.AddMessage(msg).catch(ReportErrorNow);
+            
     }],
     ["messageDelete", async (client: Ripple, msg: Message) => {
         if (await client.ModLogs.Get(msg))
-            client.AddModLog(msg, "Message Deleted", `"${msg.content}" by ${msg.member}`);
+            client.AddModLog(msg, "Message Deleted", `"${msg.content}" by ${msg.member}`)
+                .catch(ReportErrorNow);
 
-        client.DeleteSniper.Set(msg.channel as TextChannel, { 
+        client.DeleteSniper.Set(<TextChannel>msg.channel, { 
             SenderID: msg.member.id, 
             Message: msg.content 
-        });
+        }).catch(ReportErrorNow);
     }],
     ["messageDeleteBulk", async (client: Ripple, messages: Collection<Snowflake, Message> ) => {
         const msg: Message = messages.random();
         if (await client.ModLogs.Get(msg))
-            client.AddModLog(msg, "Messages Purged", messages.size.toString());
+            client.AddModLog(msg, "Messages Purged", messages.size.toString())
+                .catch(ReportErrorNow);
 
-        client.DeleteSniper.Set(msg.channel as TextChannel, { 
+        client.DeleteSniper.Set(<TextChannel>msg.channel, { 
             SenderID: msg.member.id, 
             Message: msg.content 
-        });
+        }).catch(ReportErrorNow);
     }],
     ["messageUpdate", async (client: Ripple, msg: Message) => {
         if (await client.ModLogs.Get(msg))
             client.AddModLog(msg, "Message Updated", `"${msg.content}" by ${msg.member}`);
 
-        client.EditSniper.Set(msg.channel as TextChannel, { 
+        client.EditSniper.Set(<TextChannel>msg.channel, { 
             SenderID: msg.member.id, 
             Message: msg.content 
-        })
+        }).catch(ReportErrorNow);
+
+        if (await client.AFK.Is(msg.member))
+            await client.AFK.Cancel(msg.member)
+                .then(() => {
+                    if (msg.member.nickname.includes("[AFK]"))
+                        return msg.member.setNickname(msg.member.nickname.slice(6), "AFK status");
+                }).then(() => msg.reply(
+                    client.Success(`${msg.member} is no longer AFK.`)
+                )).catch(ReportErrorNow);
     }],
     ["guildBanAdd", async (client: Ripple, server: Guild, user: User) => 
         (await client.ModLogs.Get(server.channels.cache.random() as TextChannel)) ? client.AddModLog(server.channels.cache.random() as TextChannel, "User Banned", `@${user.tag}`) : undefined
@@ -95,12 +112,12 @@ export const Events = new Map<keyof ClientEvents, Function>([
         (await client.ModLogs.Get(current.channels.cache.random() as TextChannel)) ? client.AddModLog(current.channels.cache.random() as TextChannel, "Server Updated", current.name) : undefined
     ],
     ["roleCreate", async (client: Ripple, role: Role) => 
-        (await client.ModLogs.Get(role)) ? client.AddModLog(role, "Role Created", `@${role.name}`) : undefined
+        (await client.ModLogs.Get(role)) ? client.AddModLog(role, "Role Created", role) : undefined
     ],
     ["roleDelete", async (client: Ripple, role: Role) => 
-        (await client.ModLogs.Get(role)) ? client.AddModLog(role, "Role Deleted", `@${role.name}`) : undefined
+        (await client.ModLogs.Get(role)) ? client.AddModLog(role, "Role Deleted", role) : undefined
     ],
     ["roleUpdate", async (client: Ripple, role: Role) => 
-        (await client.ModLogs.Get(role)) ? client.AddModLog(role, "Role Updated", `@${role.name}`) : undefined
+        (await client.ModLogs.Get(role)) ? client.AddModLog(role, "Role Updated", role) : undefined
     ]
 ]);

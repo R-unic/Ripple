@@ -31,10 +31,12 @@
   },
   "homepage": "https://ripple-bot.netlify.app",
   "dependencies": {
+    "@types/bad-words": "^3.0.1",
     "@types/ms": "^0.7.31",
     "@types/node-fetch": "^2.5.10",
     "@types/sqlite3": "^3.1.7",
     "axios": "^0.21.1",
+    "bad-words": "^3.0.4",
     "commander": "^7.2.0",
     "discord-akairo": "^8.1.0",
     "discord-giveaways": "^4.5.1",

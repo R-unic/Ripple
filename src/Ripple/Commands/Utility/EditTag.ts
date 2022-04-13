@@ -33,7 +33,7 @@ export default class extends Command<Ripple> {
         if (tag.AuthorID !== msg.author.id)
             return this.client.Logger.CouldNotBeExecutedError(msg, "You did not create this tag, therefore you cannot edit it.")
 
-        await this.client.Tags.Remove(msg, id);
+        await this.client.Tags.Remove(msg, tag);
         await this.client.Tags.Add(msg, { Name: id, Content: content, AuthorID: msg.author.id })
         return msg.reply(
             this.client.Success(`Successfully edited tag \`${id}\`.`)

@@ -10,7 +10,7 @@ export default class extends Command<Ripple> {
             aliases: [name, "eightball", "magic8", "fortune"],
             description: {
                 content: "Consults the magic eight ball for a trustworthy answer.",
-                usage: "<question?>"
+                usage: '<"question"?>'
             }
         });
     }

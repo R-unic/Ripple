@@ -10,11 +10,11 @@ export class ErrorLogger {
      * @readonly
      * @description The internal storage unit for each error or error message
     */
-    public Log = new Collection<Date, string | Error>();
+    public Logged = new Collection<Date, string | Error>();
 
     public constructor(...base: ErrorLogger[]) {
         base.forEach(logger => 
-            this.Log = this.Log.concat(logger.Log));
+            this.Logged = this.Logged.concat(logger.Logged));
     }
 
     /**
@@ -24,7 +24,7 @@ export class ErrorLogger {
      * @alias this.Log.size
     */
     public get ErrorCount() {
-        return this.Log.size
+        return this.Logged.size
     }
 
     /**
@@ -32,7 +32,7 @@ export class ErrorLogger {
      * @alias this.Log.clear()
     */
     public ClearLog() {
-        this.Log = new Collection<Date, string | Error>();
+        this.Logged = new Collection<Date, string | Error>();
     }
 
     /**
@@ -42,7 +42,7 @@ export class ErrorLogger {
      * @returns Index of error inside of log array
     */
     public Report(errorMsg: string, createdAt: Date): ErrorLogger {
-        this.Log.set(createdAt, errorMsg);
+        this.Logged.set(createdAt, errorMsg);
         console.warn(errorMsg);
         return this;
     }
@@ -54,7 +54,7 @@ export class ErrorLogger {
     */
     public Throw(errorMsg: string, createdAt: Date): Error {
         const err = new Error(errorMsg);
-        this.Log.set(createdAt, err);
+        this.Logged.set(createdAt, err);
         return err;
     }
 }

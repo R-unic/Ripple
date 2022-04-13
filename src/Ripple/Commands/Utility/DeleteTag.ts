@@ -27,7 +27,7 @@ export default class extends Command<Ripple> {
         if (tag.AuthorID !== msg.author.id)
             return this.client.Logger.CouldNotBeExecutedError(msg, "You did not create this tag, therefore you cannot delete it.");
 
-        await this.client.Tags.Remove(msg, id);
+        await this.client.Tags.Remove(msg, tag);
         return msg.reply(
             this.client.Success(`Successfully removed tag \`${id}\`.`)
         );

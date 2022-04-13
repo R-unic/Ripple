@@ -1,7 +1,8 @@
 import { Command } from "discord-akairo";
 import { Message } from "discord.js";
 import { ErrorLogger } from "../../Components/ErrorLogger";
-import { EventErrorLogger } from "../../Events";import Ripple from "../../Client";
+import { EventErrorLogger } from "../../Events";
+import Ripple from "../../Client";
 
 
 export default class extends Command<Ripple> {
@@ -17,7 +18,7 @@ export default class extends Command<Ripple> {
     public async exec(msg: Message) {
         const logger = new ErrorLogger(this.client.Logger.ErrorLogger, EventErrorLogger);
         let log: string = "";
-        logger.Log
+        logger.Logged
             .forEach((err, date) => log += 
                 `(${typeof err === "string"? err : err.message}) - (${date.toLocaleDateString()} | ${date.toLocaleTimeString()})\n`
             );

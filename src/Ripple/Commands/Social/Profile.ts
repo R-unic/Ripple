@@ -30,6 +30,7 @@ export default class extends Command<Ripple> {
         const rank = await this.client.Stats.GetLeaderboardRank(member);
         const reputation = await this.client.Reputation.Get(member);
         const premium = await this.client.Premium.Has(member.user);
+        const status = await this.client.AFK.Get(msg.member);
 
         try {
             return msg.channel.send(
@@ -42,6 +43,7 @@ export default class extends Command<Ripple> {
                     .addField("XP Gain", level === 100 ? "0" : "50 - " + CommaNumber(maxXPGain), true)
                     .addField("Server Rank", `#${CommaNumber(rank)}`, true)
                     .addField("Reputation", reputation, true)
+                    .addField("AFK", status.AFK ? status.Message ?? "No reason provided" : "No", true)
                     .addField("Ripple Premium", premium ? "Yes" : "No", true)
             );
         } catch (err) {

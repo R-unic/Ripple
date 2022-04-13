@@ -36,12 +36,15 @@ import {
     BankManager,
     TimeQueueManager,
     EconomyManager,
-    PurgeManager
+    PurgeManager,
+    AFKManager,
+    ChatFilterManager,
+    FilterSystemManager
 } from "./Components/DataManagement";
 import { AkairoClient, CommandHandler, InhibitorHandler } from "discord-akairo";
 import { GiveawaysManager } from "discord-giveaways";
 import { Wizard101 } from "wizard101-api";
-import { RippleLogger } from "./Components/Logger";
+import { Logger } from "./Components/Logger";
 import { DonationAPI } from "./APIWrappers/Donation";
 import { IconFinderAPI } from "./APIWrappers/IconFinder";
 import { GuildObject, ModLogEmbed, QuoteEmbed, RippleEmbed, StripISO } from "./Util";
@@ -60,7 +63,7 @@ import * as db from "quick.db";
 */
 export default class Ripple extends AkairoClient {
     public readonly CommandHandler = new CommandHandler<Ripple>(this, Options.CommandHandler);
-    public readonly Logger = new RippleLogger(this);
+    public readonly Logger = new Logger(this);
     public readonly Donations = new DonationAPI(this, env.DONATE_BOT_API);
     public readonly IconFinder = new IconFinderAPI(env.ICONFINDER_API);
 
@@ -93,6 +96,9 @@ export default class Ripple extends AkairoClient {
     public readonly TimeQueue = new TimeQueueManager(this);
     public readonly Economy = new EconomyManager(this);
     public readonly Purge = new PurgeManager(this);
+    public readonly AFK = new AFKManager(this);
+    public readonly Filter = new ChatFilterManager(this);
+    public readonly Filtering = new FilterSystemManager(this);
 
     public readonly Wizard101 = Wizard101;
     public readonly Spotify = new SpotifyWebApi;
