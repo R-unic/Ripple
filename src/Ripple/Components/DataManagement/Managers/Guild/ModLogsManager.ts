@@ -5,6 +5,6 @@ export class ModLogsManager extends ToggleableManager {
     public constructor(
         public readonly Client: Ripple
     ) {
-        super(Client, "modlogs", true);
+        super(Client, "modlogs", false);
     }
 }

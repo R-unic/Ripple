@@ -1,5 +1,5 @@
 import { Command } from "discord-akairo";
-import { Message, TextChannel } from "discord.js";
+import { GuildMember, Message, TextChannel } from "discord.js";
 import { Arg, Clamp } from "../../Util";
 import Ripple from "../../Client";
 
@@ -13,32 +13,32 @@ export default class extends Command<Ripple> {
             cooldown: 4e3,
             description: {
                 content: "Deletes a number of messages at once.",
-                usage: "<numberOfMessages>"
+                usage: "<numberOfMessages> <@member?>"
             },
-            args: [ Arg("messagesToRemove", "number") ]
+            args: [ 
+                Arg("messagesToRemove", "number"),
+                Arg("member", "member")
+            ]
         });
     }
 
-    public async exec(msg: Message, { messagesToRemove }: { messagesToRemove: number }) {
+    public async exec(msg: Message, { messagesToRemove, member }: { messagesToRemove: number, member: GuildMember }) {
         if (!await this.client.Purge.Get(msg.member))
             return this.client.Logger.CouldNotBeExecutedError(msg, "This guild has purging disabled.");
 
         if (!messagesToRemove)
             return this.client.Logger.MissingArgError(msg, "messagesToRemove");
 
-        const channel = msg.channel as TextChannel
-        if (!channel)
-            return msg.reply("Invalid channel!");
+        const chnl = <TextChannel>msg.channel;
+        if (!chnl)
+            return this.client.Logger.InvalidArgError(msg, "Invalid channel.");
 
         messagesToRemove++;
-        return channel.messages.fetch({
-            limit: Clamp(messagesToRemove, 1, 100)
-        }).then(messages => {
-            return channel
-                .bulkDelete(messages)
-                .then(() => channel.send(this.client.Success(`Bulk delete successful. Total messages removed: ${messages.size}`)))
-                .then(sent => sent.delete({ timeout: this.client.Seconds(2.5) }))
-                .catch(err => this.client.Logger.DiscordAPIError(msg, err));
-        });
+        chnl.messages.fetch()
+        const messages = chnl.messages.cache.filter(m => member ? m.member === member : true);
+        return chnl
+            .bulkDelete(messages.array().slice(0, Clamp(messagesToRemove, 1, 100)))
+            .then(() => chnl.send(this.client.Success(`Bulk delete successful. Total messages removed: ${messages.size}`)))
+            .then(sent => sent.delete({ timeout: this.client.Seconds(2.5) }))
     }
 }

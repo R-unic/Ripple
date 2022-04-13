@@ -21,6 +21,7 @@ export default class extends Command<Ripple> {
             this.client.Embed()
                 .setTitle(`\`${member.user.tag}\`'s Avatar`)
                 .setImage(member.user.displayAvatarURL({ dynamic: true }))
+                .setColor(member.displayHexColor)
         );
     }
 }
