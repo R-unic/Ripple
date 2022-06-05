@@ -41,7 +41,7 @@ import {
     ChatFilterManager,
     FilterSystemManager
 } from "./Components/DataManagement";
-import { AkairoClient, CommandHandler, InhibitorHandler } from "discord-akairo";
+import { AkairoClient, Command, CommandHandler, InhibitorHandler } from "discord-akairo";
 import { GiveawaysManager } from "discord-giveaways";
 import { Wizard101 } from "wizard101-api";
 import { Logger } from "./Components/Logger";
@@ -120,8 +120,8 @@ export default class Ripple extends AkairoClient {
         immediateLogin: boolean = true
     ) {
         super({
-            ownerID: [ "415233686758359051", "686418809720012843" ],
-            intents: [Intents.FLAGS.DIRECT_MESSAGES, Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MEMBERS, Intents.FLAGS.GUILD_MESSAGES],
+            ownerID: [ "415233686758359051" ],
+            // intents: [Intents.FLAGS.DIRECT_MESSAGES, Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MEMBERS, Intents.FLAGS.GUILD_MESSAGES],
             messageCacheLifetime: 10,
             messageCacheMaxSize: 35,
             messageSweepInterval: 3600,
@@ -138,6 +138,7 @@ export default class Ripple extends AkairoClient {
      */
     public async Login(): Promise<string> {
         try {
+            // console.log(env.LOGIN_TOKEN); // probably dont keep this in production
             const p = super.login(env.LOGIN_TOKEN)
                 .then(async res => {
                     this.BotName = this.user.username;
@@ -155,7 +156,7 @@ export default class Ripple extends AkairoClient {
     private async Initialize() {
         this.HandleEvents(Events);
         this.LoadCommands();
-        this.Spotify.setAccessToken(env.SPOTIFY_API);
+        // this.Spotify.setAccessToken(env.SPOTIFY_API);
         await this.Donations.StartTransactionsLoop();
     }
 
@@ -301,7 +302,7 @@ export default class Ripple extends AkairoClient {
             .loadAll();
 
         this.CommandHandler.on("cooldown", (msg, cmd, remaining) => 
-            this.Logger.CooldownError(msg, cmd, remaining));
+            this.Logger.CooldownError(msg, <Command<Ripple>>cmd, remaining));
 
         this.CommandHandler.on("commandBlocked", (msg, cmd, reason) => {           
             console.log("command blocked");
