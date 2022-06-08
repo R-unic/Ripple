@@ -1,0 +1,11 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const tslib_1 = require("tslib");
+const TestRunner_1 = require("./API/TestRunner");
+const ClientTest_1 = tslib_1.__importDefault(require("./Tests/ClientTest"));
+const CommandHandlerTest_1 = tslib_1.__importDefault(require("./Tests/CommandHandlerTest"));
+const ErrorLoggerTest_1 = tslib_1.__importDefault(require("./Tests/ErrorLoggerTest"));
+TestRunner_1.TestRunner.Add(new ClientTest_1.default);
+TestRunner_1.TestRunner.Add(new CommandHandlerTest_1.default);
+TestRunner_1.TestRunner.Add(new ErrorLoggerTest_1.default);
+TestRunner_1.TestRunner.Go(TestRunner_1.TestRunner.Get(1).TestClient);
