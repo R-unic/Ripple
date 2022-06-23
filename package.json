@@ -4,12 +4,12 @@
   "description": "All-purpose TypeScript Discord bot",
   "main": "dist/Program.js",
   "scripts": {
+    "cleardir": "rm -d dist/",
     "start": "node dist/Program.js",
-    "restart": "tsc && pm2 restart Program && echo Successfully restarted Ripple client.",
-    "devstart": "tsc -w & nodemon --trace-warnings dist/Program.js -e .ts,.js,.json",
+    "compile": "tsc",
+    "build": "yarn run cleardir && yarn run compile",
     "test": "node dist/UnitTesting/Run.js",
-    "release": "release-it",
-    "changelog": "changelog > CHANGELOG.md"
+    "release": "release-it"
   },
   "bin": {
     "ripple": "bin/ripple"
@@ -56,6 +56,7 @@
     "sqlite3": "^5.0.2",
     "ts-node": "^10.0.0",
     "tslib": "^2.2.0",
+    "typeorm": "^0.3.6",
     "typescript": "^4.7.3",
     "weky": "^3.1.8",
     "wizard101-api": "^1.2.5",
