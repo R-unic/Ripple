@@ -26,6 +26,7 @@ class default_1 extends discord_akairo_1.Command {
             const exp = yield this.client.Stats.GetXP(member);
             const untilNext = yield this.client.Stats.XPUntilNextLevel(member);
             const maxXPGain = yield this.client.Stats.MaxXPGain(member);
+            // const totalXP = await this.client.Stats.GetTotalXP(member);
             const rank = yield this.client.Stats.GetLeaderboardRank(member);
             const reputation = yield this.client.Reputation.Get(member);
             const premium = yield this.client.Premium.Has(member.user);

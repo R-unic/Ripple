@@ -86,10 +86,17 @@ export class Logger {
         `);
     }
 
-    private async Error(msg: Message, errorMsg: string, log: boolean = true): Promise<Message> {
-        if (log)
-            this.ErrorLogger.Report(errorMsg, msg.createdAt);
+    public async Collect(msg: Message, desc: string) {
+        this.ErrorLogger.Report(desc, msg.createdAt);
+        return msg.reply(
+            this.client.Embed("Info", "📝")
+                .setDescription(desc)
+                .setColor("#3492EB")
+        ).then(m => m.delete({ timeout: ms("11s") }));
+    }
 
+    private async Error(msg: Message, errorMsg: string): Promise<Message> {
+        this.ErrorLogger.Report(errorMsg, msg.createdAt);
         return msg.reply(
             this.client.Embed("Error!", "❌")
                 .setDescription(errorMsg)

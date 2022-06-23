@@ -1,12 +1,14 @@
-import { GuildMember, Message, TextChannel } from "discord.js";
+import { Guild, GuildMember, Message, TextChannel } from "discord.js";
 import { GuildMemberDataManager } from "../../Base/GuildMemberDataManager";
 import { DiscordChannel, RomanNumeral } from "../../../../Util";
 import Ripple from "../../../../Client";
+import ms from "ms";
 
 export interface Stats {
     Prestige: number,
     Level: number,
-    XP: number
+    XP: number,
+    TotalXP: number
 }
 
 export class LevelManager implements GuildMemberDataManager<Stats> {
@@ -17,7 +19,7 @@ export class LevelManager implements GuildMemberDataManager<Stats> {
     public constructor(
         public readonly Client: Ripple
     ) {}
-
+    
     public async AddMessage(msg: Message) {
         const member:GuildMember = msg.member;
         if (!member || member?.user.bot) return;
@@ -53,16 +55,25 @@ export class LevelManager implements GuildMemberDataManager<Stats> {
                 channel.send(`${member}`)
                     .then(oldM => {
                         channel.send(embed).then(m => m.delete({ timeout: 3500 }));
-                        oldM.delete({ timeout: 3500 });
+                        oldM.delete({ timeout: ms("10s") });
                     });
             else
                 channel.send(embed).then(m => m.delete({ timeout: 3500 }));
         }
     }
 
-    public async XPUntilNextLevel(user: GuildMember): Promise<number> {
-        const level: number = await this.GetLevel(user);
-        const prestige: number = await this.GetPrestige(user);
+    public async Reset(user: GuildMember): Promise<boolean> {
+        return this.Set(user, {
+            Level: 1,
+            Prestige: 0,
+            XP: 0,
+            TotalXP: 0
+        });
+    }
+
+    public async XPUntilNextLevel(user: GuildMember, customL?: number, customP?: number): Promise<number> {
+        const level: number = customL ?? await this.GetLevel(user);
+        const prestige: number = customP ?? await this.GetPrestige(user);
         return (575 + (level ^ 2 - prestige ^ 1.5)) * ((level ^ -.9) / 1.8);
     }
 
@@ -108,6 +119,11 @@ export class LevelManager implements GuildMemberDataManager<Stats> {
         return this.SetXP(user, xp + amount);
     }
 
+    public async AddTotalXP(user: GuildMember, amount: number): Promise<boolean> {
+        const totalXP: number = await this.GetTotalXP(user);
+        return this.SetTotalXP(user, totalXP + amount);
+    }
+
     public async SetPrestige(user: GuildMember, prestige: number): Promise<boolean> {
         if (prestige > this.MaxPrestige) return;
         
@@ -130,9 +146,22 @@ export class LevelManager implements GuildMemberDataManager<Stats> {
         return this.Set(user, stats);
     }
 
+    public async SetTotalXP(user: GuildMember, totalXP: number): Promise<boolean> {
+        const stats: Stats = await this.Get(user);
+        stats.TotalXP = totalXP;
+        return this.Set(user, stats);
+    }
+
     public async GetLeaderboard(user: GuildMember): Promise<GuildMember[]> {
-        const serverMembers = user.guild.members.cache.array().filter(m => !m.user.bot);
-        const stats = await Promise.all(serverMembers.map(async m => [m, await this.Client.Stats.GetPrestige(m), await this.Client.Stats.GetLevel(m), await this.Client.Stats.GetXP(m), await this.Client.Stats.XPUntilNextLevel(m)]));
+        // const serverMembers = user.guild.members.cache.array().filter(m => !m.user.bot);
+        const serverMembers = (await user.guild.members.fetch({ force: true })).filter(m => !m.user.bot);
+        const stats = await Promise.all(serverMembers.map(async m => [m, 
+            await this.GetPrestige(m), 
+            await this.GetLevel(m),
+            await this.GetXP(m),
+            await this.XPUntilNextLevel(m)
+        ]));
+        
         const leaderboard = stats.sort((a, b) => {
             const xpuntilA = <number>a[4];
             const xpuntilB = <number>b[4];
@@ -142,16 +171,33 @@ export class LevelManager implements GuildMemberDataManager<Stats> {
             const lvlB = <number>b[2];
             const prestigeA = <number>a[1];
             const prestigeB = <number>b[1];
-            return (prestigeA + 1) + lvlA + (xpA / xpuntilA) - (prestigeB + 1) + lvlB + (xpB / xpuntilB);
+            const prestigeLvlsA = Math.max(prestigeA * 100 - lvlA, 0);
+            const prestigeLvlsB = Math.max(prestigeB * 100 - lvlB, 0);
+            const xpPercA = xpA / xpuntilA;
+            const xpPercB = xpB / xpuntilB;
+            return (prestigeLvlsB + lvlB + xpPercB) - (prestigeLvlsA + lvlA + xpPercA);
         });
 
         return leaderboard
-            .map(s => <GuildMember>s[0])
-            .reverse();
+            .map(s => <GuildMember>s[0]);
     }
 
     public async GetLeaderboardRank(user: GuildMember): Promise<number> {
         return (await this.GetLeaderboard(user)).indexOf(user) + 1;
+    }
+
+    public async GetTotalXP(user: GuildMember): Promise<number> {
+        const level: number = await this.GetLevel(user);
+        const prestige: number = await this.GetPrestige(user);
+        let total: number = await this.GetXP(user);
+        for (let i = 1; i <= level; i++)
+            total += await this.XPUntilNextLevel(user, i, prestige);
+        
+        if (prestige > 0)
+            for (let i = 1; i <= (prestige - 1) * 100; i++)
+                total += await this.XPUntilNextLevel(user, i, Math.floor(i / 100));
+
+        return total;
     }
 
     public async GetPrestige(user: GuildMember): Promise<number> {
@@ -173,7 +219,8 @@ export class LevelManager implements GuildMemberDataManager<Stats> {
         return this.Client.Get(user, this.Tag, {
             Prestige: 0,
             Level: 1,
-            XP: 0
+            XP: 0,
+            TotalXP: 0
         }, user.id);
     }
 

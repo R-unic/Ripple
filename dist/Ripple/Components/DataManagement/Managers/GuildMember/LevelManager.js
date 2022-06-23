@@ -3,6 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.LevelManager = void 0;
 const tslib_1 = require("tslib");
 const Util_1 = require("../../../../Util");
+const ms_1 = tslib_1.__importDefault(require("ms"));
 class LevelManager {
     constructor(Client) {
         this.Client = Client;
@@ -40,17 +41,27 @@ class LevelManager {
                     channel.send(`${member}`)
                         .then(oldM => {
                         channel.send(embed).then(m => m.delete({ timeout: 3500 }));
-                        oldM.delete({ timeout: 3500 });
+                        oldM.delete({ timeout: (0, ms_1.default)("10s") });
                     });
                 else
                     channel.send(embed).then(m => m.delete({ timeout: 3500 }));
             }
         });
     }
-    XPUntilNextLevel(user) {
+    Reset(user) {
         return tslib_1.__awaiter(this, void 0, void 0, function* () {
-            const level = yield this.GetLevel(user);
-            const prestige = yield this.GetPrestige(user);
+            return this.Set(user, {
+                Level: 1,
+                Prestige: 0,
+                XP: 0,
+                TotalXP: 0
+            });
+        });
+    }
+    XPUntilNextLevel(user, customL, customP) {
+        return tslib_1.__awaiter(this, void 0, void 0, function* () {
+            const level = customL !== null && customL !== void 0 ? customL : yield this.GetLevel(user);
+            const prestige = customP !== null && customP !== void 0 ? customP : yield this.GetPrestige(user);
             return (575 + (level ^ 2 - prestige ^ 1.5)) * ((level ^ -.9) / 1.8);
         });
     }
@@ -100,6 +111,12 @@ class LevelManager {
             return this.SetXP(user, xp + amount);
         });
     }
+    AddTotalXP(user, amount) {
+        return tslib_1.__awaiter(this, void 0, void 0, function* () {
+            const totalXP = yield this.GetTotalXP(user);
+            return this.SetTotalXP(user, totalXP + amount);
+        });
+    }
     SetPrestige(user, prestige) {
         return tslib_1.__awaiter(this, void 0, void 0, function* () {
             if (prestige > this.MaxPrestige)
@@ -125,10 +142,25 @@ class LevelManager {
             return this.Set(user, stats);
         });
     }
+    SetTotalXP(user, totalXP) {
+        return tslib_1.__awaiter(this, void 0, void 0, function* () {
+            const stats = yield this.Get(user);
+            stats.TotalXP = totalXP;
+            return this.Set(user, stats);
+        });
+    }
     GetLeaderboard(user) {
         return tslib_1.__awaiter(this, void 0, void 0, function* () {
-            const serverMembers = user.guild.members.cache.array().filter(m => !m.user.bot);
-            const stats = yield Promise.all(serverMembers.map((m) => tslib_1.__awaiter(this, void 0, void 0, function* () { return [m, yield this.Client.Stats.GetPrestige(m), yield this.Client.Stats.GetLevel(m), yield this.Client.Stats.GetXP(m), yield this.Client.Stats.XPUntilNextLevel(m)]; })));
+            // const serverMembers = user.guild.members.cache.array().filter(m => !m.user.bot);
+            const serverMembers = (yield user.guild.members.fetch({ force: true })).filter(m => !m.user.bot);
+            const stats = yield Promise.all(serverMembers.map((m) => tslib_1.__awaiter(this, void 0, void 0, function* () {
+                return [m,
+                    yield this.GetPrestige(m),
+                    yield this.GetLevel(m),
+                    yield this.GetXP(m),
+                    yield this.XPUntilNextLevel(m)
+                ];
+            })));
             const leaderboard = stats.sort((a, b) => {
                 const xpuntilA = a[4];
                 const xpuntilB = b[4];
@@ -138,16 +170,32 @@ class LevelManager {
                 const lvlB = b[2];
                 const prestigeA = a[1];
                 const prestigeB = b[1];
-                return (prestigeA + 1) + lvlA + (xpA / xpuntilA) - (prestigeB + 1) + lvlB + (xpB / xpuntilB);
+                const prestigeLvlsA = Math.max(prestigeA * 100 - lvlA, 0);
+                const prestigeLvlsB = Math.max(prestigeB * 100 - lvlB, 0);
+                const xpPercA = xpA / xpuntilA;
+                const xpPercB = xpB / xpuntilB;
+                return (prestigeLvlsB + lvlB + xpPercB) - (prestigeLvlsA + lvlA + xpPercA);
             });
             return leaderboard
-                .map(s => s[0])
-                .reverse();
+                .map(s => s[0]);
         });
     }
     GetLeaderboardRank(user) {
         return tslib_1.__awaiter(this, void 0, void 0, function* () {
             return (yield this.GetLeaderboard(user)).indexOf(user) + 1;
+        });
+    }
+    GetTotalXP(user) {
+        return tslib_1.__awaiter(this, void 0, void 0, function* () {
+            const level = yield this.GetLevel(user);
+            const prestige = yield this.GetPrestige(user);
+            let total = yield this.GetXP(user);
+            for (let i = 1; i <= level; i++)
+                total += yield this.XPUntilNextLevel(user, i, prestige);
+            if (prestige > 0)
+                for (let i = 1; i <= (prestige - 1) * 100; i++)
+                    total += yield this.XPUntilNextLevel(user, i, Math.floor(i / 100));
+            return total;
         });
     }
     GetPrestige(user) {
@@ -173,7 +221,8 @@ class LevelManager {
             return this.Client.Get(user, this.Tag, {
                 Prestige: 0,
                 Level: 1,
-                XP: 0
+                XP: 0,
+                TotalXP: 0
             }, user.id);
         });
     }

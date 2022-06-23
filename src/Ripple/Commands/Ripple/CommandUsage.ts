@@ -24,8 +24,16 @@ export default class extends Command<Ripple> {
 
         const prefix = await this.client.Prefix.Get(msg);
         const descIsString = typeof command.description === "string";
-        const userPerms = (<PermissionResolvable[]>command.userPermissions).map(p => ToTitleCase(p.toString()));
-        const clientPerms = (<PermissionResolvable[]>command.clientPermissions).map(p => ToTitleCase(p.toString()));
+        let userPerms
+        let clientPerms
+        if (command.userPermissions instanceof Array)
+            userPerms = (<PermissionResolvable[]>command.userPermissions).map(p => ToTitleCase(p.toString())).join(", ");
+        else
+            userPerms = command.userPermissions;
+        if (command.clientPermissions instanceof Array)
+            clientPerms = (<PermissionResolvable[]>command.clientPermissions).map(p => ToTitleCase(p.toString())).join(", ");
+        else
+            clientPerms = command.clientPermissions;
 
         return msg.reply(
             this.client.Embed(`How To Use \`${prefix}${command.aliases[0]}\``)
@@ -38,12 +46,12 @@ export default class extends Command<Ripple> {
                 .addField("Premium Only", command instanceof PremiumCommand ? "Yes" : "No", true)
                 .addField("Required User Permissions", 
                     userPerms?
-                    `\`${userPerms.join(", ")}\``
+                    `\`${userPerms}\``
                     :"None",
                 true)
                 .addField("Required Bot Permissions", 
                 clientPerms?
-                    `\`${clientPerms.join(", ")}\``
+                    `\`${clientPerms}\``
                     :"None",
                 true)
         );

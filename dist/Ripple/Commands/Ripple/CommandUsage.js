@@ -24,8 +24,16 @@ class default_1 extends discord_akairo_1.Command {
                 return this.client.Logger.MissingArgError(msg, "command");
             const prefix = yield this.client.Prefix.Get(msg);
             const descIsString = typeof command.description === "string";
-            const userPerms = command.userPermissions.map(p => (0, Util_1.ToTitleCase)(p.toString()));
-            const clientPerms = command.clientPermissions.map(p => (0, Util_1.ToTitleCase)(p.toString()));
+            let userPerms;
+            let clientPerms;
+            if (command.userPermissions instanceof Array)
+                userPerms = command.userPermissions.map(p => (0, Util_1.ToTitleCase)(p.toString())).join(", ");
+            else
+                userPerms = command.userPermissions;
+            if (command.clientPermissions instanceof Array)
+                clientPerms = command.clientPermissions.map(p => (0, Util_1.ToTitleCase)(p.toString())).join(", ");
+            else
+                clientPerms = command.clientPermissions;
             return msg.reply(this.client.Embed(`How To Use \`${prefix}${command.aliases[0]}\``)
                 .setDescription(descIsString ? command.description : command.description.content)
                 .addField("Arguments", descIsString ? "None" : command.description.usage, true)
@@ -35,10 +43,10 @@ class default_1 extends discord_akairo_1.Command {
                 .addField("Owner Only", command.ownerOnly ? "Yes" : "No", true)
                 .addField("Premium Only", command instanceof PremiumCommand_1.PremiumCommand ? "Yes" : "No", true)
                 .addField("Required User Permissions", userPerms ?
-                `\`${userPerms.join(", ")}\``
+                `\`${userPerms}\``
                 : "None", true)
                 .addField("Required Bot Permissions", clientPerms ?
-                `\`${clientPerms.join(", ")}\``
+                `\`${clientPerms}\``
                 : "None", true));
         });
     }

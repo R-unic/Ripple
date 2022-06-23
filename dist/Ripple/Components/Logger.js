@@ -94,10 +94,17 @@ class Logger {
         `);
         });
     }
-    Error(msg, errorMsg, log = true) {
+    Collect(msg, desc) {
         return tslib_1.__awaiter(this, void 0, void 0, function* () {
-            if (log)
-                this.ErrorLogger.Report(errorMsg, msg.createdAt);
+            this.ErrorLogger.Report(desc, msg.createdAt);
+            return msg.reply(this.client.Embed("Info", "📝")
+                .setDescription(desc)
+                .setColor("#3492EB")).then(m => m.delete({ timeout: (0, ms_1.default)("11s") }));
+        });
+    }
+    Error(msg, errorMsg) {
+        return tslib_1.__awaiter(this, void 0, void 0, function* () {
+            this.ErrorLogger.Report(errorMsg, msg.createdAt);
             return msg.reply(this.client.Embed("Error!", "❌")
                 .setDescription(errorMsg)
                 .setColor("#D9210D")).then(m => m.delete({ timeout: (0, ms_1.default)("11s") }));

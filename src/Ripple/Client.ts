@@ -255,7 +255,7 @@ export default class Ripple extends AkairoClient {
 
     public VerifySource(source: string): boolean {
         source = source.toLowerCase();
-        return  source !== "bank" && source !== "wallet";
+        return source !== "bank" && source !== "wallet";
     }
 
     public Pending(description?: string): RippleEmbed {

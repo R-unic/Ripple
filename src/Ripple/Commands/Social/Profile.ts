@@ -3,6 +3,7 @@ import { GuildMember, Message } from "discord.js";
 import { Arg, CommaNumber, RomanNumeral } from "../../Util";
 import Ripple from "../../Client";
 import ms from "ms";
+import { isJSDocThisTag } from "typescript";
 
 export default class extends Command<Ripple> {
     public constructor() {
@@ -27,6 +28,7 @@ export default class extends Command<Ripple> {
         const exp = await this.client.Stats.GetXP(member);
         const untilNext = await this.client.Stats.XPUntilNextLevel(member);
         const maxXPGain = await this.client.Stats.MaxXPGain(member);
+        // const totalXP = await this.client.Stats.GetTotalXP(member);
         const rank = await this.client.Stats.GetLeaderboardRank(member);
         const reputation = await this.client.Reputation.Get(member);
         const premium = await this.client.Premium.Has(member.user);
