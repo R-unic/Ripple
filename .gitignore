@@ -1,4 +1,3 @@
 node_modules
 .env
-json.sqlite
 .release-it.json
