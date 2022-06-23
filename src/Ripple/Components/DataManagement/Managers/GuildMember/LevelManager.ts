@@ -80,7 +80,7 @@ export class LevelManager implements GuildMemberDataManager<Stats> {
     public async MaxXPGain(user: GuildMember): Promise<number> {
         const level: number = await this.GetLevel(user);
         const prestige: number = await this.GetPrestige(user);
-        return Math.ceil(50 + (level ^ 1.6) * 6 * (prestige + 1) ^ 1.1);
+        return Math.ceil(50 + (level ^ 1.5) * 6 * (prestige + 1 ^ .4));
     }
 
     public async XPGain(user: GuildMember): Promise<number> {

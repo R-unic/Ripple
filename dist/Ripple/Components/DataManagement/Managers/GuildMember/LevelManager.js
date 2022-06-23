@@ -69,7 +69,7 @@ class LevelManager {
         return tslib_1.__awaiter(this, void 0, void 0, function* () {
             const level = yield this.GetLevel(user);
             const prestige = yield this.GetPrestige(user);
-            return Math.ceil(50 + (level ^ 1.6) * 6 * (prestige + 1) ^ 1.1);
+            return Math.ceil(50 + (level ^ 1.5) * 6 * (prestige + 1 ^ .4));
         });
     }
     XPGain(user) {
