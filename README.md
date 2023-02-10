@@ -1,6 +1,8 @@
 <h1 align="center">
   <br>
-  <a href="https://github.com/AlphaRunic/Ripple"><img src="https://images.wallpaperscraft.com/image/drop_ripple_purple_115080_1280x720.jpg" width="480" height="270"></a>
+  <a href="https://github.com/AlphaRunic/Ripple" style="border-radius:2%;>
+    <img src="https://cdn.discordapp.com/attachments/846604279791616042/1073652214700187728/DALLE_2023-02-10_09.10.21.png" width="480" height="480">
+   </a>
   <br>
   Ripple
   <br>
